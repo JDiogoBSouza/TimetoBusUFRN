@@ -1,0 +1,104 @@
+<resources>
+    <string name="app_name">Time to Bus UFRN</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_sobre">Sobre</string>
+
+    <string-array name="paradas">
+        <item>Reitoria</item>
+        <item>Rotatoria</item>
+        <item>Saida UFRN</item>
+        <item>Bar de Mae</item>
+        <item>Capela</item>
+        <item>Via Direta</item>
+        <item>Deart</item>
+        <item>Esc. Musica</item>
+        <item>CB</item>
+    </string-array>
+
+    <string-array name="onibus">
+        <item>Direto</item>
+        <item>Inverso</item>
+        <item>Ex. Reitoria</item>
+        <item>Ex. CeT</item>
+    </string-array>
+
+    <string name="title_activity_login">Time to Bus - UFRN</string>
+
+    <!-- Strings related to login -->
+
+    <string name="prompt_login">Login ou Matricula</string>
+    <string name="prompt_password">Senha</string>
+    <string name="action_sign_in">Entrar ou Cadastrar</string>
+    <string name="action_sign_in_short">Entrar</string>
+    <string name="error_invalid_email">Email invalido</string>
+    <string name="error_invalid_password">Senha muito curta</string>
+    <string name="error_incorrect_password">Senha incorreta</string>
+    <string name="error_field_required">Campo obrigatorio</string>
+    <string name="permission_rationale">"Permissão aos contatos são necessárias para auto-completar emails."
+    </string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">Geral</string>
+
+    <string name="pref_title_bot">Ativar postagens do BOT</string>
+    <string name="pref_description_bot">Serão postadas automaticamente na timeline os horarios predefinidos dos circulares.</string>
+
+    <string name="pref_title_display_name">Nome de Exibição</string>
+    <string name="pref_default_display_name">Nome de Exibição</string>
+    <string name="pref_default_matricula">Matricula</string>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Dados &amp; Sincronização</string>
+
+    <string name="pref_title_sync_frequency">Frequencia de Sincronização</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutos</item>
+        <item>30 minutos</item>
+        <item>1 hora</item>
+        <item>3 hora</item>
+        <item>6 hora</item>
+        <item>Nunca</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value"/>
+
+    <string name="pref_title_system_sync_settings">Configurações de Sincronização do Sistema</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notificações</string>
+
+    <string name="pref_title_new_post_notifications">Notificação de Nova Postagem</string>
+
+    <string name="pref_title_ringtone">Toque de Notificação</string>
+    <string name="pref_ringtone_silent">Silencioso</string>
+
+    <string name="pref_title_vibrate">Vibrar</string>
+
+</resources>

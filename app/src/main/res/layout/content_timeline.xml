@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:accessibilityLiveRegion="none"
+              android:animateLayoutChanges="true"
+              android:elevation="0dp"
+              android:fillViewport="true"
+              android:orientation="vertical"
+              android:weightSum="1"
+              app:layout_behavior="@string/appbar_scrolling_view_behavior"
+              tools:showIn="@layout/app_bar_timeline">
+
+    <FrameLayout
+        android:id="@+id/content_timeline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.82"
+        android:accessibilityLiveRegion="none"
+        >
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/sw_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--layout which should be refreshed should come here-->
+
+            <ListView
+                android:id="@+id/listaposts"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="true"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    </FrameLayout>
+
+</LinearLayout>
