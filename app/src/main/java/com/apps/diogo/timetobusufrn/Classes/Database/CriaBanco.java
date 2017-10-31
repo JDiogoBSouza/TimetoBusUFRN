@@ -64,7 +64,7 @@ public class CriaBanco extends SQLiteOpenHelper
     
         db.execSQL(sql);
     
-        sql = "INSERT INTO usuarios values (1111,'Diogo Souza', 'dg1111',  'enderecoFoto1')";
+        sql = "INSERT INTO usuarios values (1111,'Diogo Souza', 'dg123456',  'enderecoFoto1')";
         db.execSQL(sql);
         sql = "INSERT INTO usuarios values (2222,'Alex Lima', 'dg22221',  'enderecoFoto2')";
         db.execSQL(sql);

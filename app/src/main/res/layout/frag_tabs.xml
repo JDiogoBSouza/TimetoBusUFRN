@@ -20,6 +20,7 @@
             android:background="@color/colorPrimaryDark"
             app:tabIndicatorColor="@android:color/white"
             app:tabIndicatorHeight="1.5dp"
+            app:tabGravity="fill"
             />
     </android.support.design.widget.AppBarLayout>
 

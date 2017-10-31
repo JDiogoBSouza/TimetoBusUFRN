@@ -30,7 +30,7 @@
 
     <!-- Strings related to login -->
 
-    <string name="prompt_login">Login ou Matricula</string>
+    <string name="prompt_login">Matricula</string>
     <string name="prompt_password">Senha</string>
     <string name="action_sign_in">Entrar ou Cadastrar</string>
     <string name="action_sign_in_short">Entrar</string>
