@@ -1,9 +1,10 @@
-package com.apps.diogo.timetobusufrn.Classes.Database;
+package com.apps.diogo.timetobusufrn.Classes.Database.Geral;
 
 import android.content.Context;
 import android.database.Cursor;
 
-import com.apps.diogo.timetobusufrn.Classes.Usuario;
+import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.UsuarioDAO;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 
 /**
  * Created by Diogo on 31/10/2017.

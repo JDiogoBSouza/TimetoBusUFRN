@@ -27,14 +27,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.apps.diogo.timetobusufrn.Classes.Database.Facade;
-import com.apps.diogo.timetobusufrn.Classes.Database.PostDAO;
-import com.apps.diogo.timetobusufrn.Classes.PostAdapter;
-import com.apps.diogo.timetobusufrn.Classes.Usuario;
+import com.apps.diogo.timetobusufrn.Classes.Database.Geral.Facade;
+import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.PostDAO;
+import com.apps.diogo.timetobusufrn.Classes.Adapters.PostAdapter;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 import com.apps.diogo.timetobusufrn.Fragmentos.FragmentoNotificacoes;
 import com.apps.diogo.timetobusufrn.Fragmentos.FragmentoTabs;
 import com.apps.diogo.timetobusufrn.Fragmentos.TimelineFragment;
-import com.apps.diogo.timetobusufrn.Classes.Post;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
 import com.apps.diogo.timetobusufrn.R;
 
 import java.io.FileOutputStream;
@@ -77,12 +77,12 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         
         if( intent.getExtras() != null )
         {
-            Toast.makeText(getApplicationContext(), "TINHA EXTRAAAS", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "TINHA EXTRAAAS", Toast.LENGTH_SHORT).show();
             usuario = (Usuario) intent.getSerializableExtra(Usuario.USER_INFO);
         }
         else
         {
-            Toast.makeText(getApplicationContext(), "NAO TINHA EXTRAAAS", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "NAO TINHA EXTRAAAS", Toast.LENGTH_SHORT).show();
             usuario = criaUsuario();
         }
         

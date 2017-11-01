@@ -1,4 +1,4 @@
-package com.apps.diogo.timetobusufrn.Classes;
+package com.apps.diogo.timetobusufrn.Classes.Modelos;
 
 import java.io.Serializable;
 

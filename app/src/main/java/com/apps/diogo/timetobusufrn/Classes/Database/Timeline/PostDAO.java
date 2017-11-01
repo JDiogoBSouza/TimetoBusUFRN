@@ -1,10 +1,12 @@
-package com.apps.diogo.timetobusufrn.Classes.Database;
+package com.apps.diogo.timetobusufrn.Classes.Database.Timeline;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.apps.diogo.timetobusufrn.Classes.Post;
+
+import com.apps.diogo.timetobusufrn.Classes.Database.Geral.CriaBanco;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
 
 /**
  * Created by Diogo on 27/10/2017.

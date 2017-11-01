@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.database.Cursor;
 
 import android.os.Bundle;
 import android.view.View;
@@ -17,10 +14,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.apps.diogo.timetobusufrn.Classes.Database.CriaBanco;
-import com.apps.diogo.timetobusufrn.Classes.Database.Facade;
-import com.apps.diogo.timetobusufrn.Classes.Database.UsuarioDAO;
-import com.apps.diogo.timetobusufrn.Classes.Usuario;
+import com.apps.diogo.timetobusufrn.Classes.Database.Geral.Facade;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 import com.apps.diogo.timetobusufrn.R;
 
 /**

@@ -1,4 +1,4 @@
-package com.apps.diogo.timetobusufrn.Classes;
+package com.apps.diogo.timetobusufrn.Classes.Modelos;
 
 /**
  * Created by Diogo on 30/09/2017.

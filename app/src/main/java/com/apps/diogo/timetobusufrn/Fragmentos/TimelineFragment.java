@@ -13,12 +13,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.apps.diogo.timetobusufrn.Classes.Database.CriaBanco;
-import com.apps.diogo.timetobusufrn.Classes.Database.PostDAO;
-import com.apps.diogo.timetobusufrn.Classes.Database.UsuarioDAO;
-import com.apps.diogo.timetobusufrn.Classes.Post;
-import com.apps.diogo.timetobusufrn.Classes.PostAdapter;
-import com.apps.diogo.timetobusufrn.Classes.Usuario;
+import com.apps.diogo.timetobusufrn.Classes.Database.Geral.CriaBanco;
+import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.PostDAO;
+import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.UsuarioDAO;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
+import com.apps.diogo.timetobusufrn.Classes.Adapters.PostAdapter;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 import com.apps.diogo.timetobusufrn.R;
 
 import java.util.ArrayList;

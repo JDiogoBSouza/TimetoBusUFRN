@@ -1,9 +1,8 @@
-package com.apps.diogo.timetobusufrn.Classes;
+package com.apps.diogo.timetobusufrn.Classes.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 import com.apps.diogo.timetobusufrn.R;
 
 import java.io.File;
