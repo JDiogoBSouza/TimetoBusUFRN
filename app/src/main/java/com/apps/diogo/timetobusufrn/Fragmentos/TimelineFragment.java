@@ -112,6 +112,8 @@ public class TimelineFragment extends Fragment
             String comentario = cursor.getString( cursor.getColumnIndex(nomeCampos[5]) );
             int matricuser = cursor.getInt( cursor.getColumnIndex(nomeCampos[6]) );
             
+            //Toast.makeText(context, "ID: " + id, Toast.LENGTH_SHORT).show();
+            
             cursorUser = daoUser.selectUsuarioNoPass(matricuser);
             
             int matricula = cursorUser.getInt( cursorUser.getColumnIndex(nomeCamposUser[0]) );

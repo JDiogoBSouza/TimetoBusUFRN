@@ -52,7 +52,7 @@
 
     <string name="pref_title_display_name">Nome de Exibição</string>
     <string name="pref_default_display_name">Nome de Exibição</string>
-    <string name="pref_default_matricula">Matricula</string>
+    <string name="pref_default_matricula">0000</string>
 
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Dados &amp; Sincronização</string>

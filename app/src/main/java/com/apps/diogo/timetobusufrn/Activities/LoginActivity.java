@@ -1,5 +1,9 @@
 package com.apps.diogo.timetobusufrn.Activities;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -14,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.apps.diogo.timetobusufrn.Classes.Database.CriaBanco;
+import com.apps.diogo.timetobusufrn.Classes.Database.Facade;
 import com.apps.diogo.timetobusufrn.Classes.Database.UsuarioDAO;
 import com.apps.diogo.timetobusufrn.Classes.Usuario;
 import com.apps.diogo.timetobusufrn.R;
@@ -32,6 +37,23 @@ public class LoginActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+    
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean logado = sharedPreferences.getBoolean("logado",false);
+        
+        if( logado )
+        {
+            //Toast.makeText(getApplicationContext(), "Ja Logado", Toast.LENGTH_SHORT).show();
+            iniciaApp();
+            finish();
+        }
+        else
+        {
+            // TODO: SOMETHING
+            //Toast.makeText(getApplicationContext(), "Nao logado ainda", Toast.LENGTH_SHORT).show();
+        }
+        
+        final Context contexto = getApplicationContext();
         
         // Set up the login form.
         mMatriculaView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -46,31 +68,58 @@ public class LoginActivity extends AppCompatActivity
             {
                 String senhaView = mPasswordView.getText().toString();
                 
-                UsuarioDAO dao = new UsuarioDAO( getApplicationContext() );
-    
-                String[] nomeCamposUser = new String[] {CriaBanco.MATRICULA, CriaBanco.SENHA, CriaBanco.NOME, CriaBanco.FOTO};
-    
-    
-                // TODO: verificar conversao de string
-                int iMatricula = Integer.parseInt( mMatriculaView.getText().toString() );
-    
-                Cursor cursorUser = dao.selectUsuarioByMatricula(iMatricula);
-    
-                int matricula = cursorUser.getInt( cursorUser.getColumnIndex(nomeCamposUser[0]) );
-                String senha = cursorUser.getString( cursorUser.getColumnIndex(nomeCamposUser[1]) );
-                String nome   = cursorUser.getString( cursorUser.getColumnIndex(nomeCamposUser[2]) );
-                String foto   = cursorUser.getString( cursorUser.getColumnIndex(nomeCamposUser[3]) );
-    
-                Usuario usuario = new Usuario(matricula, senha, nome, foto);
-    
-                if( senhaView.equals( usuario.getSenha() ) )
+                Facade fac = new Facade( contexto );
+                Usuario usuario = fac.getUsuarioByMatriculaS( mMatriculaView.getText().toString() );
+                
+                if( usuario != null )
                 {
-                    Toast.makeText(getApplicationContext(),"Login Bem Sucedido !", Toast.LENGTH_SHORT).show();
+                    if (senhaView.equals(usuario.getSenha()))
+                    {
+                        Toast.makeText(getApplicationContext(), "Login Bem Sucedido !", Toast.LENGTH_SHORT).show();
+                        
+                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(contexto).edit();
+                        
+                        editor.putBoolean( "logado" , true );
+                        
+                        editor.putString("nomeexibicao_text" , usuario.getNome() );
+                        editor.putString("matricula" , usuario.getSMatricula() );
+                        editor.putString("senha" , usuario.getSenha() );
+                        editor.putInt("matriculaI", usuario.getMatricula());
+                        editor.putString("foto", usuario.getFoto());
+                        
+                        editor.commit();
+                        
+                        iniciaApp(usuario);
+                        finish();
+                    }
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "Login Mal Sucedido !", Toast.LENGTH_SHORT).show();
+                        mPasswordView.setText("");
+                    }
                 }
                 else
-                    Toast.makeText(getApplicationContext(),"Login Mal Sucedido !", Toast.LENGTH_SHORT).show();
+                {
+                    Toast.makeText(getApplicationContext(), "Login Mal Sucedido !", Toast.LENGTH_SHORT).show();
+                    mPasswordView.setText("");
+                }
             }
         });
+    }
+    
+    private void iniciaApp(Usuario user)
+    {
+        Intent intentTimline = new Intent(LoginActivity.this, TimelineActivity.class);
+    
+        if( user != null )
+            intentTimline.putExtra(Usuario.USER_INFO, user);
+        
+        startActivity(intentTimline);
+    }
+    
+    private void iniciaApp()
+    {
+        iniciaApp( null );
     }
 }
 

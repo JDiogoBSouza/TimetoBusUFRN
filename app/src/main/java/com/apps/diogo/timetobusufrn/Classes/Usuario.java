@@ -8,6 +8,8 @@ import java.io.Serializable;
 
 public class Usuario implements Serializable
 {
+    public static final String USER_INFO = "USER_INFO";
+    
     private int matricula;
     private String senha;
     private String nome;
@@ -18,6 +20,15 @@ public class Usuario implements Serializable
         super();
         this.matricula = matricula;
         this.senha = senha;
+        this.nome = nome;
+        this.foto = foto;
+    }
+    
+    public Usuario( int matricula, String nome, String foto )
+    {
+        super();
+        this.matricula = matricula;
+        this.senha = "";
         this.nome = nome;
         this.foto = foto;
     }
@@ -57,5 +68,11 @@ public class Usuario implements Serializable
     
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+    
+    @Override
+    public boolean equals(Object o)
+    {
+        return ((Usuario)o).matricula == this.matricula;
     }
 }
