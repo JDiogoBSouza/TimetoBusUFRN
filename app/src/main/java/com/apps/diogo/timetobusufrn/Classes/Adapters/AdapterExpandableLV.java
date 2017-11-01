@@ -116,11 +116,10 @@ public class AdapterExpandableLV extends BaseExpandableListAdapter
             convertView = layoutInflater.inflate(R.layout.item_horario, null);
         }
         
-        TextView tvItem = (TextView) convertView.findViewById(R.id.tvTipo);
+        TextView tvTipo = (TextView) convertView.findViewById(R.id.tvTipo);
         
-        /*Produto produto = (Produto) getChild(groupPosition, childPosition);
-        tvItem.setText(produto.getNome());
-        tvValor.setText(String.valueOf(produto.getValor()));*/
+        Horario horario = (Horario) getChild(groupPosition, childPosition);
+        tvTipo.setText(horario.getSaida());
         
         return convertView;
     }
