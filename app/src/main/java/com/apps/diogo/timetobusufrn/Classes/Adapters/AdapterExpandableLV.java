@@ -5,9 +5,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 
-import com.apps.diogo.timetobusufrn.Classes.Modelos.Horario;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.Horario;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.HorarioComEmpresa;
 import com.apps.diogo.timetobusufrn.R;
 
 import java.util.HashMap;
@@ -20,10 +22,10 @@ import java.util.List;
 public class AdapterExpandableLV extends BaseExpandableListAdapter
 {
     private List<String> lstGrupos;
-    private HashMap<String, List<Horario>> lstItensGrupos;
+    private HashMap<String, List<HorarioComEmpresa>> lstItensGrupos;
     private Context context;
     
-    public AdapterExpandableLV(Context context, List<String> grupos, HashMap<String, List<Horario>> itensGrupos)
+    public AdapterExpandableLV(Context context, List<String> grupos, HashMap<String, List<HorarioComEmpresa>> itensGrupos)
     {
         // inicializa as variáveis da classe
         this.context = context;
@@ -97,11 +99,9 @@ public class AdapterExpandableLV extends BaseExpandableListAdapter
             convertView = layoutInflater.inflate(R.layout.grupo, null);
         }
         
-        TextView tvHora = (TextView) convertView.findViewById(R.id.tvHora);
-        TextView tvOnibus = (TextView) convertView.findViewById(R.id.tvOnibus);
+        TextView tvTipo = (TextView) convertView.findViewById(R.id.tvTipo);
         
-        tvHora.setText((String) getGroup(groupPosition));
-        tvOnibus.setText(String.valueOf(getChildrenCount(groupPosition)));
+        tvTipo.setText( lstGrupos.get( (int) getGroupId(groupPosition) ) );
         
         return convertView;
     }
@@ -115,11 +115,22 @@ public class AdapterExpandableLV extends BaseExpandableListAdapter
                     Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.item_horario, null);
         }
+    
+        TextView tvHora = (TextView) convertView.findViewById(R.id.tvHora);
+        TextView tvOnibus = (TextView) convertView.findViewById(R.id.tvOnibus);
         
-        TextView tvTipo = (TextView) convertView.findViewById(R.id.tvTipo);
+        HorarioComEmpresa horario = (HorarioComEmpresa) getChild(groupPosition, childPosition);
         
-        Horario horario = (Horario) getChild(groupPosition, childPosition);
-        tvTipo.setText(horario.getSaida());
+        if( horario.getSaida() != null )
+        {
+            tvHora.setText(horario.getSaida());
+        }
+        else
+        {
+            tvHora.setText( horario.getDestino() );
+        }
+        
+        tvOnibus.setText( horario.getNomeEmpresa() );
         
         return convertView;
     }

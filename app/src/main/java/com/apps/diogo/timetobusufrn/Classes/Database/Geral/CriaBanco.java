@@ -65,14 +65,24 @@ public class CriaBanco extends SQLiteOpenHelper
         
         if( comSenha )
         {
-            nomeCamposUser = new String[]{CriaBanco.MATRICULA, CriaBanco.SENHA, CriaBanco.NOME, CriaBanco.FOTO};
+            nomeCamposUser = new String[]{MATRICULA, SENHA, NOME, FOTO};
         }
         else
         {
-            nomeCamposUser = new String[]{CriaBanco.MATRICULA, CriaBanco.NOME, CriaBanco.FOTO};
+            nomeCamposUser = new String[]{MATRICULA, NOME, FOTO};
         }
             
         return nomeCamposUser;
+    }
+    
+    public static String[] getStringsHorarios()
+    {
+        return new String[]{ ID_HORARIO, SAIDA, DESTINO, CHEGADA, IDONIBUS};
+    }
+    
+    public static String[] getStringsOnibus()
+    {
+        return new String[]{ ID_ONIBUS, ONIBUS_ID_EMPRESA, ONIBUS_ID_TIPO };
     }
     
     

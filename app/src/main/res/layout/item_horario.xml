@@ -2,25 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="#ff9b999a"
+              android:background="@color/colorPrimary"
               android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tvHora"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="10dp"
         android:layout_weight="3"
         android:text="Hora"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:textSize="24sp"/>
 
     <TextView
         android:id="@+id/tvOnibus"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="10dp"
         android:layout_weight="7"
         android:gravity="left"
         android:text="Onibus"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:textSize="24sp"/>
 </LinearLayout>

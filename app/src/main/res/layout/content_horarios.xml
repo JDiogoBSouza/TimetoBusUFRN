@@ -5,8 +5,13 @@
               android:gravity="center_horizontal"
     >
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/sw_refreshHorarios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
@@ -15,15 +20,19 @@
             android:id="@+id/tvHorarios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:layout_weight="6.88"
-            android:text="Horarios de Saída"/>
+            android:text="Horarios de Saída"
+            android:textSize="18sp"/>
 
         <ExpandableListView
-            android:id="@+id/elNormais"
-            android:layout_width="wrap_content"
+            android:id="@+id/elvHorarios"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
+            android:layout_margin="40dp"
             android:layout_weight="35.64"/>
     </LinearLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

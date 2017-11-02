@@ -15,6 +15,7 @@
         android:layout_marginTop="16dp"
         android:layout_weight="8"
         android:text="Tipo"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/black"
+        android:textSize="24sp"/>
 
 </LinearLayout>

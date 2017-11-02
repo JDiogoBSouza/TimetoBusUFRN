@@ -32,8 +32,8 @@ public class TimelineFragment extends Fragment
     //Declara um atributo para guardar o context.
     private Context context;
     private PostAdapter adaptadorLista;
-    ArrayList<Post> posts = new ArrayList<Post>();
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    private ArrayList<Post> posts = new ArrayList<Post>();
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     
     @Nullable
     @Override
@@ -102,6 +102,11 @@ public class TimelineFragment extends Fragment
         
         String[] nomeCampos = new String[] { CriaBanco.ID, CriaBanco.PARADA, CriaBanco.ONIBUS, CriaBanco.HORA, CriaBanco.SEGUNDOS, CriaBanco.COMENTARIO, CriaBanco.MATRIUSUARIO };
         String[] nomeCamposUser = new String[] {CriaBanco.MATRICULA, CriaBanco.NOME, CriaBanco.FOTO};
+    
+        if( cursor.getCount() < 0 )
+        {
+            return;
+        }
         
         do{
             int id = cursor.getInt( cursor.getColumnIndex( nomeCampos[0] ) );

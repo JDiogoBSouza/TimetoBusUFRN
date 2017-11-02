@@ -1,4 +1,4 @@
-package com.apps.diogo.timetobusufrn.Classes.Modelos;
+package com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus;
 
 /**
  * Created by Diogo on 01/11/2017.
@@ -17,6 +17,7 @@ public class Horario
         this.id = id;
         this.saida = saida;
         this.destino = destino;
+        this.chegada = chegada;
         this.id_onibus = id_onibus;
     }
     
