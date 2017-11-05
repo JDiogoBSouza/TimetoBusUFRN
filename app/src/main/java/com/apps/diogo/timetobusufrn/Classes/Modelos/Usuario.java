@@ -13,9 +13,9 @@ public class Usuario implements Serializable
     private int matricula;
     private String senha;
     private String nome;
-    private String foto;
+    private byte[] foto;
     
-    public Usuario(int matricula, String senha, String nome, String foto)
+    public Usuario(int matricula, String senha, String nome, byte[] foto)
     {
         super();
         this.matricula = matricula;
@@ -24,7 +24,25 @@ public class Usuario implements Serializable
         this.foto = foto;
     }
     
-    public Usuario( int matricula, String nome, String foto )
+    public Usuario(int matricula, String senha, String nome)
+    {
+        super();
+        this.matricula = matricula;
+        this.senha = senha;
+        this.nome = nome;
+        this.foto = null;
+    }
+    
+    public Usuario( int matricula, String nome)
+    {
+        super();
+        this.matricula = matricula;
+        this.senha = "";
+        this.nome = nome;
+        this.foto = null;
+    }
+    
+    public Usuario( int matricula, String nome, byte[] foto )
     {
         super();
         this.matricula = matricula;
@@ -62,11 +80,11 @@ public class Usuario implements Serializable
         this.senha = senha;
     }
     
-    public String getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
     
-    public void setFoto(String foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
     

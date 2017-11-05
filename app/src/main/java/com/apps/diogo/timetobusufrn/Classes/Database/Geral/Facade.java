@@ -38,7 +38,7 @@ public class Facade
             int matricula = cursorUser.getInt(cursorUser.getColumnIndex(nomeCamposUser[0]));
             String senha = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[1]));
             String nome = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[2]));
-            String foto = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[3]));
+            byte[] foto = cursorUser.getBlob(cursorUser.getColumnIndex(nomeCamposUser[3]));
             
             return new Usuario(matricula, senha, nome, foto);
         }
@@ -60,7 +60,7 @@ public class Facade
             int matricula = cursorUser.getInt(cursorUser.getColumnIndex(nomeCamposUser[0]));
             String senha = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[1]));
             String nome = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[2]));
-            String foto = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[3]));
+            byte[] foto = cursorUser.getBlob(cursorUser.getColumnIndex(nomeCamposUser[3]));
             
             return new Usuario(matricula, senha, nome, foto);
         }
@@ -79,7 +79,7 @@ public class Facade
         if( cursorUser.getCount() > 0 ) {
             int matricula = cursorUser.getInt(cursorUser.getColumnIndex(nomeCamposUser[0]));
             String nome = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[1]));
-            String foto = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[2]));
+            byte[] foto = cursorUser.getBlob(cursorUser.getColumnIndex(nomeCamposUser[2]));
     
             return new Usuario(matricula, "", nome, foto);
         }
@@ -100,7 +100,7 @@ public class Facade
         if( cursorUser.getCount() > 0 ) {
             int matricula = cursorUser.getInt(cursorUser.getColumnIndex(nomeCamposUser[0]));
             String nome = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[1]));
-            String foto = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[2]));
+            byte[] foto = cursorUser.getBlob(cursorUser.getColumnIndex(nomeCamposUser[2]));
             
             return new Usuario(matricula, "", nome, foto);
         }

@@ -93,7 +93,7 @@ public class CriaBanco extends SQLiteOpenHelper
                 + MATRICULA + " integer primary key,"
                 + NOME + " text,"
                 + SENHA + " text,"
-                + FOTO + " text"
+                + FOTO + " blob"
                 +")";
     
         db.execSQL(sql);
