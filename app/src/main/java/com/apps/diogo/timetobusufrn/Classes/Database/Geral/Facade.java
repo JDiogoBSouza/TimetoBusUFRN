@@ -5,9 +5,11 @@ import android.database.Cursor;
 
 import com.apps.diogo.timetobusufrn.Classes.Database.Horarios.HorariosDAO;
 import com.apps.diogo.timetobusufrn.Classes.Database.Horarios.OnibusDAO;
+import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.PostDAO;
 import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.UsuarioDAO;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.Horario;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.HorarioComEmpresa;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 
 import java.util.ArrayList;
@@ -140,9 +142,50 @@ public class Facade
         return lstHorarios;
     }
     
-    public List<HorarioComEmpresa> getHorariosPorTipoeHora(int tipo)
+    public void getUltimosPosts(ArrayList<Post> posts)
     {
-        List<HorarioComEmpresa> lstHorarios = new ArrayList<>();;
+        PostDAO dao = new PostDAO( contexto );
+        UsuarioDAO daoUser = new UsuarioDAO( contexto );
+    
+        Cursor cursor = dao.selectAllPosts();
+        Cursor cursorUser;
+    
+        String[] nomeCampos = new String[] { CriaBanco.ID, CriaBanco.PARADA, CriaBanco.ONIBUS, CriaBanco.HORA, CriaBanco.SEGUNDOS, CriaBanco.COMENTARIO, CriaBanco.MATRIUSUARIO };
+        String[] nomeCamposUser = new String[] {CriaBanco.MATRICULA, CriaBanco.NOME, CriaBanco.FOTO};
+    
+        if( cursor.getCount() < 0 )
+        {
+            return;
+        }
+    
+        do{
+            int id = cursor.getInt( cursor.getColumnIndex( nomeCampos[0] ) );
+            String parada = cursor.getString( cursor.getColumnIndex(nomeCampos[1]) );
+            String onibus = cursor.getString( cursor.getColumnIndex(nomeCampos[2]) );
+            String hora = cursor.getString( cursor.getColumnIndex(nomeCampos[3]) );
+            String segundos = cursor.getString( cursor.getColumnIndex(nomeCampos[4]) );
+            String comentario = cursor.getString( cursor.getColumnIndex(nomeCampos[5]) );
+            int matricuser = cursor.getInt( cursor.getColumnIndex(nomeCampos[6]) );
+        
+            //Toast.makeText(context, "ID: " + id, Toast.LENGTH_SHORT).show();
+        
+            cursorUser = daoUser.selectUsuarioNoPass(matricuser);
+        
+            int matricula = cursorUser.getInt( cursorUser.getColumnIndex(nomeCamposUser[0]) );
+            String nome   = cursorUser.getString( cursorUser.getColumnIndex(nomeCamposUser[1]) );
+            byte[] foto   = cursorUser.getBlob( cursorUser.getColumnIndex(nomeCamposUser[2]) );
+        
+            Usuario user = new Usuario(matricula, "", nome, foto);
+            Post p = new Post( user, parada , onibus, hora, segundos, comentario );
+    
+            posts.add(p);
+        
+        }while(cursor.moveToNext());
+    }
+    
+    public void getHorariosPorTipoeHora(int tipo, List<HorarioComEmpresa> lstHorarios)
+    {
+        lstHorarios.clear();
         
         HorariosDAO dao = new HorariosDAO(contexto);
     
@@ -160,21 +203,19 @@ public class Facade
             String destino = cursor.getString(cursor.getColumnIndex(camposHorarios[2]));
             String chegada = cursor.getString(cursor.getColumnIndex(camposHorarios[3]));
             int idonibus = cursor.getInt(cursor.getColumnIndex(camposHorarios[4]));
-            
-            // TODO: Consultar nome da empresa no banco
-            String empresa = getNomeEmpresa(1);
+            String empresa = getNomeEmpresa( getIdEmpresa( idonibus ) );
     
             lstHorarios.add( new HorarioComEmpresa(id, saida, destino, chegada, idonibus, empresa) );
         }
         else
-            return null;
+            return;
     
         Cursor cursor1;
         cursor1 = dao.selectHorarioProximos(tipo);
         
         if( cursor1.getCount() <= 0 )
         {
-            return lstHorarios;
+            return;
         }
         
         do{
@@ -183,25 +224,25 @@ public class Facade
             String destino = cursor1.getString(cursor1.getColumnIndex(camposHorarios[2]));
             String chegada = cursor1.getString(cursor1.getColumnIndex(camposHorarios[3]));
             int idonibus = cursor1.getInt(cursor1.getColumnIndex(camposHorarios[4]));
-            String empresa;
-            
-            OnibusDAO daoOnibus = new OnibusDAO(contexto);
-            
-            Cursor busCursor = daoOnibus.selectOnibusByID( idonibus );
-            
-            if( busCursor.getCount() > 0 )
-            {
-                int empresabus = busCursor.getInt(busCursor.getColumnIndex(camposOnibus[2]));
-                empresa = getNomeEmpresa( empresabus );
-            }
-            else
-                return lstHorarios;
+            String empresa = getNomeEmpresa( getIdEmpresa( idonibus ) );
             
             
             lstHorarios.add( new HorarioComEmpresa(id, saida, destino, chegada, idonibus, empresa) );
         }while( cursor1.moveToNext() );
-        
-        return lstHorarios;
+    }
+    
+    private int getIdEmpresa(int idonibus)
+    {
+        OnibusDAO daoOnibus = new OnibusDAO(contexto);
+    
+        Cursor busCursor = daoOnibus.selectOnibusByID( idonibus );
+    
+        if( busCursor.getCount() > 0 )
+        {
+            return busCursor.getInt(busCursor.getColumnIndex( CriaBanco.ONIBUS_ID_EMPRESA ));
+        }
+        else
+            return -1;
     }
     
     private String getNomeEmpresa(int id)
@@ -223,7 +264,7 @@ public class Facade
                 break;
             
             case 4:
-                nome = "Cidade do Natal";
+                nome = "Cid. do Natal";
                 break;
             
             case 5:
@@ -233,6 +274,10 @@ public class Facade
             case 6:
                 nome = "Reunidas";
                 break;
+            
+            default:
+                nome = "Default";
+            break;
         }
         
         return nome;

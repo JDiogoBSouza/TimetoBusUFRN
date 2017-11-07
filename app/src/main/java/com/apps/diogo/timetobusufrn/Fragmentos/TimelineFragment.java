@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.apps.diogo.timetobusufrn.Classes.Database.Geral.CriaBanco;
+import com.apps.diogo.timetobusufrn.Classes.Database.Geral.Facade;
 import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.PostDAO;
 import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.UsuarioDAO;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
@@ -93,43 +94,10 @@ public class TimelineFragment extends Fragment
     
     public void buscaPosts()
     {
+        Facade fac = new Facade(context);
+        
         adaptadorLista.clear();
-        PostDAO dao = new PostDAO( context );
-        UsuarioDAO daoUser = new UsuarioDAO( context );
-        
-        Cursor cursor = dao.selectAllPosts();
-        Cursor cursorUser;
-        
-        String[] nomeCampos = new String[] { CriaBanco.ID, CriaBanco.PARADA, CriaBanco.ONIBUS, CriaBanco.HORA, CriaBanco.SEGUNDOS, CriaBanco.COMENTARIO, CriaBanco.MATRIUSUARIO };
-        String[] nomeCamposUser = new String[] {CriaBanco.MATRICULA, CriaBanco.NOME, CriaBanco.FOTO};
-    
-        if( cursor.getCount() < 0 )
-        {
-            return;
-        }
-        
-        do{
-            int id = cursor.getInt( cursor.getColumnIndex( nomeCampos[0] ) );
-            String parada = cursor.getString( cursor.getColumnIndex(nomeCampos[1]) );
-            String onibus = cursor.getString( cursor.getColumnIndex(nomeCampos[2]) );
-            String hora = cursor.getString( cursor.getColumnIndex(nomeCampos[3]) );
-            String segundos = cursor.getString( cursor.getColumnIndex(nomeCampos[4]) );
-            String comentario = cursor.getString( cursor.getColumnIndex(nomeCampos[5]) );
-            int matricuser = cursor.getInt( cursor.getColumnIndex(nomeCampos[6]) );
-            
-            //Toast.makeText(context, "ID: " + id, Toast.LENGTH_SHORT).show();
-            
-            cursorUser = daoUser.selectUsuarioNoPass(matricuser);
-            
-            int matricula = cursorUser.getInt( cursorUser.getColumnIndex(nomeCamposUser[0]) );
-            String nome   = cursorUser.getString( cursorUser.getColumnIndex(nomeCamposUser[1]) );
-            String foto   = cursorUser.getString( cursorUser.getColumnIndex(nomeCamposUser[2]) );
-            
-            Usuario user = new Usuario(matricula, "", nome, foto);
-            Post p = new Post( user, parada , onibus, hora, segundos, comentario );
-            
-            adicionarPost( p );
-            
-        }while(cursor.moveToNext());
+        fac.getUltimosPosts(posts);
+        adaptadorLista.notifyDataSetChanged();
     }
 }

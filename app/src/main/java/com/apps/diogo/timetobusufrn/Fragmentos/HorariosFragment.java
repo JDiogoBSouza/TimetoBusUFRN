@@ -38,7 +38,12 @@ public class HorariosFragment extends Fragment
     private ExpandableListView elvHorarios;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     
-    List<HorarioComEmpresa> lstDiretos, lstInversos, lstExpressosCET, lstExpressosREI;
+    List<HorarioComEmpresa> lstDiretos = new ArrayList<>();
+    List<HorarioComEmpresa> lstInversos = new ArrayList<>();
+    List<HorarioComEmpresa> lstExpressosCET = new ArrayList<>();
+    List<HorarioComEmpresa> lstExpressosREI = new ArrayList<>();
+    
+    AdapterExpandableLV adaptador;
     
     @Nullable
     @Override
@@ -68,8 +73,6 @@ public class HorariosFragment extends Fragment
         lstGrupos.add("Inverso");
         lstGrupos.add("Expresso C&T");
         lstGrupos.add("Expresso Reitoria");
-        
-        atualizaListas();
     
         // cria o "relacionamento" dos grupos com seus itens
         HashMap<String, List<HorarioComEmpresa>> lstItensGrupo = new HashMap<>();
@@ -79,8 +82,9 @@ public class HorariosFragment extends Fragment
         lstItensGrupo.put(lstGrupos.get(3), lstExpressosREI);
     
         // cria um adaptador (BaseExpandableListAdapter) com os dados acima
-        AdapterExpandableLV adaptador = new AdapterExpandableLV(context, lstGrupos, lstItensGrupo);
+        adaptador = new AdapterExpandableLV(context, lstGrupos, lstItensGrupo);
         // define o apadtador do ExpandableListView
+        
         elvHorarios.setAdapter(adaptador);
     
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.sw_refreshHorarios);
@@ -94,7 +98,8 @@ public class HorariosFragment extends Fragment
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-        
+    
+        atualizaListas();
         return view;
     }
     
@@ -109,61 +114,12 @@ public class HorariosFragment extends Fragment
     private void atualizaListas()
     {
         Facade fac = new Facade(context);
-    
-        lstDiretos      = fac.getHorariosPorTipoeHora(1);
-        lstInversos     = fac.getHorariosPorTipoeHora(2);
-        lstExpressosCET = fac.getHorariosPorTipoeHora(3);
-        lstExpressosREI = fac.getHorariosPorTipoeHora(6);
         
-        //lstDiretos      = buscaDiretos();
-        //lstInversos     = buscaInversos();
-        //lstExpressosCET = buscaExpressosCET();
-        //lstExpressosREI = buscaExpressosREI();
-        
-        elvHorarios.deferNotifyDataSetChanged();
-    }
+        fac.getHorariosPorTipoeHora(1,lstDiretos );
+        fac.getHorariosPorTipoeHora(2,lstInversos );
+        fac.getHorariosPorTipoeHora(3,lstExpressosCET);
+        fac.getHorariosPorTipoeHora(6,lstExpressosREI );
     
-    private List<Horario> buscaDiretos()
-    {
-        List<Horario> diretos = new ArrayList<>();
-    
-        diretos.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        diretos.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        diretos.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        
-        return diretos;
-    }
-    
-    private List<Horario> buscaInversos()
-    {
-        List<Horario> inversos = new ArrayList<>();
-    
-        inversos.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        inversos.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        inversos.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        
-        return inversos;
-    }
-    
-    private List<Horario> buscaExpressosCET()
-    {
-        List<Horario> expressoscet = new ArrayList<>();
-    
-        expressoscet.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        expressoscet.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        expressoscet.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        
-        return expressoscet;
-    }
-    
-    private List<Horario> buscaExpressosREI()
-    {
-        List<Horario> expressosreit = new ArrayList<>();
-    
-        expressosreit.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        expressosreit.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        expressosreit.add( new Horario(1, "10:10", "10:15", "10:25", 1) );
-        
-        return expressosreit;
+        adaptador.notifyDataSetChanged();
     }
 }

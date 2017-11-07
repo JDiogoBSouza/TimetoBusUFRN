@@ -93,9 +93,6 @@ public class FragmentoTabs extends Fragment
     {
         // TODO Auto-generated method stub
         super.onAttachFragment(fragment);
-        
-        
-        
         //Toast.makeText(context, String.valueOf(fragment.getId()), Toast.LENGTH_SHORT).show();
     }
 }

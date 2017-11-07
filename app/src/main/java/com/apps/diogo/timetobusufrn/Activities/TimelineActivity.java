@@ -37,6 +37,7 @@ import com.apps.diogo.timetobusufrn.Fragmentos.TimelineFragment;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
 import com.apps.diogo.timetobusufrn.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -69,28 +70,28 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         
-        verificaLogado();
-        
-        fac = new Facade( context );
-        
-        Intent intent = getIntent();
-        
-        if( intent.getExtras() != null )
+        if( verificaLogado() )
         {
-            //Toast.makeText(getApplicationContext(), "TINHA EXTRAAAS", Toast.LENGTH_SHORT).show();
-            usuario = (Usuario) intent.getSerializableExtra(Usuario.USER_INFO);
+    
+            fac = new Facade(context);
+    
+            Intent intent = getIntent();
+    
+            if (intent.getExtras() != null) {
+                //Toast.makeText(getApplicationContext(), "TINHA EXTRAAAS", Toast.LENGTH_SHORT).show();
+                usuario = (Usuario) intent.getSerializableExtra(Usuario.USER_INFO);
+            } else {
+                //Toast.makeText(getApplicationContext(), "NAO TINHA EXTRAAAS", Toast.LENGTH_SHORT).show();
+                usuario = criaUsuario();
+            }
+    
+            instanciaItens();
+            atualizaNavHeader();
+    
+            fragmentoAtual = new FragmentoTabs();
+            setFragment(fragmentoAtual);
+            
         }
-        else
-        {
-            //Toast.makeText(getApplicationContext(), "NAO TINHA EXTRAAAS", Toast.LENGTH_SHORT).show();
-            usuario = criaUsuario();
-        }
-        
-        instanciaItens();
-        atualizaNavHeader();
-        
-        fragmentoAtual = new FragmentoTabs();
-        setFragment(fragmentoAtual);
     }
     
     @Override
@@ -110,7 +111,8 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         int matricula = sharedPreferences.getInt("matriculaI", 0);
         String nome = sharedPreferences.getString("nomeexibicao_text", "Nome de Exibicao");
         String senha = sharedPreferences.getString("senha", "...");
-        String foto = sharedPreferences.getString("foto", "...");
+        //String foto = sharedPreferences.getString("foto", "...");
+        byte[] foto = null;
         
         Usuario user = new Usuario(matricula, senha, nome, foto);
         
@@ -149,7 +151,7 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         initFloatingActionButton();
     }
     
-    private void verificaLogado()
+    private Boolean verificaLogado()
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean logado = sharedPreferences.getBoolean("logado",false);
@@ -162,10 +164,11 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
             startActivity(intentLogin);
             
             finish();
+            
+            return false;
         }
-        else
-        {
-        }
+        
+        return true;
     }
     
     private void atualizaNavHeader()
@@ -253,8 +256,21 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         {
             bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
             outputStream = new FileOutputStream(local);
+            
+            ByteArrayOutputStream saida = new ByteArrayOutputStream();
+            
             bitmap.compress(Bitmap.CompressFormat.JPEG, 30, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG,5,saida);
+            
+            byte[] img = saida.toByteArray();
+            usuario.setFoto(img);
+            
+            saida.close();
             outputStream.close();
+    
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(contexto).edit();
+            editor.putString("foto", local);
+            editor.commit();
             
             fac.updateUsuario( usuario, contexto );
         }

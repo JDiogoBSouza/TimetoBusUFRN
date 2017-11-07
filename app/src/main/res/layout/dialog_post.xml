@@ -99,6 +99,15 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancelar"
+            android:textColor="@android:color/white"
+            android:onClick="cancelar"/>
+
+        <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,15 +116,6 @@
             android:text="Postar"
             android:textColor="@android:color/white"
             android:onClick="postar"/>
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Cancelar"
-            android:textColor="@android:color/white"
-            android:onClick="cancelar"/>
     </LinearLayout>
 
 </LinearLayout>

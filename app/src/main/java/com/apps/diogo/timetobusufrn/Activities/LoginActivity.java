@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity
                         editor.putString("matricula" , usuario.getSMatricula() );
                         editor.putString("senha" , usuario.getSenha() );
                         editor.putInt("matriculaI", usuario.getMatricula());
-                        editor.putString("foto", usuario.getFoto());
+                        //editor.putString("foto", usuario.getFoto());
                         
                         editor.commit();
                         

@@ -141,10 +141,10 @@ public class CriaBanco extends SQLiteOpenHelper
                 +")";
         db.execSQL(sql);
     
-        db.execSQL("INSERT INTO usuarios values (1111,'Diogo Souza', 'dg123456',  'enderecoFoto1')");
-        db.execSQL("INSERT INTO usuarios values (2222,'Alex Lima', 'dg22221',  'enderecoFoto2')");
-        db.execSQL("INSERT INTO usuarios values (3333,'Janna Silva', 'dg3333',  'enderecoFoto3')");
-        db.execSQL("INSERT INTO usuarios values (4444, 'Bruno Silva', 'dg4444', 'enderecoFoto4')");
+        db.execSQL("INSERT INTO usuarios values (1111,'Diogo Souza', 'dg123456',  NULL)");
+        db.execSQL("INSERT INTO usuarios values (2222,'Alex Lima', 'dg22221',  NULL)");
+        db.execSQL("INSERT INTO usuarios values (3333,'Janna Silva', 'dg3333',  NULL)");
+        db.execSQL("INSERT INTO usuarios values (4444, 'Bruno Silva', 'dg4444', NULL)");
     
         db.execSQL("INSERT INTO posts values (NULL, 'Reitoria', 'Inverso', '12:45', ':44', 'Busao lotado', 2222)");
         db.execSQL("INSERT INTO posts values (NULL, 'Via Direta', 'Direto', '10:40', ':34', 'Busao Vazio', 4444)");

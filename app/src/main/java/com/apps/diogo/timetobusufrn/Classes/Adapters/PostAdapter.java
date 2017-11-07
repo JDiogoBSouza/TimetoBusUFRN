@@ -40,7 +40,6 @@ public class PostAdapter extends ArrayAdapter<Post>
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
@@ -82,12 +81,34 @@ public class PostAdapter extends ArrayAdapter<Post>
         textHora.setText( post.getHora() );
         textSegundos.setText( post.getSegundos() );
     
-        buscaImagemPerfil( imagemPost, context, post.getUsuario() );
+        //if( ! (buscaImagemPerfil( imagemPost, context, post.getUsuario())) )
+        //{
+            //Toast.makeText(context, "Não Achou imagem no celular !", Toast.LENGTH_SHORT).show();
+            
+            if( post.getUsuario().getFoto() != null )
+            {
+                //Toast.makeText(context, "Achou imagem no banco !", Toast.LENGTH_SHORT).show();
+                
+                byte[] fotoArray = post.getUsuario().getFoto();
+                
+                Bitmap raw  = BitmapFactory.decodeByteArray(fotoArray,0,fotoArray.length);
+                
+                imagemPost.setImageBitmap(raw);
+            }
+            //else
+            //{
+                //Toast.makeText(context, "Também não achou imagem no banco !", Toast.LENGTH_SHORT).show();
+            //}
+        //}
+        //else
+        //{
+            //Toast.makeText(context, "Achou a Imagem no Celular !", Toast.LENGTH_SHORT).show();
+        //}
         
         return rowView;
     }
     
-    public static void buscaImagemPerfil( ImageView ibageView, Context contexto, Usuario usuario )
+    public static boolean buscaImagemPerfil( ImageView ibageView, Context contexto, Usuario usuario )
     {
         String fileName = "thumb" + usuario.getMatricula();
         String local = contexto.getFilesDir().getPath()+ "/" + fileName + ".jpg";
@@ -100,11 +121,16 @@ public class PostAdapter extends ArrayAdapter<Post>
             {
                 Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
                 ibageView.setImageBitmap(b);
+                return true;
             }
+            else
+                return false;
+            
         }
         catch (FileNotFoundException e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
+            return false;
         }
     }
 }
