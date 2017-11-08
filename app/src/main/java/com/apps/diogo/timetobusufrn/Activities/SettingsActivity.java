@@ -88,22 +88,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     };
     
+    /**
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         
         switch (item.getItemId())
         {
-            
             case android.R.id.home:
-                
-                /*Intent mIntent = //Crie a intent para chamar a activity anterior
-                        
-                        startActivity(mIntent);*/
-                
                 finish(); // Finaliza a Activity atual
-                
-                break;
+            break;
             
             default:break;
         }
@@ -115,7 +112,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * Helper method to determine if the device has an extra-large screen. For
      * example, 10" tablets are extra-large.
      */
-    private static boolean isXLargeTablet(Context context) {
+    private static boolean isXLargeTablet(Context context)
+    {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
@@ -129,7 +127,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      *
      * @see #sBindPreferenceSummaryToValueListener
      */
-    private static void bindPreferenceSummaryToValue(Preference preference) {
+    private static void bindPreferenceSummaryToValue(Preference preference)
+    {
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
     

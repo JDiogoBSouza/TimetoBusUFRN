@@ -54,7 +54,7 @@ public class PostDAO
         String[] campos =  {banco.ID, banco.PARADA, banco.TIPOONIBUS, banco.EMPRESAONIBUS, banco.HORA, banco.SEGUNDOS, banco.COMENTARIO, banco.MATRIUSUARIO};
         
         db = banco.getReadableDatabase();
-        cursor = db.query(banco.TABELA2, campos, null, null, null, null, null, null);
+        cursor = db.query(banco.TABELA2, campos, null, null, null, null, banco.HORA + " asc " , null);
         
         if(cursor!=null){
             cursor.moveToFirst();

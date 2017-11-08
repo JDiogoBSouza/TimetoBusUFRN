@@ -6,12 +6,12 @@ import java.io.Serializable;
  * Created by Diogo on 07/11/2017.
  */
 
-public class Onibuss implements Serializable
+public class OnibusSpinner implements Serializable
 {
     String nomeEmpresa;
     int idEmpresa;
     
-    public Onibuss(String nomeEmpresa, int idEmpresa)
+    public OnibusSpinner(String nomeEmpresa, int idEmpresa)
     {
         this.nomeEmpresa = nomeEmpresa;
         this.idEmpresa = idEmpresa;

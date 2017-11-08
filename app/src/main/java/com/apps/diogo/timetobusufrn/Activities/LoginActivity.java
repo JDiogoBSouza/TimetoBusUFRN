@@ -33,19 +33,16 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
     
+        // Pega o valor de "logado" no SharedPreferences
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean logado = sharedPreferences.getBoolean("logado",false);
         
+        // Caso o usuário ja tenha logado, fecha-se a tela de login e inicia a aplicação na tela principal
         if( logado )
         {
             //Toast.makeText(getApplicationContext(), "Ja Logado", Toast.LENGTH_SHORT).show();
             iniciaApp();
             finish();
-        }
-        else
-        {
-            // TODO: SOMETHING
-            //Toast.makeText(getApplicationContext(), "Nao logado ainda", Toast.LENGTH_SHORT).show();
         }
         
         final Context contexto = getApplicationContext();
@@ -56,6 +53,8 @@ public class LoginActivity extends AppCompatActivity
         
         Button botaoEntrar = (Button) findViewById(R.id.botaoEntrar);
         
+        
+        // Atribuição do método onClick ao botão de "Entrar" na tela de Login.
         botaoEntrar.setOnClickListener(new OnClickListener()
         {
             @Override
@@ -72,10 +71,10 @@ public class LoginActivity extends AppCompatActivity
                     {
                         Toast.makeText(getApplicationContext(), "Login Bem Sucedido !", Toast.LENGTH_SHORT).show();
                         
+                        // Ao logar corretamente no app, as informações do usuário são armazenadas no SharedPreferences
                         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(contexto).edit();
                         
                         editor.putBoolean( "logado" , true );
-                        
                         editor.putString("nomeexibicao_text" , usuario.getNome() );
                         editor.putString("matricula" , usuario.getSMatricula() );
                         editor.putString("senha" , usuario.getSenha() );
@@ -102,6 +101,10 @@ public class LoginActivity extends AppCompatActivity
         });
     }
     
+    /**
+     * Método chamado para iniciar a aplicação
+     * @param user : Objeto Usuario a ser enviado na forma de Intent para a proxima tela do aplicativo.
+     */
     private void iniciaApp(Usuario user)
     {
         Intent intentTimline = new Intent(LoginActivity.this, TimelineActivity.class);
@@ -112,6 +115,9 @@ public class LoginActivity extends AppCompatActivity
         startActivity(intentTimline);
     }
     
+    /**
+     * Método sem parametros para iniciar a aplicação.
+     */
     private void iniciaApp()
     {
         iniciaApp( null );

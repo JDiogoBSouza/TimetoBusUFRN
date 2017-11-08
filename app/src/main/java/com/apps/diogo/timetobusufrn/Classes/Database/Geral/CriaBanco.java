@@ -58,6 +58,10 @@ public class CriaBanco extends SQLiteOpenHelper
         contexto = context;
     }
     
+    /**
+     * @param comSenha : Identificar se deseja adicionar o campo senha, ou não.
+     * @return : Vetor de String com os campos da tabela usuário.
+     */
     public static String[] getStringsUsuario(boolean comSenha)
     {
         String[] nomeCamposUser;
@@ -74,17 +78,26 @@ public class CriaBanco extends SQLiteOpenHelper
         return nomeCamposUser;
     }
     
+    /**
+     * @return : Vetor de String com os campos da tabela horarios.
+     */
     public static String[] getStringsHorarios()
     {
         return new String[]{ ID_HORARIO, SAIDA, DESTINO, CHEGADA, IDONIBUS};
     }
     
+    /**
+     * @return : Vetor de String com os campos da tabela onibus.
+     */
     public static String[] getStringsOnibus()
     {
         return new String[]{ ID_ONIBUS, ONIBUS_ID_EMPRESA, ONIBUS_ID_TIPO };
     }
     
-    
+    /**
+     * Cria as tabelas no banco de dados da aplicação.
+     * @param db : Banco de dados da aplicação.
+     */
     @Override
     public void onCreate(SQLiteDatabase db)
     {
@@ -140,7 +153,56 @@ public class CriaBanco extends SQLiteOpenHelper
                 + "FOREIGN KEY(" + IDONIBUS + ") REFERENCES " + TABELAONIBUS + "("+ ID_ONIBUS +")"
                 +")";
         db.execSQL(sql);
+        
+        inserirDadosTeste(db);
+    }
     
+    /**
+     * Método para atualizar o banco de dados caso seja necessário.
+     * @param db : Banco de dados da aplicação.
+     * @param oldVersion : Versão anterior da aplicação.
+     * @param newVersion : Versão atual da aplicação.
+     */
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
+    {
+        // No Momento só existe uma versão do banco no momento.
+        
+        switch( oldVersion )
+        {
+            case 1:
+                // Comandos para mudar da versão 1 para a 2.
+                
+            case 2:
+                // Comandos para mudar da versão 2 para a 3.
+            break;
+        }
+    }
+    
+    /**
+     * Método para dar um downgrade no banco de dados caso seja necessário.
+     * @param db : Banco de dados da aplicação.
+     * @param oldVersion : Versão anterior da aplicação.
+     * @param newVersion : Versão atual da aplicação.
+     */
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion)
+    {
+        // ler SQL da pasta raw
+        switch( oldVersion )
+        {
+            case 2:
+                // Comandos para mudar da versão 2 para a 1.
+            break;
+        }
+    }
+    
+    /**
+     * Insere os dados de teste no banco de dados da aplicação.
+     * @param db : Banco de dados da aplicação
+     */
+    public void inserirDadosTeste(SQLiteDatabase db)
+    {
         db.execSQL("INSERT INTO usuarios values (1111,'Diogo Souza', 'dg123456',  NULL)");
         db.execSQL("INSERT INTO usuarios values (2222,'Alex Lima', 'dg22221',  NULL)");
         db.execSQL("INSERT INTO usuarios values (3333,'Janna Silva', 'dg3333',  NULL)");
@@ -183,8 +245,8 @@ public class CriaBanco extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Onibus values (NULL, 6, 6)");	// 11. Expresso Reitoria - Reunidas
         db.execSQL("INSERT INTO Onibus values (NULL, 6, 7)");	// 12. Expresso Reitoria - Reunidas
         db.execSQL("INSERT INTO Onibus values (NULL, 6, 8)");	// 13. Expresso Reitoria - Reunidas
-
-
+    
+    
         // Horarios Direto
         db.execSQL("INSERT INTO Horarios values (NULL, NULL, '06:15', '06:30', 1)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:20', '06:35', '06:50', 2)");
@@ -230,7 +292,7 @@ public class CriaBanco extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Horarios values (NULL, '21:45', '22:05', '22:15', 2)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:00', '22:15', '22:40', 1)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:20', '22:35', '23:00', 2)");
-
+    
         // Horarios Inverso
         db.execSQL("INSERT INTO Horarios values (NULL, '00:00', '06:30', '06:45', 3)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:30', '06:40', '07:00', 4)");
@@ -276,7 +338,7 @@ public class CriaBanco extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Horarios values (NULL, '21:50', '22:05', '22:20', 4)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:10', '22:20', '22:35', 3)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:20', '22:30', '00:00', 4)");
-
+    
         // Horarios Expresso C&T
         db.execSQL("INSERT INTO Horarios values (NULL, '06:35', '06:40', '06:50', 5)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:45', '06:50', '07:00', 5)");
@@ -353,7 +415,7 @@ public class CriaBanco extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Horarios values (NULL, '22:05', '22:10', '22:20', 5)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:15', '22:20', '22:30', 5)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:25', '22:30', '22:40', 5)");
-
+    
         // Horarios Expresso Reitoria
         db.execSQL("INSERT INTO Horarios values (NULL, '06:30', '06:35', '06:45', 8)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:40', '06:45', '06:55', 11)");
@@ -427,27 +489,6 @@ public class CriaBanco extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Horarios values (NULL, '20:20', '20:25', '20:35', 11)");
         db.execSQL("INSERT INTO Horarios values (NULL, '20:30', '20:35', '20:45', 8)");
         db.execSQL("INSERT INTO Horarios values (NULL, '20:40', '20:45', '20:55', 11)");
-    
-    }
-    
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-    {
-        db.execSQL("DROP TABLE IF EXISTS " + TABELA1);
-        db.execSQL("DROP TABLE IF EXISTS " + TABELA2);
-        db.execSQL("DROP TABLE IF EXISTS " + TABELAEMPRESAS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABELATIPOS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABELAONIBUS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABELAHORARIOS);
-    
-        
-        // ler SQL da pasta raw
-        switch( oldVersion )
-        {
-            case 1:
-                onCreate(db);
-            break;
-        }
     }
 }
 

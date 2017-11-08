@@ -23,11 +23,20 @@ public class Facade
 {
     private Context contexto;
     
+    /**
+     * Construtor padrão da classe.
+     * @param contexto
+     */
     public Facade(Context contexto)
     {
         this.contexto = contexto;
     }
     
+    /**
+     * Método para buscar um usuário pela matricula.
+     * @param matric : Matricula do usuário que se deseja buscar.
+     * @return : Objeto usuário encontrado, ou nulo caso não tenha sido encontrado.
+     */
     public Usuario getUsuarioByMatricula(int matric)
     {
         UsuarioDAO dao = new UsuarioDAO( contexto );
@@ -48,6 +57,11 @@ public class Facade
         return null;
     }
     
+    /**
+     * Método para buscar um usuário pela matricula no formato String.
+     * @param matric : Matricula do usuário que se deseja buscar.
+     * @return : Objeto usuário encontrado, ou nulo caso não tenha sido encontrado.
+     */
     public Usuario getUsuarioByMatriculaS(String matric)
     {
         UsuarioDAO dao = new UsuarioDAO( contexto );
@@ -70,6 +84,11 @@ public class Facade
         return null;
     }
     
+    /**
+     * Método para buscar um usuário pela matricula sem o campo de senha.
+     * @param matric : Matricula do usuário que se deseja buscar.
+     * @return : Objeto usuário encontrado, ou nulo caso não tenha sido encontrado.
+     */
     public Usuario getUsuarioByMatriculaSemSenha(int matric)
     {
         UsuarioDAO dao = new UsuarioDAO( contexto );
@@ -89,6 +108,11 @@ public class Facade
         return null;
     }
     
+    /**
+     * Método para buscar um usuário pela matricula no formato String, sem o campo de senha.
+     * @param matric : Matricula do usuário que se deseja buscar.
+     * @return : Objeto usuário encontrado, ou nulo caso não tenha sido encontrado.
+     */
     public Usuario getUsuarioByMatriculaSemSenha(String matric)
     {
         UsuarioDAO dao = new UsuarioDAO( contexto );
@@ -110,6 +134,12 @@ public class Facade
         return null;
     }
     
+    
+    /**
+     * Método para buscar os horarios dos onibus com o id da empresa.
+     * @param tipo : Tipo do onibus a ser buscado.
+     * @return : Lista com os horarios dos onibus.
+     */
     public List<HorarioComEmpresa> getHorariosPorTipo(int tipo)
     {
         List<HorarioComEmpresa> lstHorarios = new ArrayList<>();;
@@ -142,6 +172,11 @@ public class Facade
         return lstHorarios;
     }
     
+    /**
+     * Método para buscar os posts mais recentes.
+     * @param posts : lista para adicionar os posts encontrados.
+     * TODO: buscar apenas posts dentro de uma faixa de tempo.
+     */
     public void getUltimosPosts(ArrayList<Post> posts)
     {
         PostDAO dao = new PostDAO( contexto );
@@ -184,6 +219,12 @@ public class Facade
         }while(cursor.moveToNext());
     }
     
+    /**
+     * Método para buscar horarios por tipo do onibus e pela hora.
+     * Busca um onibus que ja saiu e dois onibus que vão sair.
+     * @param tipo : Tipo de onibus que se deseja buscar.
+     * @param lstHorarios : Lista para preencher com os dados encontrados.
+     */
     public void getHorariosPorTipoeHora(int tipo, List<HorarioComEmpresa> lstHorarios)
     {
         lstHorarios.clear();
@@ -232,6 +273,11 @@ public class Facade
         }while( cursor1.moveToNext() );
     }
     
+    /**
+     * Método para inserir um post no banco.
+     * @param post : Post a ser inserido no banco.
+     * @return : True caso tenha sido inserido, false caso contrario.
+     */
     public boolean inserirPost( Post post )
     {
         PostDAO dao = new PostDAO(contexto);
@@ -246,6 +292,11 @@ public class Facade
         }
     }
     
+    /**
+     * Método para buscar apenas id da empresa a partir do id de um onibus.
+     * @param idonibus : Id do onibus a ser buscado o id da empresa.
+     * @return : Id da empresa do onibus buscado.
+     */
     private int getIdEmpresa(int idonibus)
     {
         OnibusDAO daoOnibus = new OnibusDAO(contexto);
@@ -260,6 +311,11 @@ public class Facade
             return -1;
     }
     
+    /**
+     * Retorna o nome da empresa em formato String de acordo com o id informado.
+     * @param id : Id da empresa.
+     * @return : Nome da empresa.
+     */
     private String getNomeEmpresa(int id)
     {
         String nome = "";
@@ -298,6 +354,11 @@ public class Facade
         return nome;
     }
     
+    /**
+     * Converte uma string para inteiro.
+     * @param s : String a ser convertida para inteiro.
+     * @return : Inteiro resultante da conversão.
+     */
     private int converteString(String s)
     {
         // TODO: Verificar se string contem letras, tratar exceção
@@ -306,6 +367,12 @@ public class Facade
         return convertido;
     }
     
+    /**
+     * Método para atualizar as informações de um usuário no banco.
+     * @param user : Usuario a ser atualizado.
+     * @param context : Contexto
+     * @return : Valor para verificar se a atualização ocorreu com sucesso ou não.
+     */
     public int updateUsuario(Usuario user, Context context)
     {
         UsuarioDAO dao = new UsuarioDAO( context );

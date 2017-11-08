@@ -32,9 +32,8 @@ import android.widget.Toast;
 
 import com.apps.diogo.timetobusufrn.Classes.Adapters.SpinnerAdapter;
 import com.apps.diogo.timetobusufrn.Classes.Database.Geral.Facade;
-import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.PostDAO;
 import com.apps.diogo.timetobusufrn.Classes.Adapters.PostAdapter;
-import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibuss;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.OnibusSpinner;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 import com.apps.diogo.timetobusufrn.Fragmentos.FragmentoNotificacoes;
 import com.apps.diogo.timetobusufrn.Fragmentos.FragmentoTabs;
@@ -49,34 +48,20 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class TimelineActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    
-    protected static final int LOGADO = 0;
-    
-    private static final String tagNotificacoes = "Notificacoes";
-    private static final String tagTimeLine     = "Timeline";
-    private static final String tagMapa         = "Mapa";
-    private static final String tagHorarios     = "Horarios";
-    
-    private int indexFragmentoAtual;
+public class TimelineActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+{
+    protected static final int FOTO = 0;
     
     AlertDialog dialog;
     Fragment fragmentoAtual;
     FloatingActionButton fab;
     Usuario usuario;
-    String profileImage;
     
     Context context;
-    
     Facade fac;
-    
-    protected static final int FOTO = 0;
-    private static final String IMAGEM ="imagem" ;
-    
-    private Bitmap bitmap;
     CircleImageView imgView;
     
-    // Ciclo de Vida Importante
+    // Ciclos de Vida Importantes
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -91,11 +76,14 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
     
             Intent intent = getIntent();
     
-            if (intent.getExtras() != null) {
-                //Toast.makeText(getApplicationContext(), "TINHA EXTRAAAS", Toast.LENGTH_SHORT).show();
+            if (intent.getExtras() != null)
+            {
+                // Inicializa usuário a partir do Intent
                 usuario = (Usuario) intent.getSerializableExtra(Usuario.USER_INFO);
-            } else {
-                //Toast.makeText(getApplicationContext(), "NAO TINHA EXTRAAAS", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                // Inicializa usuário a partir das informações salvas no SharedPreferences
                 usuario = criaUsuario();
             }
     
@@ -116,8 +104,12 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         PostAdapter.buscaImagemPerfil( imgView, getApplicationContext(), usuario );
     }
     
-    // -------------------------
+    // ---------------------------------------------
     
+    /**
+     * Metodo para criar um Objeto usuário.
+     * @return Usuário criado a partir das informações presentes no SharedPreferences.
+     */
     private Usuario criaUsuario()
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -133,6 +125,9 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         return user;
     }
     
+    /**
+     * Método que instancia todos os itens presentes na activity da Timeline
+     */
     private void instanciaItens()
     {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -142,17 +137,16 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
     
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    
         drawer.setDrawerListener(toggle);
-    
         toggle.syncState();
-    
+        
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        
         View header = navigationView.getHeaderView(0);
-    
+        
+        // Instancia o imageView da foto de perfil, seta metodo onClick do mesmo.
         imgView = (CircleImageView) header.findViewById( R.id.fotoPerfil );
-    
         imgView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -165,6 +159,11 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         initFloatingActionButton();
     }
     
+    /**
+     * Método que verifica se o usuário está logado. Caso contrário, finaliza a activity da Timeline
+     * e volta para a tela de login.
+     * @return : false caso o usuário não esteja logado, true caso o usuário esteja logado.
+     */
     @NonNull
     private Boolean verificaLogado()
     {
@@ -186,6 +185,10 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         return true;
     }
     
+    /**
+     * Atualiza os dados 'Nome de Exibição' e 'Matricula' presentes na NavHeader
+     * com as informações presentes no SharedPreferences.
+     */
     private void atualizaNavHeader()
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -206,6 +209,9 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         matExibicao.setText(matSalva);
     }
     
+    /**
+     * Instancia e seta o método onClick do botão flutuante utilizado para postar.
+     */
     private void initFloatingActionButton()
     {
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -221,6 +227,11 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         });
     }
     
+    /**
+     * Cria uma Janela de Dialogo personalizada onde o usuário irá selecionar
+     * as informações da sua postagem.
+     * @return : Janela de dialogo personalizada funcionando com layout pre-definido.
+     */
     private AlertDialog createCustomDialog()
     {
         final Activity m = this;
@@ -303,7 +314,7 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3)
             {
-                ArrayList<Onibuss> list = new ArrayList<>();
+                ArrayList<OnibusSpinner> list = new ArrayList<>();
                 
                 int posicaoSpinner1 = spinner.getSelectedItemPosition();
                 
@@ -317,20 +328,20 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
                         {
                             case 0:
                                 // Empresas dos Diretos.
-                                list.add(new Onibuss("Guanabara",0));
-                                list.add(new Onibuss("Via Sul",1));
+                                list.add(new OnibusSpinner("Guanabara",0));
+                                list.add(new OnibusSpinner("Via Sul",1));
                                 break;
                             
                             case 1:
                                 // Empresas dos Inversos.
-                                list.add(new Onibuss("Conceição",2));
-                                list.add(new Onibuss("Cidade do Natal",3));
+                                list.add(new OnibusSpinner("Conceição",2));
+                                list.add(new OnibusSpinner("Cidade do Natal",3));
                                 break;
                             
                             case 2:
                                 // Empresas dos Expressos Reitoria.
-                                list.add(new Onibuss("Reunidas",4));
-                                list.add(new Onibuss("Santa Maria",5));
+                                list.add(new OnibusSpinner("Reunidas",4));
+                                list.add(new OnibusSpinner("Santa Maria",5));
                                 break;
                         }
                     break;
@@ -340,25 +351,25 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
                         {
                             case 0:
                                 // Empresas dos Diretos.
-                                list.add(new Onibuss("Guanabara",0));
-                                list.add(new Onibuss("Via Sul",1));
+                                list.add(new OnibusSpinner("Guanabara",0));
+                                list.add(new OnibusSpinner("Via Sul",1));
                                 break;
         
                             case 1:
                                 // Empresas dos Inversos.
-                                list.add(new Onibuss("Conceição",2));
-                                list.add(new Onibuss("Cidade do Natal",3));
+                                list.add(new OnibusSpinner("Conceição",2));
+                                list.add(new OnibusSpinner("Cidade do Natal",3));
                                 break;
     
                             case 2:
                                 // Empresas dos Expressos CeT.
-                                list.add(new Onibuss("Guanabara",0));
+                                list.add(new OnibusSpinner("Guanabara",0));
                                 break;
                             
                             case 3:
                                 // Empresas dos Expressos Reitoria.
-                                list.add(new Onibuss("Reunidas",4));
-                                list.add(new Onibuss("Santa Maria",5));
+                                list.add(new OnibusSpinner("Reunidas",4));
+                                list.add(new OnibusSpinner("Santa Maria",5));
                                 break;
                         }
                     break;
@@ -368,19 +379,19 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
                         {
                             case 0:
                                 // Empresas dos Diretos.
-                                list.add(new Onibuss("Guanabara",0));
-                                list.add(new Onibuss("Via Sul",1));
+                                list.add(new OnibusSpinner("Guanabara",0));
+                                list.add(new OnibusSpinner("Via Sul",1));
                                 break;
         
                             case 1:
                                 // Empresas dos Inversos.
-                                list.add(new Onibuss("Conceição",2));
-                                list.add(new Onibuss("Cidade do Natal",3));
+                                list.add(new OnibusSpinner("Conceição",2));
+                                list.add(new OnibusSpinner("Cidade do Natal",3));
                                 break;
         
                             case 2:
                                 // Empresas dos Expressos CeT.
-                                list.add(new Onibuss("Guanabara",0));
+                                list.add(new OnibusSpinner("Guanabara",0));
                                 break;
                         }
                     break;
@@ -390,14 +401,14 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
                         {
                             case 0:
                                 // Empresas dos Diretos.
-                                list.add(new Onibuss("Guanabara",0));
-                                list.add(new Onibuss("Via Sul",1));
+                                list.add(new OnibusSpinner("Guanabara",0));
+                                list.add(new OnibusSpinner("Via Sul",1));
                                 break;
         
                             case 1:
                                 // Empresas dos Inversos.
-                                list.add(new Onibuss("Conceição",2));
-                                list.add(new Onibuss("Cidade do Natal",3));
+                                list.add(new OnibusSpinner("Conceição",2));
+                                list.add(new OnibusSpinner("Cidade do Natal",3));
                                 break;
                         }
                     break;
@@ -433,6 +444,10 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         return mBuilder.create();
     }
     
+    /**
+     * Inicia uma janela para a seleção de uma imagem.
+     * @param v : View que chamou o método.
+     */
     public void trocarImagem(View v)
     {
         Intent intent = new Intent();
@@ -443,6 +458,11 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         startActivityForResult(Intent.createChooser(intent,"Selecionar Foto"), FOTO);
     }
     
+    /**
+     * Transfere uma cópia comprimida da imagem selecionada para a pasta do aplicativo e
+     * atribui a imagem ao imageView da foto de perfil.
+     * @param data : Intent retornada pela janela de seleção de imagem.
+     */
     private void alterarFoto(Intent data)
     {
         Uri selectedImageUri = data.getData();
@@ -461,7 +481,7 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
             
             ByteArrayOutputStream saida = new ByteArrayOutputStream();
             
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 30, outputStream);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 5, outputStream);
             bitmap.compress(Bitmap.CompressFormat.JPEG,5,saida);
             
             byte[] img = saida.toByteArray();
@@ -485,6 +505,10 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         imgView.setImageURI( selectedImageUri );
     }
     
+    /**
+     * Seta um fragmento para ser exibido dentro da activity.
+     * @param fragment : Fragmento a ser exibido.
+     */
     public void setFragment(Fragment fragment)
     {
         if (fragment != null)
@@ -498,6 +522,9 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         drawer.closeDrawer(GravityCompat.START);
     }
     
+    /**
+     * Atualiza a lista de postagens na tela inicial.
+     */
     private void atualizarPostsFrag()
     {
         List<Fragment> a  = fragmentoAtual.getChildFragmentManager().getFragments();
@@ -509,25 +536,27 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         }
     }
     
+    /**
+     * Insere uma postagem no banco de dados e atualizar timeline.
+     * @param v : View que chamou o método.
+     */
     public void postar(View v)
     {
         Spinner spinnerParada = (Spinner) dialog.findViewById(R.id.DLparada);
         Spinner spinnerTipoOnibus = (Spinner) dialog.findViewById(R.id.DLonibus);
         Spinner spinnerEmpresaOnibus = (Spinner) dialog.findViewById(R.id.DLempresas);
+        
         EditText textComentarios = (EditText) dialog.findViewById(R.id.DLcomentarios);
     
         String postContent = textComentarios.getText().toString();
         String parada = spinnerParada.getSelectedItem().toString();
         
-        //int id = idEmpresa( spinnerTipoOnibus.getSelectedItemPosition(), spinnerEmpresaOnibus.getSelectedItemPosition() );
-        Onibuss a = (Onibuss) spinnerEmpresaOnibus.getSelectedItem();
+        OnibusSpinner a = (OnibusSpinner) spinnerEmpresaOnibus.getSelectedItem();
         
         String tipoOnibus = spinnerTipoOnibus.getSelectedItem().toString();
         int empresaOnibus = a.getIdEmpresa();
         
         Post post = new Post(usuario, parada , tipoOnibus, empresaOnibus, postContent);
-        
-        Facade fac = new Facade( context );
         
         if( fac.inserirPost(post) )
         {
@@ -541,11 +570,10 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         dialog.dismiss();
     }
     
-    /*private int idEmpresa(int tipo, int empresa)
-    {
-        
-    }*/
-    
+    /**
+     * Método chamado ao clicar no botão cancelar na janela de dialogo personalizada.
+     * @param v : View que chamou o método.
+     */
     public void cancelar(View v)
     {
         Toast.makeText(getApplicationContext(), "Cancelando postagem", Toast.LENGTH_SHORT).show();
@@ -561,6 +589,12 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         return true;
     }
     
+    /**
+     * Método que gerencia o comportamento da aplicação ao se clicar em algum dos
+     * botões da barra lateral.
+     * @param item : Item clicado na barra lateral
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -593,7 +627,6 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
             Intent intentLogin = new Intent(TimelineActivity.this, LoginActivity.class);
             startActivity(intentLogin);
             
-            
             finish();
         }
         else if (id == R.id.nav_fechar)
@@ -604,6 +637,12 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         return true;
     }
     
+    /**
+     * Método que gerencia o comportamento da aplicação ao se clicar em algum dos
+     * botões do menu na appBar.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -627,6 +666,13 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         return super.onOptionsItemSelected(item);
     }
     
+    /**
+     * Método que gerencia o comportamento da aplicação ao receber o resultado
+     * de alguma Activity.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -647,12 +693,16 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
     }
     
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
+        {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else
+        {
             super.onBackPressed();
         }
     }

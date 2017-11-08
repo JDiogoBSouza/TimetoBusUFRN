@@ -9,22 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibuss;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.OnibusSpinner;
 import com.apps.diogo.timetobusufrn.R;
 
 import java.util.ArrayList;
 
-public class SpinnerAdapter extends ArrayAdapter<Onibuss>
+public class SpinnerAdapter extends ArrayAdapter<OnibusSpinner>
 {
     int groupid;
     Activity context;
-    ArrayList<Onibuss> list;
+    ArrayList<OnibusSpinner> list;
     LayoutInflater inflater;
     
-    public SpinnerAdapter(Activity context, int groupid, int id, ArrayList<Onibuss> list)
+    public SpinnerAdapter(Activity context, int groupid, int id, ArrayList<OnibusSpinner> list)
     {
         super(context,id,list);
         this.list = list;
