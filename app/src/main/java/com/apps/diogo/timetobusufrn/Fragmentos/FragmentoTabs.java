@@ -49,7 +49,7 @@ public class FragmentoTabs extends Fragment
     
     private class sliderAdapter extends FragmentPagerAdapter
     {
-        final  String tabs[]={"Timeline", "Mapa", "Horarios"};
+        final  String tabs[]={"Timeline", "Horarios", "Mapa"};
 
         public sliderAdapter(FragmentManager fm)
         {
@@ -65,10 +65,10 @@ public class FragmentoTabs extends Fragment
                     return new TimelineFragment();
                 
                 case 1:
-                    return new MapsFragment();
+                    return new HorariosFragment();
                 
                 case 2:
-                    return new HorariosFragment();
+                    return new MapsFragment();
                 
                 default:
                     return new TimelineFragment();
