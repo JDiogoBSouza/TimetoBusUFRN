@@ -71,6 +71,7 @@
                 android:id="@+id/botaoComent"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
+                android:focusable="false"
                 android:text="C"/>
 
             <TextView

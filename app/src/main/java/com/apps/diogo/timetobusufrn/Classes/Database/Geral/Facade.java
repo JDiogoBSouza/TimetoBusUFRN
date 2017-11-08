@@ -188,7 +188,7 @@ public class Facade
         String[] nomeCampos = new String[] { CriaBanco.ID, CriaBanco.PARADA, CriaBanco.TIPOONIBUS, CriaBanco.EMPRESAONIBUS, CriaBanco.HORA, CriaBanco.SEGUNDOS, CriaBanco.COMENTARIO, CriaBanco.MATRIUSUARIO };
         String[] nomeCamposUser = new String[] {CriaBanco.MATRICULA, CriaBanco.NOME, CriaBanco.FOTO};
     
-        if( cursor.getCount() < 0 )
+        if( cursor.getCount() <= 0 )
         {
             return;
         }
@@ -212,7 +212,7 @@ public class Facade
             byte[] foto   = cursorUser.getBlob( cursorUser.getColumnIndex(nomeCamposUser[2]) );
         
             Usuario user = new Usuario(matricula, "", nome, foto);
-            Post p = new Post( user, parada , onibus, empresaOnibus, hora, segundos, comentario );
+            Post p = new Post( id, user, parada , onibus, empresaOnibus, hora, segundos, comentario );
     
             posts.add(p);
         
@@ -380,5 +380,13 @@ public class Facade
         
         // TODO: verificar se foi atualizado ou deu erro
         return 1;
+    }
+    
+    public boolean deletarPost(int id)
+    {
+        PostDAO dao = new PostDAO(contexto);
+        dao.deletePost(id);
+        //TODO: Verificar se realmente excluiu
+        return true;
     }
 }

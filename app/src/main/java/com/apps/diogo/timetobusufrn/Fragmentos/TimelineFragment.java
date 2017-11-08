@@ -1,12 +1,17 @@
 package com.apps.diogo.timetobusufrn.Fragmentos;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,6 +40,7 @@ public class TimelineFragment extends Fragment
     private PostAdapter adaptadorLista;
     private ArrayList<Post> posts = new ArrayList<Post>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    int matriculaUsuario;
     
     @Nullable
     @Override
@@ -42,9 +48,10 @@ public class TimelineFragment extends Fragment
     {
         View rootView = inflater.inflate(R.layout.content_timeline,container,false);
         
-        ListView lista = (ListView) rootView.findViewById(R.id.listaposts);
+        final ListView lista = (ListView) rootView.findViewById(R.id.listaposts);
         adaptadorLista = new PostAdapter(context, posts);
         lista.setAdapter(adaptadorLista);
+    
         
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.sw_refresh);
         
@@ -58,27 +65,92 @@ public class TimelineFragment extends Fragment
             }
         });
     
-        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> adapter, View view,
-                                    int position, long id) {
-                
-                Toast.makeText(context, "Sem evento de clique.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    
-        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        registerForContextMenu(lista);
         
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-                                           int position, long arg3) {
-                Toast.makeText(context, "Sem evento de clique longo.", Toast.LENGTH_SHORT).show();
-                return true;
+        lista.setOnCreateContextMenuListener(new AdapterView.OnCreateContextMenuListener()
+        {
+            @Override
+            public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo)
+            {
+                AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) contextMenuInfo;
+                int position = menuInfo.position;
+                
+                int mat = posts.get(position).getUsuario().getMatricula();
+                
+                // Toast.makeText(context, "Matricula = " + mat, Toast.LENGTH_SHORT).show();
+                
+                if( mat == matriculaUsuario )
+                {
+                    contextMenu.add(Menu.NONE, 1, Menu.NONE, "Editar");
+                    contextMenu.add(Menu.NONE, 2, Menu.NONE, "Deletar");
+                }
             }
         });
-    
+        
+        
         buscaPosts();
         return rootView;
     }
     
+    
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int position = menuInfo.position;
+        
+        switch (item.getItemId())
+        {
+            case 1:
+                editarPost(position);
+            break;
+            
+            case 2:
+                deletarPost(position);
+            break;
+        }
+        
+        return super.onContextItemSelected(item);
+    }
+    
+    /**
+     * Função para apagar um post do banco e consequentemente, da timeline
+     * @param position : posição do post no ArrayList
+     */
+    private void deletarPost(int position)
+    {
+        Facade fac = new Facade(context);
+        
+        Post post = posts.get( position );
+        int id = post.getId();
+    
+        //Toast.makeText(context, "Post ID: " + id + " User: " + post.getUsuario().getNome(), Toast.LENGTH_SHORT).show();
+        
+        if( fac.deletarPost( id ) )
+        {
+            Toast.makeText(context, "Post Deletado", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(context, "Erro ao Deletar Post !", Toast.LENGTH_SHORT).show();
+        }
+        
+        buscaPosts();
+    }
+    
+    /**
+     * Função para editar um post do banco e consequentemente, da timeline
+     * @param position : posição do post no ArrayList
+     */
+    private void editarPost(int position)
+    {
+        Toast.makeText(context, "Editar Post", Toast.LENGTH_SHORT).show();
+    }
+    
+    /**
+     * Adicionar um post ao ArrayList de posts.
+     * @param post
+     */
     public void adicionarPost(Post post)
     {
         posts.add(post);
@@ -89,9 +161,16 @@ public class TimelineFragment extends Fragment
     public void onAttach(Context context)
     {
         this.context = context;
+        
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        matriculaUsuario = sharedPreferences.getInt("matriculaI", 0000);
+        
         super.onAttach(context);
     }
     
+    /**
+     * Busca os posts no banco de dados e atualiza a timeline.
+     */
     public void buscaPosts()
     {
         Facade fac = new Facade(context);

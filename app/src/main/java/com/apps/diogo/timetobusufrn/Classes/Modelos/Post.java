@@ -41,9 +41,10 @@ public class Post implements Serializable
         this.segundos = cortaSegundos(data);
     }
     
-    public Post(Usuario usuario, String parada, String tipoOnibus, int empresaOnibus, String hora, String segundos, String comentario)
+    public Post(int id, Usuario usuario, String parada, String tipoOnibus, int empresaOnibus, String hora, String segundos, String comentario)
     {
         super();
+        this.id = id;
         this.comentario = comentario;
         this.usuario = usuario;
         this.hora = hora;
