@@ -56,6 +56,7 @@ public class PostAdapter extends ArrayAdapter<Post>
         TextView textParada = (TextView) rowView.findViewById(R.id.parada);
     
         ImageView imagemPost = (ImageView) rowView.findViewById(R.id.fotoAutor);
+        ImageView imagemOnibus = (ImageView) rowView.findViewById(R.id.imagemOnibus);
         
         Post post = posts.get(position);
         final String comentario = post.getComentario();
@@ -75,37 +76,65 @@ public class PostAdapter extends ArrayAdapter<Post>
         textAutor.setText( post.getUsuario().getNome() );
         textMatricula.setText( post.getUsuario().getSMatricula() );
         
-        textOnibus.setText( post.getOnibus() );
+        textOnibus.setText( post.getTipoOnibus() );
         textParada.setText( post.getParada() );
         
         textHora.setText( post.getHora() );
         textSegundos.setText( post.getSegundos() );
-    
-        //if( ! (buscaImagemPerfil( imagemPost, context, post.getUsuario())) )
-        //{
-            //Toast.makeText(context, "Não Achou imagem no celular !", Toast.LENGTH_SHORT).show();
+        
+        setImagemEmpresa(post.getEmpresaOnibus(), imagemOnibus);
+        
+        if( post.getUsuario().getFoto() != null )
+        {
+            //Toast.makeText(context, "Achou imagem no banco !", Toast.LENGTH_SHORT).show();
             
-            if( post.getUsuario().getFoto() != null )
-            {
-                //Toast.makeText(context, "Achou imagem no banco !", Toast.LENGTH_SHORT).show();
-                
-                byte[] fotoArray = post.getUsuario().getFoto();
-                
-                Bitmap raw  = BitmapFactory.decodeByteArray(fotoArray,0,fotoArray.length);
-                
-                imagemPost.setImageBitmap(raw);
-            }
-            //else
-            //{
-                //Toast.makeText(context, "Também não achou imagem no banco !", Toast.LENGTH_SHORT).show();
-            //}
-        //}
-        //else
-        //{
-            //Toast.makeText(context, "Achou a Imagem no Celular !", Toast.LENGTH_SHORT).show();
-        //}
+            byte[] fotoArray = post.getUsuario().getFoto();
+            
+            Bitmap raw  = BitmapFactory.decodeByteArray(fotoArray,0,fotoArray.length);
+            
+            imagemPost.setImageBitmap(raw);
+        }
         
         return rowView;
+    }
+    
+    private void setImagemEmpresa(int idEmpresa, ImageView imageOnibus)
+    {
+        String imageName;
+        
+        switch ( idEmpresa )
+        {
+            case 0:
+                imageName = "guanabaralow";
+                break;
+            
+            case 1:
+                imageName = "viasullow";
+                break;
+            
+            case 2:
+                imageName = "conceicaolow";
+                break;
+            
+            case 3:
+                imageName = "cidadedonatallow";
+                break;
+            
+            case 4:
+                imageName = "reunidaslow";
+                break;
+            
+            case 5:
+                imageName = "santamarialow";
+                break;
+            
+            default:
+                imageName = "guanabaralow";
+                break;
+        }
+        
+        int resID = context.getResources().getIdentifier(imageName , "drawable", context.getPackageName());
+        imageOnibus.setImageResource(resID);
     }
     
     public static boolean buscaImagemPerfil( ImageView ibageView, Context contexto, Usuario usuario )

@@ -15,7 +15,8 @@ public class Post implements Serializable
     
     private int id;
     private String parada;
-    private String onibus;
+    private String tipoOnibus;
+    private int empresaOnibus;
     private String comentario;
     private Usuario usuario;
     private String hora;
@@ -25,12 +26,12 @@ public class Post implements Serializable
     //private Onibus onibus;
     
     
-    public Post(Usuario usuario, String parada, String onibus, String comentario)
+    public Post(Usuario usuario, String parada, String tipoOnibus, int empresaOnibus, String comentario)
     {
         super();
-        //this.id = id;
         this.parada = parada;
-        this.onibus = onibus;
+        this.tipoOnibus = tipoOnibus;
+        this.empresaOnibus = empresaOnibus;
         this.comentario = comentario;
         this.usuario = usuario;
         
@@ -38,10 +39,9 @@ public class Post implements Serializable
         
         this.hora = cortaHora(data);
         this.segundos = cortaSegundos(data);
-        //id = ++idCount;
     }
     
-    public Post(Usuario usuario, String parada, String onibus, String hora, String segundos, String comentario)
+    public Post(Usuario usuario, String parada, String tipoOnibus, int empresaOnibus, String hora, String segundos, String comentario)
     {
         super();
         this.comentario = comentario;
@@ -49,7 +49,8 @@ public class Post implements Serializable
         this.hora = hora;
         this.segundos = segundos;
         this.parada = parada;
-        this.onibus = onibus;
+        this.tipoOnibus = tipoOnibus;
+        this.empresaOnibus = empresaOnibus;
     }
     
     public String getParada() {
@@ -60,12 +61,20 @@ public class Post implements Serializable
         this.parada = parada;
     }
     
-    public String getOnibus() {
-        return onibus;
+    public String getTipoOnibus() {
+        return tipoOnibus;
     }
     
-    public void setOnibus(String onibus) {
-        this.onibus = onibus;
+    public void setTipoOnibus(String onibus) {
+        this.tipoOnibus = onibus;
+    }
+    
+    public int getEmpresaOnibus() {
+        return empresaOnibus;
+    }
+    
+    public void setEmpresaOnibus(int empresaOnibus) {
+        this.empresaOnibus = empresaOnibus;
     }
     
     public String getComentario() {

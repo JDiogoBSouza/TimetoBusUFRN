@@ -30,8 +30,7 @@
                 android:layout_height="120dp"
                 android:padding="@dimen/nav_header_vertical_spacing"
                 android:clickable="true"
-                android:onClick="teste"
-                android:src="@mipmap/ic_launcher"
+                android:src="@color/colorPrimary"
                 app:civ_border_color="#FF000000"
                 app:civ_border_width="0dp"/>
 

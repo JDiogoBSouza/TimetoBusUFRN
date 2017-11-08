@@ -25,9 +25,13 @@ public class FragmentoTabs extends Fragment
     View view;
     ViewPager viewPager;
     TabLayout tabLayout;
+    int mCurrentItem;
     
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        
         view = inflater.inflate(R.layout.frag_tabs, container, false);
         
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
@@ -39,9 +43,10 @@ public class FragmentoTabs extends Fragment
                 tabLayout.setupWithViewPager(viewPager);
             }
         });
-        
+            
         return view;
     }
+    
     private class sliderAdapter extends FragmentPagerAdapter
     {
         final  String tabs[]={"Timeline", "Mapa", "Horarios"};
@@ -75,7 +80,8 @@ public class FragmentoTabs extends Fragment
             return 3;
         }
         @Override
-        public CharSequence getPageTitle(int position) {
+        public CharSequence getPageTitle(int position)
+        {
             return tabs[position];
         }
     }

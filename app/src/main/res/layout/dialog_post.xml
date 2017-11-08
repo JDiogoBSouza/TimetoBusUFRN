@@ -7,7 +7,7 @@
     tools:context="com.apps.diogo.timetobusufrn.Activities.TimelineActivity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -17,7 +17,7 @@
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tvParada"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Parada:"/>
@@ -39,7 +39,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/tvOnibus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -65,7 +65,7 @@
                 android:text="Empresa:"/>
 
             <Spinner
-                android:id="@+id/spinnerEmpresa"
+                android:id="@+id/DLempresas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -99,23 +99,23 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btCancelar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="cancelar"
             android:text="Cancelar"
-            android:textColor="@android:color/white"
-            android:onClick="cancelar"/>
+            android:textColor="@android:color/white"/>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btPostar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorPrimary"
+            android:onClick="postar"
             android:text="Postar"
-            android:textColor="@android:color/white"
-            android:onClick="postar"/>
+            android:textColor="@android:color/white"/>
     </LinearLayout>
 
 </LinearLayout>

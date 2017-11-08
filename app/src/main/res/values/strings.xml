@@ -8,8 +8,8 @@
     <string name="action_sobre">Sobre</string>
 
     <string-array name="paradas">
-        <item>Reitoria</item>
-        <item>Rotatoria</item>
+        <item>Reitoria</item> 0
+        <item>Anel Viario</item>
         <item>Saida UFRN</item>
         <item>Bar de Mae</item>
         <item>Capela</item>
@@ -17,14 +17,53 @@
         <item>Deart</item>
         <item>Esc. Musica</item>
         <item>CB</item>
+        <item>ECT</item>
     </string-array>
 
-    <string-array name="onibus">
+    <string-array name="empresasDireto">
+        <item>Guanabara</item>
+        <item>Via Sul</item>
+    </string-array>
+
+    <string-array name="empresasInverso">
+        <item>Conceição</item>
+        <item>Cidade do Natal</item>
+    </string-array>
+
+    <string-array name="empresasExpressoCET">
+        <item>Guanabara</item>
+    </string-array>
+
+    <string-array name="empresasExpressoReitoria">
+        <item>Reunidas</item>
+        <item>Santa Maria</item>
+    </string-array>
+
+    <string-array name="onibusComuns">
+        <item>Direto</item>
+        <item>Inverso</item>
+    </string-array>
+
+    <string-array name="onibusCET">
+        <item>Direto</item>
+        <item>Inverso</item>
+        <item>Ex. CeT</item>
+    </string-array>
+
+    <string-array name="onibusReitoria">
         <item>Direto</item>
         <item>Inverso</item>
         <item>Ex. Reitoria</item>
-        <item>Ex. CeT</item>
     </string-array>
+
+    <string-array name="onibusViaDireta">
+        <item>Direto</item>
+        <item>Inverso</item>
+        <item>Ex. CeT</item>
+        <item>Ex. Reitoria</item>
+    </string-array>
+
+
 
     <string name="title_activity_login">Time to Bus - UFRN</string>
 
@@ -32,7 +71,7 @@
 
     <string name="prompt_login">Matricula</string>
     <string name="prompt_password">Senha</string>
-    <string name="action_sign_in">Entrar ou Cadastrar</string>
+    <string name="action_sign_in">Entrar</string>
     <string name="action_sign_in_short">Entrar</string>
     <string name="error_invalid_email">Email invalido</string>
     <string name="error_invalid_password">Senha muito curta</string>
@@ -100,5 +139,8 @@
     <string name="pref_ringtone_silent">Silencioso</string>
 
     <string name="pref_title_vibrate">Vibrar</string>
+
+    <item name="visible" type="id"/>
+    <item name="masked" type="id"/>
 
 </resources>

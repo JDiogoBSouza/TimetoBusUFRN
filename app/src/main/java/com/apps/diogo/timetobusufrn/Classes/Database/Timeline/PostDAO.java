@@ -33,7 +33,8 @@ public class PostDAO
         
         //valores.put(CriaBanco.ID, post.getId());
         valores.put(CriaBanco.PARADA, post.getParada());
-        valores.put(CriaBanco.ONIBUS, post.getOnibus());
+        valores.put(CriaBanco.TIPOONIBUS, post.getTipoOnibus());
+        valores.put(CriaBanco.EMPRESAONIBUS, post.getEmpresaOnibus());
         valores.put(CriaBanco.HORA, post.getHora());
         valores.put(CriaBanco.SEGUNDOS, post.getSegundos());
         valores.put(CriaBanco.COMENTARIO, post.getComentario());
@@ -50,7 +51,7 @@ public class PostDAO
     {
         Cursor cursor;
         
-        String[] campos =  {banco.ID, banco.PARADA, banco.ONIBUS, banco.HORA, banco.SEGUNDOS, banco.COMENTARIO, banco.MATRIUSUARIO};
+        String[] campos =  {banco.ID, banco.PARADA, banco.TIPOONIBUS, banco.EMPRESAONIBUS, banco.HORA, banco.SEGUNDOS, banco.COMENTARIO, banco.MATRIUSUARIO};
         
         db = banco.getReadableDatabase();
         cursor = db.query(banco.TABELA2, campos, null, null, null, null, null, null);
@@ -67,7 +68,7 @@ public class PostDAO
     public Cursor selectPostByID(int id)
     {
         Cursor cursor;
-        String[] campos =  {banco.ID, banco.PARADA, banco.ONIBUS, banco.HORA, banco.SEGUNDOS, banco.COMENTARIO};
+        String[] campos =  {banco.ID, banco.PARADA, banco.TIPOONIBUS, banco.EMPRESAONIBUS, banco.HORA, banco.SEGUNDOS, banco.COMENTARIO};
         
         String where = CriaBanco.ID + "=" + id;
         
@@ -93,7 +94,8 @@ public class PostDAO
         
         valores = new ContentValues();
         valores.put(CriaBanco.PARADA, post.getParada());
-        valores.put(CriaBanco.ONIBUS, post.getOnibus());
+        valores.put(CriaBanco.TIPOONIBUS, post.getTipoOnibus());
+        valores.put(CriaBanco.EMPRESAONIBUS, post.getEmpresaOnibus());
         valores.put(CriaBanco.HORA, post.getHora());
         valores.put(CriaBanco.SEGUNDOS, post.getSegundos());
         valores.put(CriaBanco.COMENTARIO, post.getComentario());

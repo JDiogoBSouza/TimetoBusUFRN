@@ -21,12 +21,12 @@ public class CriaBanco extends SQLiteOpenHelper
     public static final String TABELA2 = "posts";
     public static final String ID = "id";
     public static final String PARADA = "parada";
-    public static final String ONIBUS = "onibus";
+    public static final String TIPOONIBUS = "tipoonibus";
+    public static final String EMPRESAONIBUS = "empresaonibus";
     public static final String HORA = "hora";
     public static final String SEGUNDOS = "segundos";
     public static final String COMENTARIO = "comentario";
     public static final String MATRIUSUARIO = "matriusuario";
-    
     
     public static final String TABELAEMPRESAS = "empresas";
     public static final String ID_EMPRESA = "id_empresa";
@@ -47,7 +47,6 @@ public class CriaBanco extends SQLiteOpenHelper
     public static final String DESTINO = "destino";
     public static final String CHEGADA = "chegada";
     public static final String IDONIBUS = "idonibus";
-    
     
     public static final int VERSAO = 1;
     
@@ -101,7 +100,8 @@ public class CriaBanco extends SQLiteOpenHelper
         sql = "CREATE TABLE "+TABELA2+"("
             + ID + " integer primary key autoincrement,"
             + PARADA + " int,"
-            + ONIBUS + " text,"
+            + TIPOONIBUS + " text,"
+            + EMPRESAONIBUS + " int,"
             + HORA + " text,"
             + SEGUNDOS + " text,"
             + COMENTARIO + " text,"
@@ -146,9 +146,9 @@ public class CriaBanco extends SQLiteOpenHelper
         db.execSQL("INSERT INTO usuarios values (3333,'Janna Silva', 'dg3333',  NULL)");
         db.execSQL("INSERT INTO usuarios values (4444, 'Bruno Silva', 'dg4444', NULL)");
     
-        db.execSQL("INSERT INTO posts values (NULL, 'Reitoria', 'Inverso', '12:45', ':44', 'Busao lotado', 2222)");
-        db.execSQL("INSERT INTO posts values (NULL, 'Via Direta', 'Direto', '10:40', ':34', 'Busao Vazio', 4444)");
-        db.execSQL("INSERT INTO posts values (NULL, 'Via Direta', 'Inverso', '10:00', ':34', 'Busao Vazio', 1111)");
+        db.execSQL("INSERT INTO posts values (NULL, 'Reitoria', 'Inverso',2 , '12:45', ':44', 'Busao lotado', 2222)");
+        db.execSQL("INSERT INTO posts values (NULL, 'Via Direta', 'Direto',0 , '10:40', ':34', 'Busao Vazio', 4444)");
+        db.execSQL("INSERT INTO posts values (NULL, 'Via Direta', 'Inverso',1 , '10:00', ':34', 'Busao Vazio', 1111)");
     
         db.execSQL("INSERT INTO Empresas values (NULL,'Guanabara')");
         db.execSQL("INSERT INTO Empresas values (NULL,'Via Sul')");
@@ -435,7 +435,19 @@ public class CriaBanco extends SQLiteOpenHelper
     {
         db.execSQL("DROP TABLE IF EXISTS " + TABELA1);
         db.execSQL("DROP TABLE IF EXISTS " + TABELA2);
-        onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + TABELAEMPRESAS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABELATIPOS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABELAONIBUS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABELAHORARIOS);
+    
+        
+        // ler SQL da pasta raw
+        switch( oldVersion )
+        {
+            case 1:
+                onCreate(db);
+            break;
+        }
     }
 }
 

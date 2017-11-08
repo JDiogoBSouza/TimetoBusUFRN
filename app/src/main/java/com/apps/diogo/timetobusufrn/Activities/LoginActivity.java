@@ -54,9 +54,9 @@ public class LoginActivity extends AppCompatActivity
         mMatriculaView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
         
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button botaoEntrar = (Button) findViewById(R.id.botaoEntrar);
         
-        mEmailSignInButton.setOnClickListener(new OnClickListener()
+        botaoEntrar.setOnClickListener(new OnClickListener()
         {
             @Override
             public void onClick(View view)

@@ -1,5 +1,6 @@
 package com.apps.diogo.timetobusufrn.Activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -21,15 +23,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apps.diogo.timetobusufrn.Classes.Adapters.SpinnerAdapter;
 import com.apps.diogo.timetobusufrn.Classes.Database.Geral.Facade;
 import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.PostDAO;
 import com.apps.diogo.timetobusufrn.Classes.Adapters.PostAdapter;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibuss;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 import com.apps.diogo.timetobusufrn.Fragmentos.FragmentoNotificacoes;
 import com.apps.diogo.timetobusufrn.Fragmentos.FragmentoTabs;
@@ -39,6 +44,7 @@ import com.apps.diogo.timetobusufrn.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -46,6 +52,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class TimelineActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     
     protected static final int LOGADO = 0;
+    
+    private static final String tagNotificacoes = "Notificacoes";
+    private static final String tagTimeLine     = "Timeline";
+    private static final String tagMapa         = "Mapa";
+    private static final String tagHorarios     = "Horarios";
+    
+    private int indexFragmentoAtual;
+    
     AlertDialog dialog;
     Fragment fragmentoAtual;
     FloatingActionButton fab;
@@ -151,6 +165,7 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         initFloatingActionButton();
     }
     
+    @NonNull
     private Boolean verificaLogado()
     {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -208,23 +223,210 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
     
     private AlertDialog createCustomDialog()
     {
+        final Activity m = this;
+        
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(TimelineActivity.this);
         
         View mView = getLayoutInflater().inflate(R.layout.dialog_post, null);
         
         // Preenche o Spinner das Paradas
-        Spinner spinner = (Spinner) mView.findViewById(R.id.DLparada);
+        final Spinner spinner = (Spinner) mView.findViewById(R.id.DLparada);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.paradas, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         
-        // Preenche o Spinner dos Onibus
-        Spinner spinner2 = (Spinner) mView.findViewById(R.id.DLonibus);
-        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(context, R.array.onibus, android.R.layout.simple_spinner_item);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner2.setAdapter(adapter2);
+        final Spinner spinner2 = (Spinner) mView.findViewById(R.id.DLonibus);
+        final Spinner spinner3 = (Spinner) mView.findViewById(R.id.DLempresas);
+    
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+            {
+                ArrayAdapter<CharSequence> adapter2;
+                
+                //Toast.makeText(getApplicationContext(), "Arg2 = " + arg2, Toast.LENGTH_SHORT).show();
+                
+                switch( arg2 )
+                {
+                    case 0:
+                        // Todos os Onibus, exceto o expresso CeT, param na reitoria.
+                        adapter2 = ArrayAdapter.createFromResource(context, R.array.onibusReitoria, android.R.layout.simple_spinner_item);
+                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner2.setAdapter(adapter2);
+                        break;
+    
+                    case 5:
+                        // Todos os Onibus param no via direta.
+                        adapter2 = ArrayAdapter.createFromResource(context, R.array.onibusViaDireta, android.R.layout.simple_spinner_item);
+                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner2.setAdapter(adapter2);
+                        break;
+                    
+                    case 9:
+                        // Todos os Onibus, exceto o expresso reitoria, param na ECT.
+                        adapter2 = ArrayAdapter.createFromResource(context, R.array.onibusCET, android.R.layout.simple_spinner_item);
+                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner2.setAdapter(adapter2);
+                    break;
+                    
+                    default:
+                        // Apenas diretos e inversos param nas outras paradas.
+                        adapter2 = ArrayAdapter.createFromResource(context, R.array.onibusComuns, android.R.layout.simple_spinner_item);
+                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner2.setAdapter(adapter2);
+                    break;
+                }
+                
+                /*
+                    0 - Reitoria
+                    1 - Anel Viario
+                    2 - Saida UFRN
+                    3 - Bar de Mae
+                    4 - Capela
+                    5 - Via Direta
+                    6 - Deart
+                    7 - Esc. Musica
+                    8 - CB
+                    9 - ECT
+                 */
+            }
         
-        // TODO: Criar e preencher o Spinner das cores.
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0)
+            {
+            }
+        });
+        
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+            {
+                ArrayList<Onibuss> list = new ArrayList<>();
+                
+                int posicaoSpinner1 = spinner.getSelectedItemPosition();
+                
+                //Toast.makeText(getApplicationContext(), "Spinner1 = " + posicaoSpinner1 , Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Spinner2 = " + arg2, Toast.LENGTH_SHORT).show();
+            
+                switch( posicaoSpinner1 )
+                {
+                    case 0:
+                        switch (arg2)
+                        {
+                            case 0:
+                                // Empresas dos Diretos.
+                                list.add(new Onibuss("Guanabara",0));
+                                list.add(new Onibuss("Via Sul",1));
+                                break;
+                            
+                            case 1:
+                                // Empresas dos Inversos.
+                                list.add(new Onibuss("Conceição",2));
+                                list.add(new Onibuss("Cidade do Natal",3));
+                                break;
+                            
+                            case 2:
+                                // Empresas dos Expressos Reitoria.
+                                list.add(new Onibuss("Reunidas",4));
+                                list.add(new Onibuss("Santa Maria",5));
+                                break;
+                        }
+                    break;
+                
+                    case 5:
+                        switch (arg2)
+                        {
+                            case 0:
+                                // Empresas dos Diretos.
+                                list.add(new Onibuss("Guanabara",0));
+                                list.add(new Onibuss("Via Sul",1));
+                                break;
+        
+                            case 1:
+                                // Empresas dos Inversos.
+                                list.add(new Onibuss("Conceição",2));
+                                list.add(new Onibuss("Cidade do Natal",3));
+                                break;
+    
+                            case 2:
+                                // Empresas dos Expressos CeT.
+                                list.add(new Onibuss("Guanabara",0));
+                                break;
+                            
+                            case 3:
+                                // Empresas dos Expressos Reitoria.
+                                list.add(new Onibuss("Reunidas",4));
+                                list.add(new Onibuss("Santa Maria",5));
+                                break;
+                        }
+                    break;
+                
+                    case 9:
+                        switch (arg2)
+                        {
+                            case 0:
+                                // Empresas dos Diretos.
+                                list.add(new Onibuss("Guanabara",0));
+                                list.add(new Onibuss("Via Sul",1));
+                                break;
+        
+                            case 1:
+                                // Empresas dos Inversos.
+                                list.add(new Onibuss("Conceição",2));
+                                list.add(new Onibuss("Cidade do Natal",3));
+                                break;
+        
+                            case 2:
+                                // Empresas dos Expressos CeT.
+                                list.add(new Onibuss("Guanabara",0));
+                                break;
+                        }
+                    break;
+                
+                    default:
+                        switch (arg2)
+                        {
+                            case 0:
+                                // Empresas dos Diretos.
+                                list.add(new Onibuss("Guanabara",0));
+                                list.add(new Onibuss("Via Sul",1));
+                                break;
+        
+                            case 1:
+                                // Empresas dos Inversos.
+                                list.add(new Onibuss("Conceição",2));
+                                list.add(new Onibuss("Cidade do Natal",3));
+                                break;
+                        }
+                    break;
+                }
+    
+                SpinnerAdapter adapter3 = new SpinnerAdapter(m, R.layout.spinner_layout, R.id.txt, list);
+                spinner3.setAdapter(adapter3);
+                
+                /*
+                    0 - Reitoria
+                    1 - Anel Viario
+                    2 - Saida UFRN
+                    3 - Bar de Mae
+                    4 - Capela
+                    5 - Via Direta
+                    6 - Deart
+                    7 - Esc. Musica
+                    8 - CB
+                    9 - ECT
+                 */
+            }
+        
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0)
+            {
+                // TODO Auto-generated method stub
+            
+            }
+        });
         
         mBuilder.setView(mView);
         
@@ -296,41 +498,53 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         drawer.closeDrawer(GravityCompat.START);
     }
     
-    private void adicionarPostNoFrag( Post post )
+    private void atualizarPostsFrag()
     {
         List<Fragment> a  = fragmentoAtual.getChildFragmentManager().getFragments();
         
         if( a != null )
         {
             TimelineFragment atual = (TimelineFragment) a.get(0);
-            atual.adicionarPost(post);
+            atual.buscaPosts();
         }
     }
     
     public void postar(View v)
     {
         Spinner spinnerParada = (Spinner) dialog.findViewById(R.id.DLparada);
-        Spinner spinnerOnibus = (Spinner) dialog.findViewById(R.id.DLonibus);
+        Spinner spinnerTipoOnibus = (Spinner) dialog.findViewById(R.id.DLonibus);
+        Spinner spinnerEmpresaOnibus = (Spinner) dialog.findViewById(R.id.DLempresas);
         EditText textComentarios = (EditText) dialog.findViewById(R.id.DLcomentarios);
     
         String postContent = textComentarios.getText().toString();
         String parada = spinnerParada.getSelectedItem().toString();
-        String onibus = spinnerOnibus.getSelectedItem().toString();
-        Post post = new Post(usuario, parada , onibus, postContent);
         
-        PostDAO dao = new PostDAO( getApplicationContext() );
+        //int id = idEmpresa( spinnerTipoOnibus.getSelectedItemPosition(), spinnerEmpresaOnibus.getSelectedItemPosition() );
+        Onibuss a = (Onibuss) spinnerEmpresaOnibus.getSelectedItem();
         
-        if( dao.insertPost(post) != -1 )
+        String tipoOnibus = spinnerTipoOnibus.getSelectedItem().toString();
+        int empresaOnibus = a.getIdEmpresa();
+        
+        Post post = new Post(usuario, parada , tipoOnibus, empresaOnibus, postContent);
+        
+        Facade fac = new Facade( context );
+        
+        if( fac.inserirPost(post) )
         {
-            adicionarPostNoFrag(post);
+            atualizarPostsFrag();
         }
         else
         {
-            Toast.makeText(getApplicationContext(),"Erro de inserção SQLite", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Falha na Postagem", Toast.LENGTH_SHORT).show();
         }
         
         dialog.dismiss();
     }
+    
+    /*private int idEmpresa(int tipo, int empresa)
+    {
+        
+    }*/
     
     public void cancelar(View v)
     {

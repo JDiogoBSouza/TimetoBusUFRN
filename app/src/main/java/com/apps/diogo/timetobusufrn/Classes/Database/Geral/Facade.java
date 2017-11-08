@@ -150,7 +150,7 @@ public class Facade
         Cursor cursor = dao.selectAllPosts();
         Cursor cursorUser;
     
-        String[] nomeCampos = new String[] { CriaBanco.ID, CriaBanco.PARADA, CriaBanco.ONIBUS, CriaBanco.HORA, CriaBanco.SEGUNDOS, CriaBanco.COMENTARIO, CriaBanco.MATRIUSUARIO };
+        String[] nomeCampos = new String[] { CriaBanco.ID, CriaBanco.PARADA, CriaBanco.TIPOONIBUS, CriaBanco.EMPRESAONIBUS, CriaBanco.HORA, CriaBanco.SEGUNDOS, CriaBanco.COMENTARIO, CriaBanco.MATRIUSUARIO };
         String[] nomeCamposUser = new String[] {CriaBanco.MATRICULA, CriaBanco.NOME, CriaBanco.FOTO};
     
         if( cursor.getCount() < 0 )
@@ -162,10 +162,11 @@ public class Facade
             int id = cursor.getInt( cursor.getColumnIndex( nomeCampos[0] ) );
             String parada = cursor.getString( cursor.getColumnIndex(nomeCampos[1]) );
             String onibus = cursor.getString( cursor.getColumnIndex(nomeCampos[2]) );
-            String hora = cursor.getString( cursor.getColumnIndex(nomeCampos[3]) );
-            String segundos = cursor.getString( cursor.getColumnIndex(nomeCampos[4]) );
-            String comentario = cursor.getString( cursor.getColumnIndex(nomeCampos[5]) );
-            int matricuser = cursor.getInt( cursor.getColumnIndex(nomeCampos[6]) );
+            int empresaOnibus = cursor.getInt( cursor.getColumnIndex(nomeCampos[3]) );
+            String hora = cursor.getString( cursor.getColumnIndex(nomeCampos[4]) );
+            String segundos = cursor.getString( cursor.getColumnIndex(nomeCampos[5]) );
+            String comentario = cursor.getString( cursor.getColumnIndex(nomeCampos[6]) );
+            int matricuser = cursor.getInt( cursor.getColumnIndex(nomeCampos[7]) );
         
             //Toast.makeText(context, "ID: " + id, Toast.LENGTH_SHORT).show();
         
@@ -176,7 +177,7 @@ public class Facade
             byte[] foto   = cursorUser.getBlob( cursorUser.getColumnIndex(nomeCamposUser[2]) );
         
             Usuario user = new Usuario(matricula, "", nome, foto);
-            Post p = new Post( user, parada , onibus, hora, segundos, comentario );
+            Post p = new Post( user, parada , onibus, empresaOnibus, hora, segundos, comentario );
     
             posts.add(p);
         
@@ -229,6 +230,20 @@ public class Facade
             
             lstHorarios.add( new HorarioComEmpresa(id, saida, destino, chegada, idonibus, empresa) );
         }while( cursor1.moveToNext() );
+    }
+    
+    public boolean inserirPost( Post post )
+    {
+        PostDAO dao = new PostDAO(contexto);
+        
+        if( dao.insertPost( post ) != -1 )
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     
     private int getIdEmpresa(int idonibus)
@@ -298,10 +313,5 @@ public class Facade
         
         // TODO: verificar se foi atualizado ou deu erro
         return 1;
-    }
-    
-    private void insertUsuario()
-    {
-        
     }
 }
