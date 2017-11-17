@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.apps.diogo.timetobusufrn.Classes.Database.Geral.Facade;
+import com.apps.diogo.timetobusufrn.Classes.Database.Facade;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 import com.apps.diogo.timetobusufrn.R;
 
@@ -44,47 +44,54 @@ public class LoginActivity extends AppCompatActivity
             iniciaApp();
             finish();
         }
-        
-        final Context contexto = getApplicationContext();
-        
-        // Set up the login form.
-        mMatriculaView = (AutoCompleteTextView) findViewById(R.id.email);
-        mPasswordView = (EditText) findViewById(R.id.password);
-        
-        Button botaoEntrar = (Button) findViewById(R.id.botaoEntrar);
-        
-        
-        // Atribuição do método onClick ao botão de "Entrar" na tela de Login.
-        botaoEntrar.setOnClickListener(new OnClickListener()
+        else
         {
-            @Override
-            public void onClick(View view)
+            final Context contexto = getApplicationContext();
+    
+            // Set up the login form.
+            mMatriculaView = (AutoCompleteTextView) findViewById(R.id.email);
+            mPasswordView = (EditText) findViewById(R.id.password);
+    
+            Button botaoEntrar = (Button) findViewById(R.id.botaoEntrar);
+    
+    
+            // Atribuição do método onClick ao botão de "Entrar" na tela de Login.
+            botaoEntrar.setOnClickListener(new OnClickListener()
             {
-                String senhaView = mPasswordView.getText().toString();
-                
-                Facade fac = new Facade( contexto );
-                Usuario usuario = fac.getUsuarioByMatriculaS( mMatriculaView.getText().toString() );
-                
-                if( usuario != null )
+                @Override
+                public void onClick(View view)
                 {
-                    if (senhaView.equals(usuario.getSenha()))
+                    String senhaView = mPasswordView.getText().toString();
+            
+                    Facade fac = new Facade( contexto );
+                    Usuario usuario = fac.getUsuarioByMatriculaS( mMatriculaView.getText().toString() );
+            
+                    if( usuario != null )
                     {
-                        Toast.makeText(getApplicationContext(), "Login Bem Sucedido !", Toast.LENGTH_SHORT).show();
-                        
-                        // Ao logar corretamente no app, as informações do usuário são armazenadas no SharedPreferences
-                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(contexto).edit();
-                        
-                        editor.putBoolean( "logado" , true );
-                        editor.putString("nomeexibicao_text" , usuario.getNome() );
-                        editor.putString("matricula" , usuario.getSMatricula() );
-                        editor.putString("senha" , usuario.getSenha() );
-                        editor.putInt("matriculaI", usuario.getMatricula());
-                        //editor.putString("foto", usuario.getFoto());
-                        
-                        editor.commit();
-                        
-                        iniciaApp(usuario);
-                        finish();
+                        if (senhaView.equals(usuario.getSenha()))
+                        {
+                            Toast.makeText(getApplicationContext(), "Login Bem Sucedido !", Toast.LENGTH_SHORT).show();
+                    
+                            // Ao logar corretamente no app, as informações do usuário são armazenadas no SharedPreferences
+                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(contexto).edit();
+                    
+                            editor.putBoolean( "logado" , true );
+                            editor.putString("nomeexibicao_text" , usuario.getNome() );
+                            editor.putString("matricula" , usuario.getSMatricula() );
+                            editor.putString("senha" , usuario.getSenha() );
+                            editor.putInt("matriculaI", usuario.getMatricula());
+                            //editor.putString("foto", usuario.getFoto());
+                    
+                            editor.commit();
+                    
+                            iniciaApp(usuario);
+                            finish();
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Login Mal Sucedido !", Toast.LENGTH_SHORT).show();
+                            mPasswordView.setText("");
+                        }
                     }
                     else
                     {
@@ -92,13 +99,8 @@ public class LoginActivity extends AppCompatActivity
                         mPasswordView.setText("");
                     }
                 }
-                else
-                {
-                    Toast.makeText(getApplicationContext(), "Login Mal Sucedido !", Toast.LENGTH_SHORT).show();
-                    mPasswordView.setText("");
-                }
-            }
-        });
+            });
+        }
     }
     
     /**

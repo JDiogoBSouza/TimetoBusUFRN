@@ -1,32 +1,16 @@
-package com.apps.diogo.timetobusufrn.Classes.Database.Geral;
-
-import android.database.sqlite.SQLiteOpenHelper;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+package com.apps.diogo.timetobusufrn.Classes.Database;
+        
+        import android.content.Context;
+        import android.database.sqlite.SQLiteDatabase;
+        import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by Diogo on 27/10/2017.
+ * Created by Diogo on 16/11/2017.
  */
 
-public class CriaBanco extends SQLiteOpenHelper
+public class BancoHorarios extends SQLiteOpenHelper
 {
-    public static final String NOME_BANCO = "banco.db";
-    
-    public static final String TABELA1 = "usuarios";
-    public static final String MATRICULA = "matricula";
-    public static final String NOME = "nome";
-    public static final String SENHA = "senha";
-    public static final String FOTO = "foto";
-    
-    public static final String TABELA2 = "posts";
-    public static final String ID = "id";
-    public static final String PARADA = "parada";
-    public static final String TIPOONIBUS = "tipoonibus";
-    public static final String EMPRESAONIBUS = "empresaonibus";
-    public static final String HORA = "hora";
-    public static final String SEGUNDOS = "segundos";
-    public static final String COMENTARIO = "comentario";
-    public static final String MATRIUSUARIO = "matriusuario";
+    public static final String NOME_BANCO = "bancoHorarios.db";
     
     public static final String TABELAEMPRESAS = "empresas";
     public static final String ID_EMPRESA = "id_empresa";
@@ -52,30 +36,10 @@ public class CriaBanco extends SQLiteOpenHelper
     
     private Context contexto;
     
-    public CriaBanco(Context context)
+    public BancoHorarios(Context context)
     {
         super(context, NOME_BANCO,null,VERSAO);
         contexto = context;
-    }
-    
-    /**
-     * @param comSenha : Identificar se deseja adicionar o campo senha, ou não.
-     * @return : Vetor de String com os campos da tabela usuário.
-     */
-    public static String[] getStringsUsuario(boolean comSenha)
-    {
-        String[] nomeCamposUser;
-        
-        if( comSenha )
-        {
-            nomeCamposUser = new String[]{MATRICULA, SENHA, NOME, FOTO};
-        }
-        else
-        {
-            nomeCamposUser = new String[]{MATRICULA, NOME, FOTO};
-        }
-            
-        return nomeCamposUser;
     }
     
     /**
@@ -101,40 +65,20 @@ public class CriaBanco extends SQLiteOpenHelper
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        String sql = "CREATE TABLE "+TABELA1+"("
-                + MATRICULA + " integer primary key,"
-                + NOME + " text,"
-                + SENHA + " text,"
-                + FOTO + " blob"
-                +")";
-    
-        db.execSQL(sql);
+        // TODO: Transferir todo o SQL para um arquivo separado.
         
-        sql = "CREATE TABLE "+TABELA2+"("
-            + ID + " integer primary key autoincrement,"
-            + PARADA + " int,"
-            + TIPOONIBUS + " text,"
-            + EMPRESAONIBUS + " int,"
-            + HORA + " text,"
-            + SEGUNDOS + " text,"
-            + COMENTARIO + " text,"
-            + MATRIUSUARIO + " integer,"
-            + "FOREIGN KEY(" + MATRIUSUARIO + ") REFERENCES " + TABELA1 + "("+ MATRICULA +")"
-            +")";
-        db.execSQL(sql);
-        
-        sql = "CREATE TABLE "+TABELAEMPRESAS+"("
+        String sql = "CREATE TABLE "+TABELAEMPRESAS+"("
                 + ID_EMPRESA + " integer primary key autoincrement,"
                 + NOME_EMPRESA + " text"
                 +")";
         db.execSQL(sql);
-    
+        
         sql = "CREATE TABLE "+TABELATIPOS+"("
                 + ID_TIPO + " integer primary key autoincrement,"
                 + DESCRICAO_TIPO + " text"
                 +")";
         db.execSQL(sql);
-    
+        
         sql = "CREATE TABLE "+TABELAONIBUS+"("
                 + ID_ONIBUS + " integer primary key autoincrement,"
                 + ONIBUS_ID_EMPRESA + " int,"
@@ -143,7 +87,7 @@ public class CriaBanco extends SQLiteOpenHelper
                 + "FOREIGN KEY(" + ONIBUS_ID_TIPO + ") REFERENCES " + TABELATIPOS + "("+ ID_TIPO +")"
                 +")";
         db.execSQL(sql);
-    
+        
         sql = "CREATE TABLE "+TABELAHORARIOS+"("
                 + ID_HORARIO + " integer primary key autoincrement,"
                 + SAIDA + " text,"
@@ -175,7 +119,7 @@ public class CriaBanco extends SQLiteOpenHelper
                 
             case 2:
                 // Comandos para mudar da versão 2 para a 3.
-            break;
+                break;
         }
     }
     
@@ -193,7 +137,7 @@ public class CriaBanco extends SQLiteOpenHelper
         {
             case 2:
                 // Comandos para mudar da versão 2 para a 1.
-            break;
+                break;
         }
     }
     
@@ -203,22 +147,15 @@ public class CriaBanco extends SQLiteOpenHelper
      */
     public void inserirDadosTeste(SQLiteDatabase db)
     {
-        db.execSQL("INSERT INTO usuarios values (1111,'Diogo Souza', 'dg123456',  NULL)");
-        db.execSQL("INSERT INTO usuarios values (2222,'Alex Lima', 'dg22221',  NULL)");
-        db.execSQL("INSERT INTO usuarios values (3333,'Janna Silva', 'dg3333',  NULL)");
-        db.execSQL("INSERT INTO usuarios values (4444, 'Bruno Silva', 'dg4444', NULL)");
-    
-        db.execSQL("INSERT INTO posts values (NULL, 'Reitoria', 'Inverso',2 , '12:45', ':44', 'Busao lotado', 2222)");
-        db.execSQL("INSERT INTO posts values (NULL, 'Via Direta', 'Direto',0 , '10:40', ':34', 'Busao Vazio', 4444)");
-        db.execSQL("INSERT INTO posts values (NULL, 'Via Direta', 'Inverso',1 , '10:00', ':34', 'Busao Vazio', 1111)");
-    
+        // TODO: Transerir todo o SQL para um arquivo separado.
+        
         db.execSQL("INSERT INTO Empresas values (NULL,'Guanabara')");
         db.execSQL("INSERT INTO Empresas values (NULL,'Via Sul')");
         db.execSQL("INSERT INTO Empresas values (NULL,'Conceição')");
         db.execSQL("INSERT INTO Empresas values (NULL,'Cidade do Natal')");
         db.execSQL("INSERT INTO Empresas values (NULL,'Santa Maria')");
         db.execSQL("INSERT INTO Empresas values (NULL,'Reunidas')");
-    
+        
         db.execSQL("INSERT INTO Tipos values (NULL,'Direto')");
         db.execSQL("INSERT INTO Tipos values (NULL,'Inverso')");
         db.execSQL("INSERT INTO Tipos values (NULL,'Ex C&T')");
@@ -227,26 +164,26 @@ public class CriaBanco extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Tipos values (NULL,'Ex Reitoria')");
         db.execSQL("INSERT INTO Tipos values (NULL,'Ex Reitoria - RUVD')");
         db.execSQL("INSERT INTO Tipos values (NULL,'Ex Reitoria - VDRU')");
-    
+        
         db.execSQL("INSERT INTO Onibus values (NULL, 1, 1)"); 	// 1. Direto	- Guanabara
         db.execSQL("INSERT INTO Onibus values (NULL, 2, 1)");	// 2. Direto	- Via Sul
-    
+        
         db.execSQL("INSERT INTO Onibus values (NULL, 3, 2)"); 	// 3. Inverso	- Conceição
         db.execSQL("INSERT INTO Onibus values (NULL, 4, 2)");	// 4. Inverso	- Cidade do Natal
-    
+        
         db.execSQL("INSERT INTO Onibus values (NULL, 1, 3)");	// 5. Expresso	C&T - Guanabara
         db.execSQL("INSERT INTO Onibus values (NULL, 1, 4)");	// 6. Expresso	C&T - Guanabara
         db.execSQL("INSERT INTO Onibus values (NULL, 1, 5)");	// 7. Expresso	C&T - Guanabara
-    
+        
         db.execSQL("INSERT INTO Onibus values (NULL, 5, 6)");	// 8. Expresso Reitoria - Santa Maria
         db.execSQL("INSERT INTO Onibus values (NULL, 5, 7)");	// 9. Expresso Reitoria - Santa Maria
         db.execSQL("INSERT INTO Onibus values (NULL, 5, 8)");	// 10. Expresso Reitoria - Santa Maria
-    
+        
         db.execSQL("INSERT INTO Onibus values (NULL, 6, 6)");	// 11. Expresso Reitoria - Reunidas
         db.execSQL("INSERT INTO Onibus values (NULL, 6, 7)");	// 12. Expresso Reitoria - Reunidas
         db.execSQL("INSERT INTO Onibus values (NULL, 6, 8)");	// 13. Expresso Reitoria - Reunidas
-    
-    
+        
+        
         // Horarios Direto
         db.execSQL("INSERT INTO Horarios values (NULL, NULL, '06:15', '06:30', 1)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:20', '06:35', '06:50', 2)");
@@ -292,7 +229,7 @@ public class CriaBanco extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Horarios values (NULL, '21:45', '22:05', '22:15', 2)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:00', '22:15', '22:40', 1)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:20', '22:35', '23:00', 2)");
-    
+        
         // Horarios Inverso
         db.execSQL("INSERT INTO Horarios values (NULL, '00:00', '06:30', '06:45', 3)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:30', '06:40', '07:00', 4)");
@@ -338,7 +275,7 @@ public class CriaBanco extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Horarios values (NULL, '21:50', '22:05', '22:20', 4)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:10', '22:20', '22:35', 3)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:20', '22:30', '00:00', 4)");
-    
+        
         // Horarios Expresso C&T
         db.execSQL("INSERT INTO Horarios values (NULL, '06:35', '06:40', '06:50', 5)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:45', '06:50', '07:00', 5)");
@@ -415,7 +352,7 @@ public class CriaBanco extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Horarios values (NULL, '22:05', '22:10', '22:20', 5)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:15', '22:20', '22:30', 5)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:25', '22:30', '22:40', 5)");
-    
+        
         // Horarios Expresso Reitoria
         db.execSQL("INSERT INTO Horarios values (NULL, '06:30', '06:35', '06:45', 8)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:40', '06:45', '06:55', 11)");
@@ -491,4 +428,3 @@ public class CriaBanco extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Horarios values (NULL, '20:40', '20:45', '20:55', 11)");
     }
 }
-

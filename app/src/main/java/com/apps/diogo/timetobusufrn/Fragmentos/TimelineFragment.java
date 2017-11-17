@@ -2,7 +2,6 @@ package com.apps.diogo.timetobusufrn.Fragmentos;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -18,13 +17,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.apps.diogo.timetobusufrn.Classes.Database.Geral.CriaBanco;
-import com.apps.diogo.timetobusufrn.Classes.Database.Geral.Facade;
-import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.PostDAO;
-import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.UsuarioDAO;
+import com.apps.diogo.timetobusufrn.Classes.Database.Facade;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
 import com.apps.diogo.timetobusufrn.Classes.Adapters.PostAdapter;
-import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 import com.apps.diogo.timetobusufrn.R;
 
 import java.util.ArrayList;

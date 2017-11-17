@@ -1,7 +1,6 @@
 package com.apps.diogo.timetobusufrn.Fragmentos;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,20 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import com.apps.diogo.timetobusufrn.Classes.Adapters.AdapterExpandableLV;
-import com.apps.diogo.timetobusufrn.Classes.Database.Geral.Facade;
-import com.apps.diogo.timetobusufrn.Classes.Database.Horarios.HorariosDAO;
-import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.Horario;
+import com.apps.diogo.timetobusufrn.Classes.Database.Facade;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.HorarioComEmpresa;
 import com.apps.diogo.timetobusufrn.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by Diogo on 17/10/2017.

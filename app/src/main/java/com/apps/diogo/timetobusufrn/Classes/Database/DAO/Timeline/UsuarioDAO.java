@@ -1,11 +1,11 @@
-package com.apps.diogo.timetobusufrn.Classes.Database.Timeline;
+package com.apps.diogo.timetobusufrn.Classes.Database.DAO.Timeline;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.apps.diogo.timetobusufrn.Classes.Database.Geral.CriaBanco;
+import com.apps.diogo.timetobusufrn.Classes.Database.BancoTimeline;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 
 /**
@@ -15,11 +15,11 @@ import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 public class UsuarioDAO
 {
     private SQLiteDatabase db;
-    private CriaBanco banco;
+    private BancoTimeline banco;
     
     public UsuarioDAO(Context context)
     {
-        banco = new CriaBanco(context);
+        banco = new BancoTimeline(context);
     }
     
     public String insertUsuario(Usuario user)
@@ -31,12 +31,12 @@ public class UsuarioDAO
         
         valores = new ContentValues();
         
-        valores.put(CriaBanco.MATRICULA, user.getMatricula());
-        valores.put(CriaBanco.SENHA, user.getSenha());
-        valores.put(CriaBanco.NOME, user.getNome());
-        valores.put(CriaBanco.FOTO, user.getFoto());
+        valores.put(BancoTimeline.MATRICULA, user.getMatricula());
+        valores.put(BancoTimeline.SENHA, user.getSenha());
+        valores.put(BancoTimeline.NOME, user.getNome());
+        valores.put(BancoTimeline.FOTO, user.getFoto());
         
-        resultado = db.insert(CriaBanco.TABELA1, null, valores);
+        resultado = db.insert(BancoTimeline.TABELA1, null, valores);
         db.close();
         
         if (resultado ==-1)
@@ -68,11 +68,11 @@ public class UsuarioDAO
         Cursor cursor;
         String[] campos =  {banco.MATRICULA,banco.SENHA,banco.NOME,banco.FOTO};
         
-        String where = CriaBanco.MATRICULA + "=" + matricula;
+        String where = BancoTimeline.MATRICULA + "=" + matricula;
         
         db = banco.getReadableDatabase();
         
-        cursor = db.query(CriaBanco.TABELA1,campos,where, null, null, null, null, null);
+        cursor = db.query(BancoTimeline.TABELA1,campos,where, null, null, null, null, null);
         
         if(cursor!=null){
             cursor.moveToFirst();
@@ -86,11 +86,11 @@ public class UsuarioDAO
         Cursor cursor;
         String[] campos =  {banco.MATRICULA,banco.NOME,banco.FOTO};
         
-        String where = CriaBanco.MATRICULA + "=" + matricula;
+        String where = BancoTimeline.MATRICULA + "=" + matricula;
         
         db = banco.getReadableDatabase();
         
-        cursor = db.query(CriaBanco.TABELA1,campos,where, null, null, null, null, null);
+        cursor = db.query(BancoTimeline.TABELA1,campos,where, null, null, null, null, null);
         
         if(cursor!=null){
             cursor.moveToFirst();
@@ -106,22 +106,22 @@ public class UsuarioDAO
         
         db = banco.getWritableDatabase();
         
-        where = CriaBanco.MATRICULA + "=" + user.getMatricula();
+        where = BancoTimeline.MATRICULA + "=" + user.getMatricula();
         
         valores = new ContentValues();
-        valores.put(CriaBanco.SENHA, user.getSenha());
-        valores.put(CriaBanco.NOME, user.getNome());
-        valores.put(CriaBanco.FOTO, user.getFoto());
+        valores.put(BancoTimeline.SENHA, user.getSenha());
+        valores.put(BancoTimeline.NOME, user.getNome());
+        valores.put(BancoTimeline.FOTO, user.getFoto());
         
-        db.update(CriaBanco.TABELA1,valores,where,null);
+        db.update(BancoTimeline.TABELA1,valores,where,null);
         db.close();
     }
     
     public void deleteUsuario(int matricula)
     {
-        String where = CriaBanco.MATRICULA + "=" + matricula;
+        String where = BancoTimeline.MATRICULA + "=" + matricula;
         db = banco.getReadableDatabase();
-        db.delete(CriaBanco.TABELA1,where,null);
+        db.delete(BancoTimeline.TABELA1,where,null);
         db.close();
     }
 }

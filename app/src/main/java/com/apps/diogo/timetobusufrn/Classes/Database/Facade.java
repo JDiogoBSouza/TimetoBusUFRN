@@ -1,13 +1,12 @@
-package com.apps.diogo.timetobusufrn.Classes.Database.Geral;
+package com.apps.diogo.timetobusufrn.Classes.Database;
 
 import android.content.Context;
 import android.database.Cursor;
 
-import com.apps.diogo.timetobusufrn.Classes.Database.Horarios.HorariosDAO;
-import com.apps.diogo.timetobusufrn.Classes.Database.Horarios.OnibusDAO;
-import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.PostDAO;
-import com.apps.diogo.timetobusufrn.Classes.Database.Timeline.UsuarioDAO;
-import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.Horario;
+import com.apps.diogo.timetobusufrn.Classes.Database.DAO.Horarios.HorariosDAO;
+import com.apps.diogo.timetobusufrn.Classes.Database.DAO.Horarios.OnibusDAO;
+import com.apps.diogo.timetobusufrn.Classes.Database.DAO.Timeline.PostDAO;
+import com.apps.diogo.timetobusufrn.Classes.Database.DAO.Timeline.UsuarioDAO;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.HorarioComEmpresa;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
@@ -41,7 +40,7 @@ public class Facade
     {
         UsuarioDAO dao = new UsuarioDAO( contexto );
         
-        String[] nomeCamposUser = CriaBanco.getStringsUsuario(true);
+        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(true);
         
         Cursor cursorUser = dao.selectUsuarioByMatricula(matric);
     
@@ -66,7 +65,7 @@ public class Facade
     {
         UsuarioDAO dao = new UsuarioDAO( contexto );
         
-        String[] nomeCamposUser = CriaBanco.getStringsUsuario(true);
+        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(true);
         
         int iMatricula = converteString( matric );
         
@@ -93,7 +92,7 @@ public class Facade
     {
         UsuarioDAO dao = new UsuarioDAO( contexto );
         
-        String[] nomeCamposUser = CriaBanco.getStringsUsuario(false);
+        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(false);
         
         Cursor cursorUser = dao.selectUsuarioByMatricula( matric );
         
@@ -117,7 +116,7 @@ public class Facade
     {
         UsuarioDAO dao = new UsuarioDAO( contexto );
         
-        String[] nomeCamposUser = CriaBanco.getStringsUsuario(false);
+        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(false);
     
         int iMatricula = converteString( matric );
         
@@ -146,7 +145,7 @@ public class Facade
         
         HorariosDAO dao = new HorariosDAO(contexto);
     
-        String[] camposHorarios = CriaBanco.getStringsHorarios();
+        String[] camposHorarios = BancoHorarios.getStringsHorarios();
     
         Cursor cursor;
         cursor = dao.selectHorarioByTipo(tipo);
@@ -185,8 +184,8 @@ public class Facade
         Cursor cursor = dao.selectAllPosts();
         Cursor cursorUser;
     
-        String[] nomeCampos = new String[] { CriaBanco.ID, CriaBanco.PARADA, CriaBanco.TIPOONIBUS, CriaBanco.EMPRESAONIBUS, CriaBanco.HORA, CriaBanco.SEGUNDOS, CriaBanco.COMENTARIO, CriaBanco.MATRIUSUARIO };
-        String[] nomeCamposUser = new String[] {CriaBanco.MATRICULA, CriaBanco.NOME, CriaBanco.FOTO};
+        String[] nomeCampos = new String[] { BancoTimeline.ID, BancoTimeline.PARADA, BancoTimeline.TIPOONIBUS, BancoTimeline.EMPRESAONIBUS, BancoTimeline.HORA, BancoTimeline.SEGUNDOS, BancoTimeline.COMENTARIO, BancoTimeline.MATRIUSUARIO };
+        String[] nomeCamposUser = new String[] {BancoTimeline.MATRICULA, BancoTimeline.NOME, BancoTimeline.FOTO};
     
         if( cursor.getCount() <= 0 )
         {
@@ -231,8 +230,8 @@ public class Facade
         
         HorariosDAO dao = new HorariosDAO(contexto);
     
-        String[] camposHorarios = CriaBanco.getStringsHorarios();
-        String[] camposOnibus = CriaBanco.getStringsOnibus();
+        String[] camposHorarios = BancoHorarios.getStringsHorarios();
+        String[] camposOnibus = BancoHorarios.getStringsOnibus();
     
         Cursor cursor;
         
@@ -305,7 +304,7 @@ public class Facade
     
         if( busCursor.getCount() > 0 )
         {
-            return busCursor.getInt(busCursor.getColumnIndex( CriaBanco.ONIBUS_ID_EMPRESA ));
+            return busCursor.getInt(busCursor.getColumnIndex( BancoHorarios.ONIBUS_ID_EMPRESA ));
         }
         else
             return -1;

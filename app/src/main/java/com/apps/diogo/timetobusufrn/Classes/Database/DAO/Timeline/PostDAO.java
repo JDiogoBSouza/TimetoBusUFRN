@@ -1,11 +1,11 @@
-package com.apps.diogo.timetobusufrn.Classes.Database.Timeline;
+package com.apps.diogo.timetobusufrn.Classes.Database.DAO.Timeline;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.apps.diogo.timetobusufrn.Classes.Database.Geral.CriaBanco;
+import com.apps.diogo.timetobusufrn.Classes.Database.BancoTimeline;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
 
 /**
@@ -15,11 +15,11 @@ import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
 public class PostDAO
 {
     private SQLiteDatabase db;
-    private CriaBanco banco;
+    private BancoTimeline banco;
     
     public PostDAO(Context context)
     {
-        banco = new CriaBanco(context);
+        banco = new BancoTimeline(context);
     }
     
     public long insertPost(Post post)
@@ -31,16 +31,16 @@ public class PostDAO
         
         valores = new ContentValues();
         
-        //valores.put(CriaBanco.ID, post.getId());
-        valores.put(CriaBanco.PARADA, post.getParada());
-        valores.put(CriaBanco.TIPOONIBUS, post.getTipoOnibus());
-        valores.put(CriaBanco.EMPRESAONIBUS, post.getEmpresaOnibus());
-        valores.put(CriaBanco.HORA, post.getHora());
-        valores.put(CriaBanco.SEGUNDOS, post.getSegundos());
-        valores.put(CriaBanco.COMENTARIO, post.getComentario());
-        valores.put(CriaBanco.MATRIUSUARIO, post.getUsuario().getMatricula());
+        //valores.put(BancoTimeline.ID, post.getId());
+        valores.put(BancoTimeline.PARADA, post.getParada());
+        valores.put(BancoTimeline.TIPOONIBUS, post.getTipoOnibus());
+        valores.put(BancoTimeline.EMPRESAONIBUS, post.getEmpresaOnibus());
+        valores.put(BancoTimeline.HORA, post.getHora());
+        valores.put(BancoTimeline.SEGUNDOS, post.getSegundos());
+        valores.put(BancoTimeline.COMENTARIO, post.getComentario());
+        valores.put(BancoTimeline.MATRIUSUARIO, post.getUsuario().getMatricula());
         
-        resultado = db.insert(CriaBanco.TABELA2, null, valores);
+        resultado = db.insert(BancoTimeline.TABELA2, null, valores);
         
         db.close();
         
@@ -70,11 +70,11 @@ public class PostDAO
         Cursor cursor;
         String[] campos =  {banco.ID, banco.PARADA, banco.TIPOONIBUS, banco.EMPRESAONIBUS, banco.HORA, banco.SEGUNDOS, banco.COMENTARIO};
         
-        String where = CriaBanco.ID + "=" + id;
+        String where = BancoTimeline.ID + "=" + id;
         
         db = banco.getReadableDatabase();
         
-        cursor = db.query(CriaBanco.TABELA2,campos,where, null, null, null, null, null);
+        cursor = db.query(BancoTimeline.TABELA2,campos,where, null, null, null, null, null);
         
         if(cursor!=null){
             cursor.moveToFirst();
@@ -90,25 +90,25 @@ public class PostDAO
         
         db = banco.getWritableDatabase();
         
-        where = CriaBanco.ID + "=" + post.getId();
+        where = BancoTimeline.ID + "=" + post.getId();
         
         valores = new ContentValues();
-        valores.put(CriaBanco.PARADA, post.getParada());
-        valores.put(CriaBanco.TIPOONIBUS, post.getTipoOnibus());
-        valores.put(CriaBanco.EMPRESAONIBUS, post.getEmpresaOnibus());
-        valores.put(CriaBanco.HORA, post.getHora());
-        valores.put(CriaBanco.SEGUNDOS, post.getSegundos());
-        valores.put(CriaBanco.COMENTARIO, post.getComentario());
+        valores.put(BancoTimeline.PARADA, post.getParada());
+        valores.put(BancoTimeline.TIPOONIBUS, post.getTipoOnibus());
+        valores.put(BancoTimeline.EMPRESAONIBUS, post.getEmpresaOnibus());
+        valores.put(BancoTimeline.HORA, post.getHora());
+        valores.put(BancoTimeline.SEGUNDOS, post.getSegundos());
+        valores.put(BancoTimeline.COMENTARIO, post.getComentario());
         
-        db.update(CriaBanco.TABELA2,valores,where,null);
+        db.update(BancoTimeline.TABELA2,valores,where,null);
         db.close();
     }
     
     public void deletePost(int id)
     {
-        String where = CriaBanco.ID + "=" + id;
+        String where = BancoTimeline.ID + "=" + id;
         db = banco.getReadableDatabase();
-        db.delete(CriaBanco.TABELA2,where,null);
+        db.delete(BancoTimeline.TABELA2,where,null);
         db.close();
     }
 }

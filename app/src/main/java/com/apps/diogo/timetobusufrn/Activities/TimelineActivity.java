@@ -31,7 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apps.diogo.timetobusufrn.Classes.Adapters.SpinnerAdapter;
-import com.apps.diogo.timetobusufrn.Classes.Database.Geral.Facade;
+import com.apps.diogo.timetobusufrn.Classes.Database.Facade;
 import com.apps.diogo.timetobusufrn.Classes.Adapters.PostAdapter;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.OnibusSpinner;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
@@ -453,8 +453,14 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         Intent intent = new Intent();
         
         intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.setAction(Intent.ACTION_PICK);
         
+        // Código para poder cortar a imagem
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("return-data", true);
+            
         startActivityForResult(Intent.createChooser(intent,"Selecionar Foto"), FOTO);
     }
     
@@ -465,44 +471,54 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
      */
     private void alterarFoto(Intent data)
     {
-        Uri selectedImageUri = data.getData();
+        Bundle extras2 = data.getExtras();
+        Bitmap photo = null;
+        
+        if (extras2 != null)
+        {
+            photo = extras2.getParcelable("data");
+        }
+        
         FileOutputStream outputStream;
-        Bitmap bitmap;
-    
-        Context contexto = getApplicationContext();
         
         String fileName = "thumb" + usuario.getMatricula();
-        String local = contexto.getFilesDir().getPath() + "/" + fileName + ".jpg";
+        String local = context.getFilesDir().getPath() + "/" + fileName + ".jpg";
         
         try
         {
-            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
             outputStream = new FileOutputStream(local);
             
             ByteArrayOutputStream saida = new ByteArrayOutputStream();
             
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 5, outputStream);
-            bitmap.compress(Bitmap.CompressFormat.JPEG,5,saida);
-            
-            byte[] img = saida.toByteArray();
-            usuario.setFoto(img);
-            
-            saida.close();
-            outputStream.close();
+            if( photo != null )
+            {
+                Bitmap diminuida = Bitmap.createScaledBitmap( photo, 96, 96, true );
+                
+                diminuida.compress(Bitmap.CompressFormat.JPEG,100, outputStream);
+                diminuida.compress(Bitmap.CompressFormat.JPEG,100, saida);
+                
+                imgView.setImageBitmap(diminuida);
     
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(contexto).edit();
-            editor.putString("foto", local);
-            editor.commit();
-            
-            fac.updateUsuario( usuario, contexto );
+                byte[] img = saida.toByteArray();
+                usuario.setFoto(img);
+    
+                saida.close();
+                outputStream.close();
+    
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+                editor.putString("foto", local);
+                editor.commit();
+    
+                fac.updateUsuario( usuario, context );
+                
+            }
+              
         }
         catch(Exception e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
-        imgView.setImageURI( selectedImageUri );
     }
     
     /**
