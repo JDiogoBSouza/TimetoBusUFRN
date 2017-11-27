@@ -63,10 +63,10 @@ public class UsuarioDAO
         return cursor;
     }
     
-    public Cursor selectUsuarioByMatricula(int matricula)
+    public Cursor selectUsuarioByMatricula(int matricula, boolean senha, boolean foto)
     {
         Cursor cursor;
-        String[] campos =  {banco.MATRICULA,banco.SENHA,banco.NOME,banco.FOTO};
+        String[] campos = BancoTimeline.getStringsUsuario(senha, foto);
         
         String where = BancoTimeline.MATRICULA + "=" + matricula;
         
@@ -81,12 +81,41 @@ public class UsuarioDAO
         return cursor;
     }
     
+    public Cursor selectUsuarioByMatricula(int matricula)
+    {
+        return selectUsuarioByMatricula(matricula, true, true);
+    }
+    
     public Cursor selectUsuarioNoPass(int matricula)
     {
+        return selectUsuarioByMatricula(matricula, false, true);
+    }
+    
+    public Cursor selectUsuarioNoPassNoPhoto(int matricula)
+    {
+        return selectUsuarioByMatricula(matricula, false, false);
+    }
+    
+    public Cursor selectUsuarioValido(int matricula, String senha, boolean comFoto)
+    {
         Cursor cursor;
-        String[] campos =  {banco.MATRICULA,banco.NOME,banco.FOTO};
+        String[] campos;
         
-        String where = BancoTimeline.MATRICULA + "=" + matricula;
+        if( comFoto )
+        {
+            campos = new String[3];
+            campos[0] = banco.MATRICULA;
+            campos[1] = banco.NOME;
+            campos[2] = banco.FOTO;
+        }
+        else
+        {
+            campos = new String[2];
+            campos[0] = banco.MATRICULA;
+            campos[1] = banco.NOME;
+        }
+        
+        String where = BancoTimeline.MATRICULA + " = " + matricula + " and " + BancoTimeline.SENHA + " = '" + senha + "'";
         
         db = banco.getReadableDatabase();
         
@@ -98,6 +127,7 @@ public class UsuarioDAO
         db.close();
         return cursor;
     }
+    
     
     public void updateUsuario(Usuario user)
     {
