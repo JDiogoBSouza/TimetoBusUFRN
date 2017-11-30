@@ -2,6 +2,8 @@ package com.apps.diogo.timetobusufrn.Classes.Database;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.apps.diogo.timetobusufrn.Classes.Database.DAO.Horarios.HorariosDAO;
 import com.apps.diogo.timetobusufrn.Classes.Database.DAO.Horarios.OnibusDAO;
@@ -11,6 +13,11 @@ import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.HorarioComEmpresa;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,14 +47,14 @@ public class Facade
     {
         UsuarioDAO dao = new UsuarioDAO( contexto );
         
-        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(true);
+        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(true, true);
         
         Cursor cursorUser = dao.selectUsuarioByMatricula(matric);
     
         if( cursorUser.getCount() > 0 ) {
             int matricula = cursorUser.getInt(cursorUser.getColumnIndex(nomeCamposUser[0]));
-            String senha = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[1]));
-            String nome = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[2]));
+            String nome = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[1]));
+            String senha = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[2]));
             byte[] foto = cursorUser.getBlob(cursorUser.getColumnIndex(nomeCamposUser[3]));
             
             return new Usuario(matricula, senha, nome, foto);
@@ -61,23 +68,32 @@ public class Facade
      * @param matric : Matricula do usuário que se deseja buscar.
      * @return : Objeto usuário encontrado, ou nulo caso não tenha sido encontrado.
      */
-    public Usuario getUsuarioByMatriculaS(String matric)
+    public Usuario getUsuarioByMatriculaS(String matric, String senha)
     {
         UsuarioDAO dao = new UsuarioDAO( contexto );
         
-        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(true);
+        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(false, true);
         
         int iMatricula = converteString( matric );
-        
-        Cursor cursorUser = dao.selectUsuarioByMatricula(iMatricula);
     
-        if( cursorUser.getCount() > 0 ) {
-            int matricula = cursorUser.getInt(cursorUser.getColumnIndex(nomeCamposUser[0]));
-            String senha = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[1]));
-            String nome = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[2]));
-            byte[] foto = cursorUser.getBlob(cursorUser.getColumnIndex(nomeCamposUser[3]));
+        Usuario user = new Usuario(iMatricula, "", "", null);
+        Cursor cursorUser;
+        
+        boolean imagemExiste = verificarImagem( iMatricula, user );
+        cursorUser = dao.selectUsuarioValido(iMatricula, senha, !imagemExiste);
+    
+        if( cursorUser.getCount() > 0 )
+        {
+            String nome = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[1]));
+            user.setNome(nome);
             
-            return new Usuario(matricula, senha, nome, foto);
+            if( !imagemExiste )
+            {
+                byte[] foto = cursorUser.getBlob(cursorUser.getColumnIndex(nomeCamposUser[2]));
+                user.setFoto(foto);
+            }
+            
+            return user;
         }
         
         return null;
@@ -92,11 +108,12 @@ public class Facade
     {
         UsuarioDAO dao = new UsuarioDAO( contexto );
         
-        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(false);
+        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(false, true);
         
         Cursor cursorUser = dao.selectUsuarioByMatricula( matric );
         
-        if( cursorUser.getCount() > 0 ) {
+        if( cursorUser.getCount() > 0 )
+        {
             int matricula = cursorUser.getInt(cursorUser.getColumnIndex(nomeCamposUser[0]));
             String nome = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[1]));
             byte[] foto = cursorUser.getBlob(cursorUser.getColumnIndex(nomeCamposUser[2]));
@@ -114,25 +131,46 @@ public class Facade
      */
     public Usuario getUsuarioByMatriculaSemSenha(String matric)
     {
-        UsuarioDAO dao = new UsuarioDAO( contexto );
-        
-        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(false);
-    
         int iMatricula = converteString( matric );
         
-        Cursor cursorUser = dao.selectUsuarioByMatricula( iMatricula );
+        return getUsuarioByMatriculaSemSenha(iMatricula);
+    }
     
-        if( cursorUser.getCount() > 0 ) {
+    /**
+     * Método para buscar um usuário pela matricula sem o campo de senha e sem o campo foto.
+     * @param matric : Matricula do usuário que se deseja buscar.
+     * @return : Objeto usuário encontrado, ou nulo caso não tenha sido encontrado.
+     */
+    public Usuario getUsuarioByMatriculaSemSenhaSemFoto(int matric)
+    {
+        UsuarioDAO dao = new UsuarioDAO( contexto );
+        
+        String[] nomeCamposUser = BancoTimeline.getStringsUsuario(false, false);
+        
+        Cursor cursorUser = dao.selectUsuarioNoPassNoPhoto( matric );
+        
+        if( cursorUser.getCount() > 0 )
+        {
             int matricula = cursorUser.getInt(cursorUser.getColumnIndex(nomeCamposUser[0]));
             String nome = cursorUser.getString(cursorUser.getColumnIndex(nomeCamposUser[1]));
-            byte[] foto = cursorUser.getBlob(cursorUser.getColumnIndex(nomeCamposUser[2]));
             
-            return new Usuario(matricula, "", nome, foto);
+            return new Usuario(matricula, "", nome, null);
         }
         
         return null;
     }
     
+    /**
+     * Método para buscar um usuário pela matricula sem o campo de senha e sem o campo foto.
+     * @param matric : Matricula do usuário que se deseja buscar.
+     * @return : Objeto usuário encontrado, ou nulo caso não tenha sido encontrado.
+     */
+    public Usuario getUsuarioByMatriculaSemSenhaSemFoto(String matric)
+    {
+        int iMatricula = converteString( matric );
+        
+        return getUsuarioByMatriculaSemSenhaSemFoto(iMatricula);
+    }
     
     /**
      * Método para buscar os horarios dos onibus com o id da empresa.
@@ -201,21 +239,71 @@ public class Facade
             String segundos = cursor.getString( cursor.getColumnIndex(nomeCampos[5]) );
             String comentario = cursor.getString( cursor.getColumnIndex(nomeCampos[6]) );
             int matricuser = cursor.getInt( cursor.getColumnIndex(nomeCampos[7]) );
+    
+            Usuario user = new Usuario(matricuser, "", "", null);
+            
+            byte[] foto = null;
+            String nome;
+    
+            // Verificar se o usuário tem foto já na pasta do applicativo, caso ja tenha, não baixa do banco.
+            if( verificarImagem( matricuser, user ) )
+            {
+                cursorUser = daoUser.selectUsuarioNoPassNoPhoto(matricuser);
+                
+                nome   = cursorUser.getString( cursorUser.getColumnIndex(nomeCamposUser[1]) );
+                
+                user.setNome(nome);
+            }
+            else
+            {
+                cursorUser = daoUser.selectUsuarioNoPass(matricuser);
+                
+                nome   = cursorUser.getString( cursorUser.getColumnIndex(nomeCamposUser[1]) );
+                foto   = cursorUser.getBlob( cursorUser.getColumnIndex(nomeCamposUser[2]) );
+                
+                user.setNome(nome);
+                user.setFoto(foto);
+            }
         
-            //Toast.makeText(context, "ID: " + id, Toast.LENGTH_SHORT).show();
-        
-            cursorUser = daoUser.selectUsuarioNoPass(matricuser);
-        
-            int matricula = cursorUser.getInt( cursorUser.getColumnIndex(nomeCamposUser[0]) );
-            String nome   = cursorUser.getString( cursorUser.getColumnIndex(nomeCamposUser[1]) );
-            byte[] foto   = cursorUser.getBlob( cursorUser.getColumnIndex(nomeCamposUser[2]) );
-        
-            Usuario user = new Usuario(matricula, "", nome, foto);
             Post p = new Post( id, user, parada , onibus, empresaOnibus, hora, segundos, comentario );
     
             posts.add(p);
         
         }while(cursor.moveToNext());
+    }
+    
+    private boolean verificarImagem(int matricula, Usuario user)
+    {
+        String fileName = "thumb" + matricula;
+        String local = contexto.getFilesDir().getPath()+ "/" + fileName + ".jpg";
+    
+        File f = new File(local);
+        int size = (int) f.length();
+        
+        byte[] foto = new byte[size];
+        
+        try
+        {
+            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(f));
+            buf.read(foto, 0, foto.length);
+            buf.close();
+            
+            user.setFoto(foto);
+            
+            return true;
+        }
+        catch (FileNotFoundException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        return false;
     }
     
     /**

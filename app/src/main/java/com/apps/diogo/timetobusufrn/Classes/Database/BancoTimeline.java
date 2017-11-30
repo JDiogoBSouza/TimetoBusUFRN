@@ -42,20 +42,40 @@ public class BancoTimeline extends SQLiteOpenHelper
      * @param comSenha : Identificar se deseja adicionar o campo senha, ou não.
      * @return : Vetor de String com os campos da tabela usuário.
      */
-    public static String[] getStringsUsuario(boolean comSenha)
+    public static String[] getStringsUsuario(boolean comSenha, boolean comFoto)
     {
-        String[] nomeCamposUser;
-        
-        if( comSenha )
+        String[] campos;
+    
+        if( comSenha && comFoto )
         {
-            nomeCamposUser = new String[]{MATRICULA, SENHA, NOME, FOTO};
+            campos = new String[4];
+            campos[0] = MATRICULA;
+            campos[1] = NOME;
+            campos[2] = SENHA;
+            campos[3] = FOTO;
+        }
+        else if( comSenha )
+        {
+            campos = new String[3];
+            campos[0] = MATRICULA;
+            campos[1] = NOME;
+            campos[2] = SENHA;
+        }
+        else if( comFoto )
+        {
+            campos = new String[3];
+            campos[0] = MATRICULA;
+            campos[1] = NOME;
+            campos[2] = FOTO;
         }
         else
         {
-            nomeCamposUser = new String[]{MATRICULA, NOME, FOTO};
+            campos = new String[2];
+            campos[0] = MATRICULA;
+            campos[1] = NOME;
         }
             
-        return nomeCamposUser;
+        return campos;
     }
     
     /**

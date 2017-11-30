@@ -61,37 +61,31 @@ public class LoginActivity extends AppCompatActivity
                 @Override
                 public void onClick(View view)
                 {
+                    
+                    String matriculaView = mMatriculaView.getText().toString();
                     String senhaView = mPasswordView.getText().toString();
             
                     Facade fac = new Facade( contexto );
-                    Usuario usuario = fac.getUsuarioByMatriculaS( mMatriculaView.getText().toString() );
+                    // Mudança para validação da senha via sql, adequado ? não sei.
+                    Usuario usuario = fac.getUsuarioByMatriculaS( matriculaView, senhaView );
             
                     if( usuario != null )
                     {
-                        if (senhaView.equals(usuario.getSenha()))
-                        {
-                            Toast.makeText(getApplicationContext(), "Login Bem Sucedido !", Toast.LENGTH_SHORT).show();
-                    
-                            // Ao logar corretamente no app, as informações do usuário são armazenadas no SharedPreferences
-                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(contexto).edit();
-                    
-                            editor.putBoolean( "logado" , true );
-                            editor.putString("nomeexibicao_text" , usuario.getNome() );
-                            editor.putString("matricula" , usuario.getSMatricula() );
-                            editor.putString("senha" , usuario.getSenha() );
-                            editor.putInt("matriculaI", usuario.getMatricula());
-                            //editor.putString("foto", usuario.getFoto());
-                    
-                            editor.commit();
-                    
-                            iniciaApp(usuario);
-                            finish();
-                        }
-                        else
-                        {
-                            Toast.makeText(getApplicationContext(), "Login Mal Sucedido !", Toast.LENGTH_SHORT).show();
-                            mPasswordView.setText("");
-                        }
+                        Toast.makeText(getApplicationContext(), "Login Bem Sucedido !", Toast.LENGTH_SHORT).show();
+                
+                        // Ao logar corretamente no app, as informações do usuário são armazenadas no SharedPreferences
+                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(contexto).edit();
+                
+                        editor.putBoolean( "logado" , true );
+                        editor.putString("nomeexibicao_text" , usuario.getNome() );
+                        editor.putString("matricula" , usuario.getSMatricula() );
+                        //editor.putString("senha" , usuario.getSenha() );      // Não há necessidade de salvar a senha no shared preferences
+                        editor.putInt("matriculaI", usuario.getMatricula());
+                
+                        editor.commit();
+                
+                        iniciaApp(usuario);
+                        finish();
                     }
                     else
                     {
