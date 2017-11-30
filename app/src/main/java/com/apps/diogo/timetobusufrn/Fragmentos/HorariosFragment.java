@@ -12,8 +12,8 @@ import android.widget.ExpandableListView;
 
 import com.apps.diogo.timetobusufrn.Classes.Adapters.AdapterExpandableLV;
 import com.apps.diogo.timetobusufrn.Classes.Database.Facade;
-import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.HorarioComEmpresa;
 import com.apps.diogo.timetobusufrn.R;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.Horario;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,10 +32,10 @@ public class HorariosFragment extends Fragment
     private ExpandableListView elvHorarios;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     
-    List<HorarioComEmpresa> lstDiretos = new ArrayList<>();
-    List<HorarioComEmpresa> lstInversos = new ArrayList<>();
-    List<HorarioComEmpresa> lstExpressosCET = new ArrayList<>();
-    List<HorarioComEmpresa> lstExpressosREI = new ArrayList<>();
+    List<Horario> lstDiretos = new ArrayList<>();
+    List<Horario> lstInversos = new ArrayList<>();
+    List<Horario> lstExpressosCET = new ArrayList<>();
+    List<Horario> lstExpressosREI = new ArrayList<>();
     
     AdapterExpandableLV adaptador;
     
@@ -69,7 +69,7 @@ public class HorariosFragment extends Fragment
         lstGrupos.add("Expresso Reitoria");
     
         // cria o "relacionamento" dos grupos com seus itens
-        HashMap<String, List<HorarioComEmpresa>> lstItensGrupo = new HashMap<>();
+        HashMap<String, List<Horario>> lstItensGrupo = new HashMap<>();
         lstItensGrupo.put(lstGrupos.get(0), lstDiretos);
         lstItensGrupo.put(lstGrupos.get(1), lstInversos);
         lstItensGrupo.put(lstGrupos.get(2), lstExpressosCET);

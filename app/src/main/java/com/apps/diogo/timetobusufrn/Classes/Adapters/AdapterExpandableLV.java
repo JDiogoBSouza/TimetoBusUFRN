@@ -5,12 +5,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.Horario;
-import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.HorarioComEmpresa;
 import com.apps.diogo.timetobusufrn.R;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.Horario;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +22,10 @@ import java.util.List;
 public class AdapterExpandableLV extends BaseExpandableListAdapter
 {
     private List<String> lstGrupos;
-    private HashMap<String, List<HorarioComEmpresa>> lstItensGrupos;
+    private HashMap<String, List<Horario>> lstItensGrupos;
     private Context context;
     
-    public AdapterExpandableLV(Context context, List<String> grupos, HashMap<String, List<HorarioComEmpresa>> itensGrupos)
+    public AdapterExpandableLV(Context context, List<String> grupos, HashMap<String, List<Horario>> itensGrupos)
     {
         // inicializa as variáveis da classe
         this.context = context;
@@ -107,10 +107,12 @@ public class AdapterExpandableLV extends BaseExpandableListAdapter
     }
     
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent)
+    {
         // cria os subitens (itens dos grupos)
         
-        if (convertView == null) {
+        if (convertView == null)
+        {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(
                     Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.item_horario, null);
@@ -118,8 +120,9 @@ public class AdapterExpandableLV extends BaseExpandableListAdapter
     
         TextView tvHora = (TextView) convertView.findViewById(R.id.tvHora);
         TextView tvOnibus = (TextView) convertView.findViewById(R.id.tvOnibus);
-        
-        HorarioComEmpresa horario = (HorarioComEmpresa) getChild(groupPosition, childPosition);
+        final ImageView imgInfo = (ImageView) convertView.findViewById(R.id.infoOnibus);
+    
+        Horario horario = (Horario) getChild(groupPosition, childPosition);
         
         if( horario.getSaida() != null )
         {
@@ -130,7 +133,54 @@ public class AdapterExpandableLV extends BaseExpandableListAdapter
             tvHora.setText( horario.getDestino() );
         }
         
-        tvOnibus.setText( horario.getNomeEmpresa() );
+        tvOnibus.setText( horario.getOnibus().getNomeEmpresa() );
+        
+        final int tipoOnibus = horario.getOnibus().getTipo();
+        
+        if( tipoOnibus > 2 )
+        {
+            imgInfo.setVisibility( View.VISIBLE );
+    
+            imgInfo.setOnClickListener( new View.OnClickListener()
+            {
+                public void onClick(View v)
+                {
+                    if (v.equals( imgInfo ))
+                    {
+                        switch( tipoOnibus )
+                        {
+                            case 3:
+                                Toast.makeText(context, "Via Direta / ECT", Toast.LENGTH_SHORT).show();
+                                break;
+        
+                            case 4:
+                                Toast.makeText(context, "RU / Via Direta", Toast.LENGTH_SHORT).show();
+                                break;
+        
+                            case 5:
+                                Toast.makeText(context, "Via Direta / RU", Toast.LENGTH_SHORT).show();
+                                break;
+        
+                            case 6:
+                                Toast.makeText(context, "Via Direta / Reitoria", Toast.LENGTH_SHORT).show();
+                                break;
+        
+                            case 7:
+                                Toast.makeText(context, "RU / Via Direta", Toast.LENGTH_SHORT).show();
+                                break;
+        
+                            case 8:
+                                Toast.makeText(context, "Via Direta / RU", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                }
+            });
+        }
+        else
+        {
+            imgInfo.setVisibility( View.INVISIBLE );
+        }
         
         return convertView;
     }

@@ -2,16 +2,15 @@ package com.apps.diogo.timetobusufrn.Classes.Database;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import com.apps.diogo.timetobusufrn.Classes.Database.DAO.Horarios.HorariosDAO;
 import com.apps.diogo.timetobusufrn.Classes.Database.DAO.Horarios.OnibusDAO;
 import com.apps.diogo.timetobusufrn.Classes.Database.DAO.Timeline.PostDAO;
 import com.apps.diogo.timetobusufrn.Classes.Database.DAO.Timeline.UsuarioDAO;
-import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.HorarioComEmpresa;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.Onibus;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Usuario;
+import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.Horario;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -177,9 +176,9 @@ public class Facade
      * @param tipo : Tipo do onibus a ser buscado.
      * @return : Lista com os horarios dos onibus.
      */
-    public List<HorarioComEmpresa> getHorariosPorTipo(int tipo)
+    public List<Horario> getHorariosPorTipo(int tipo)
     {
-        List<HorarioComEmpresa> lstHorarios = new ArrayList<>();;
+        List<Horario> lstHorarios = new ArrayList<>();;
         
         HorariosDAO dao = new HorariosDAO(contexto);
     
@@ -200,10 +199,9 @@ public class Facade
             String chegada = cursor.getString(cursor.getColumnIndex(camposHorarios[3]));
             int idonibus = cursor.getInt(cursor.getColumnIndex(camposHorarios[4]));
             
-            // TODO: Consultar nome da empresa no banco
-            String empresa = getNomeEmpresa(1);
+            Onibus onibus = getOnibusById(idonibus);
             
-            lstHorarios.add( new HorarioComEmpresa(id, saida, destino, chegada, idonibus, empresa) );
+            lstHorarios.add( new Horario(id, saida, destino, chegada, onibus) );
         }while( cursor.moveToNext() );
         
         return lstHorarios;
@@ -312,14 +310,13 @@ public class Facade
      * @param tipo : Tipo de onibus que se deseja buscar.
      * @param lstHorarios : Lista para preencher com os dados encontrados.
      */
-    public void getHorariosPorTipoeHora(int tipo, List<HorarioComEmpresa> lstHorarios)
+    public void getHorariosPorTipoeHora(int tipo, List<Horario> lstHorarios)
     {
         lstHorarios.clear();
         
         HorariosDAO dao = new HorariosDAO(contexto);
     
         String[] camposHorarios = BancoHorarios.getStringsHorarios();
-        String[] camposOnibus = BancoHorarios.getStringsOnibus();
     
         Cursor cursor;
         
@@ -331,10 +328,12 @@ public class Facade
             String saida = cursor.getString(cursor.getColumnIndex(camposHorarios[1]));
             String destino = cursor.getString(cursor.getColumnIndex(camposHorarios[2]));
             String chegada = cursor.getString(cursor.getColumnIndex(camposHorarios[3]));
+            
             int idonibus = cursor.getInt(cursor.getColumnIndex(camposHorarios[4]));
-            String empresa = getNomeEmpresa( getIdEmpresa( idonibus ) );
+            
+            Onibus onibus = getOnibusById( idonibus );
     
-            lstHorarios.add( new HorarioComEmpresa(id, saida, destino, chegada, idonibus, empresa) );
+            lstHorarios.add( new Horario(id, saida, destino, chegada, onibus ) );
         }
         else
             return;
@@ -353,11 +352,30 @@ public class Facade
             String destino = cursor1.getString(cursor1.getColumnIndex(camposHorarios[2]));
             String chegada = cursor1.getString(cursor1.getColumnIndex(camposHorarios[3]));
             int idonibus = cursor1.getInt(cursor1.getColumnIndex(camposHorarios[4]));
-            String empresa = getNomeEmpresa( getIdEmpresa( idonibus ) );
+                
+            Onibus onibus = getOnibusById( idonibus );
             
-            
-            lstHorarios.add( new HorarioComEmpresa(id, saida, destino, chegada, idonibus, empresa) );
+            lstHorarios.add( new Horario(id, saida, destino, chegada, onibus ) );
         }while( cursor1.moveToNext() );
+    }
+    
+    public Onibus getOnibusById(int id)
+    {
+        OnibusDAO dao = new OnibusDAO( contexto );
+    
+        String[] nomesCamposOnibus = BancoHorarios.getStringsOnibus();
+    
+        Cursor cursorOnibus = dao.selectOnibusByID( id );
+    
+        if( cursorOnibus.getCount() > 0 )
+        {
+            int empresa_ = cursorOnibus.getInt(cursorOnibus.getColumnIndex(nomesCamposOnibus[1]));
+            int tipo_ = cursorOnibus.getInt(cursorOnibus.getColumnIndex(nomesCamposOnibus[2]));
+        
+            return new Onibus(id, tipo_, empresa_);
+        }
+    
+        return null;
     }
     
     /**
@@ -377,68 +395,6 @@ public class Facade
         {
             return false;
         }
-    }
-    
-    /**
-     * Método para buscar apenas id da empresa a partir do id de um onibus.
-     * @param idonibus : Id do onibus a ser buscado o id da empresa.
-     * @return : Id da empresa do onibus buscado.
-     */
-    private int getIdEmpresa(int idonibus)
-    {
-        OnibusDAO daoOnibus = new OnibusDAO(contexto);
-    
-        Cursor busCursor = daoOnibus.selectOnibusByID( idonibus );
-    
-        if( busCursor.getCount() > 0 )
-        {
-            return busCursor.getInt(busCursor.getColumnIndex( BancoHorarios.ONIBUS_ID_EMPRESA ));
-        }
-        else
-            return -1;
-    }
-    
-    /**
-     * Retorna o nome da empresa em formato String de acordo com o id informado.
-     * @param id : Id da empresa.
-     * @return : Nome da empresa.
-     */
-    private String getNomeEmpresa(int id)
-    {
-        String nome = "";
-        
-        switch( id )
-        {
-            case 1:
-                nome = "Guanabara";
-                break;
-            
-            case 2:
-                nome = "Via Sul";
-                break;
-            
-            case 3:
-                nome = "Conceição";
-                break;
-            
-            case 4:
-                nome = "Cid. do Natal";
-                break;
-            
-            case 5:
-                nome = "Santa Maria";
-                break;
-            
-            case 6:
-                nome = "Reunidas";
-                break;
-            
-            default:
-                nome = "Default";
-            break;
-        }
-        
-        return nome;
     }
     
     /**

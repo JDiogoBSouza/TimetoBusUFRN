@@ -28,6 +28,48 @@ public class Onibus implements Serializable
         this.empresa = empresa;
     }
     
+    /**
+     * Retorna o nome da empresa em formato String de acordo com o id informado.
+     * @return : Nome da empresa.
+     */
+    public String getNomeEmpresa()
+    {
+        String nome = "";
+        
+        switch( this.empresa )
+        {
+            case 1:
+                nome = "Guanabara";
+                break;
+            
+            case 2:
+                nome = "Via Sul";
+                break;
+            
+            case 3:
+                nome = "Conceição";
+                break;
+            
+            case 4:
+                nome = "Cid. do Natal";
+                break;
+            
+            case 5:
+                nome = "Santa Maria";
+                break;
+            
+            case 6:
+                nome = "Reunidas";
+                break;
+            
+            default:
+                nome = "Default";
+                break;
+        }
+        
+        return nome;
+    }
+    
     public int getId() {
         return id;
     }
@@ -37,7 +79,7 @@ public class Onibus implements Serializable
     }
     
     public int getTipo() {
-        return tipo;
+        return this.tipo;
     }
     
     public void setTipo(int tipo) {

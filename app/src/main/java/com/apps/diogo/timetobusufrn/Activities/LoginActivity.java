@@ -62,30 +62,38 @@ public class LoginActivity extends AppCompatActivity
                 public void onClick(View view)
                 {
                     
-                    String matriculaView = mMatriculaView.getText().toString();
-                    String senhaView = mPasswordView.getText().toString();
-            
-                    Facade fac = new Facade( contexto );
-                    // Mudança para validação da senha via sql, adequado ? não sei.
-                    Usuario usuario = fac.getUsuarioByMatriculaS( matriculaView, senhaView );
-            
-                    if( usuario != null )
+                    if( !mMatriculaView.getText().toString().isEmpty() && !mPasswordView.getText().toString().isEmpty() )
                     {
-                        Toast.makeText(getApplicationContext(), "Login Bem Sucedido !", Toast.LENGTH_SHORT).show();
-                
-                        // Ao logar corretamente no app, as informações do usuário são armazenadas no SharedPreferences
-                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(contexto).edit();
-                
-                        editor.putBoolean( "logado" , true );
-                        editor.putString("nomeexibicao_text" , usuario.getNome() );
-                        editor.putString("matricula" , usuario.getSMatricula() );
-                        //editor.putString("senha" , usuario.getSenha() );      // Não há necessidade de salvar a senha no shared preferences
-                        editor.putInt("matriculaI", usuario.getMatricula());
-                
-                        editor.commit();
-                
-                        iniciaApp(usuario);
-                        finish();
+                        String matriculaView = mMatriculaView.getText().toString();
+                        String senhaView = mPasswordView.getText().toString();
+    
+                        Facade fac = new Facade(contexto);
+                        // Mudança para validação da senha via sql, adequado ? não sei.
+                        Usuario usuario = fac.getUsuarioByMatriculaS(matriculaView, senhaView);
+    
+                        if (usuario != null)
+                        {
+                            Toast.makeText(getApplicationContext(), "Login Bem Sucedido !", Toast.LENGTH_SHORT).show();
+        
+                            // Ao logar corretamente no app, as informações do usuário são armazenadas no SharedPreferences
+                            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(contexto).edit();
+        
+                            editor.putBoolean("logado", true);
+                            editor.putString("nomeexibicao_text", usuario.getNome());
+                            editor.putString("matricula", usuario.getSMatricula());
+                            //editor.putString("senha" , usuario.getSenha() );      // Não há necessidade de salvar a senha no shared preferences
+                            editor.putInt("matriculaI", usuario.getMatricula());
+        
+                            editor.commit();
+        
+                            iniciaApp(usuario);
+                            finish();
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "Login Mal Sucedido !", Toast.LENGTH_SHORT).show();
+                            mPasswordView.setText("");
+                        }
                     }
                     else
                     {

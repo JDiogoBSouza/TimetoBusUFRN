@@ -10,15 +10,15 @@ public class Horario
     private String saida;
     private String destino;
     private String chegada;
-    private int id_onibus;
+    private Onibus onibus;
     
-    public Horario(int id, String saida, String destino, String chegada, int id_onibus)
+    public Horario(int id, String saida, String destino, String chegada, Onibus onibus)
     {
         this.id = id;
         this.saida = saida;
         this.destino = destino;
         this.chegada = chegada;
-        this.id_onibus = id_onibus;
+        this.onibus = onibus;
     }
     
     public int getId() {
@@ -53,11 +53,12 @@ public class Horario
         this.chegada = chegada;
     }
     
-    public int getId_onibus() {
-        return id_onibus;
+    public Onibus getOnibus()
+    {
+        return onibus;
     }
     
-    public void setId_onibus(int id_onibus) {
-        this.id_onibus = id_onibus;
+    public void setOnibus(Onibus onibus) {
+        this.onibus = onibus;
     }
 }
