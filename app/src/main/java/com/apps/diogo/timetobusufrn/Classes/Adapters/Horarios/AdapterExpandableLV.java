@@ -1,4 +1,4 @@
-package com.apps.diogo.timetobusufrn.Classes.Adapters;
+package com.apps.diogo.timetobusufrn.Classes.Adapters.Horarios;
 
 import android.widget.BaseExpandableListAdapter;
 import android.content.Context;
@@ -123,19 +123,26 @@ public class AdapterExpandableLV extends BaseExpandableListAdapter
         final ImageView imgInfo = (ImageView) convertView.findViewById(R.id.infoOnibus);
     
         Horario horario = (Horario) getChild(groupPosition, childPosition);
+    
+        tvOnibus.setText( horario.getOnibus().getNomeEmpresa() );
         
-        if( horario.getSaida() != null )
+        final int tipoOnibus;
+        
+        if( horario.getSaida().compareTo("06:29") == 0 || horario.getSaida().compareTo("06:16") == 0 )
+        {
+            tvHora.setText( horario.getDestino() );
+            tipoOnibus = 9;
+        }
+        else if( horario.getChegada().compareTo("23:31") == 0 )
         {
             tvHora.setText(horario.getSaida());
+            tipoOnibus = 10;
         }
         else
         {
-            tvHora.setText( horario.getDestino() );
+            tvHora.setText(horario.getSaida());
+            tipoOnibus = horario.getOnibus().getTipo();
         }
-        
-        tvOnibus.setText( horario.getOnibus().getNomeEmpresa() );
-        
-        final int tipoOnibus = horario.getOnibus().getTipo();
         
         if( tipoOnibus > 2 )
         {
@@ -168,9 +175,17 @@ public class AdapterExpandableLV extends BaseExpandableListAdapter
                             case 7:
                                 Toast.makeText(context, "RU / Via Direta", Toast.LENGTH_SHORT).show();
                                 break;
-        
+    
                             case 8:
                                 Toast.makeText(context, "Via Direta / RU", Toast.LENGTH_SHORT).show();
+                                break;
+                            
+                            case 9:
+                                Toast.makeText(context, "Viagem inicia no Via Direta", Toast.LENGTH_SHORT).show();
+                                break;
+                            
+                            case 10:
+                                Toast.makeText(context, "Meia Viagem até o Via Direta", Toast.LENGTH_SHORT).show();
                                 break;
                         }
                     }

@@ -335,8 +335,6 @@ public class Facade
     
             lstHorarios.add( new Horario(id, saida, destino, chegada, onibus ) );
         }
-        else
-            return;
     
         Cursor cursor1;
         cursor1 = dao.selectHorarioProximos(tipo);
@@ -353,6 +351,59 @@ public class Facade
             String chegada = cursor1.getString(cursor1.getColumnIndex(camposHorarios[3]));
             int idonibus = cursor1.getInt(cursor1.getColumnIndex(camposHorarios[4]));
                 
+            Onibus onibus = getOnibusById( idonibus );
+            
+            lstHorarios.add( new Horario(id, saida, destino, chegada, onibus ) );
+        }while( cursor1.moveToNext() );
+    }
+    
+    /**
+     * Método para buscar horarios por mais de um tipo de onibus e pela hora.
+     * Busca um onibus que ja saiu e dois onibus que vão sair.
+     * @param tipo : Tipo de onibus que se deseja buscar.
+     * @param lstHorarios : Lista para preencher com os dados encontrados.
+     */
+    public void getHorariosPorTipoeHora(int tipo, int tipo2, List<Horario> lstHorarios)
+    {
+        lstHorarios.clear();
+        
+        HorariosDAO dao = new HorariosDAO(contexto);
+        
+        String[] camposHorarios = BancoHorarios.getStringsHorarios();
+        
+        Cursor cursor;
+        
+        cursor = dao.selectHorarioAnterior(tipo, tipo2);
+        
+        if( cursor.getCount() > 0 )
+        {
+            int id = cursor.getInt(cursor.getColumnIndex(camposHorarios[0]));
+            String saida = cursor.getString(cursor.getColumnIndex(camposHorarios[1]));
+            String destino = cursor.getString(cursor.getColumnIndex(camposHorarios[2]));
+            String chegada = cursor.getString(cursor.getColumnIndex(camposHorarios[3]));
+            
+            int idonibus = cursor.getInt(cursor.getColumnIndex(camposHorarios[4]));
+            
+            Onibus onibus = getOnibusById( idonibus );
+            
+            lstHorarios.add( new Horario(id, saida, destino, chegada, onibus ) );
+        }
+        
+        Cursor cursor1;
+        cursor1 = dao.selectHorarioProximos(tipo, tipo2);
+        
+        if( cursor1.getCount() <= 0 )
+        {
+            return;
+        }
+        
+        do{
+            int id = cursor1.getInt(cursor1.getColumnIndex(camposHorarios[0]));
+            String saida = cursor1.getString(cursor1.getColumnIndex(camposHorarios[1]));
+            String destino = cursor1.getString(cursor1.getColumnIndex(camposHorarios[2]));
+            String chegada = cursor1.getString(cursor1.getColumnIndex(camposHorarios[3]));
+            int idonibus = cursor1.getInt(cursor1.getColumnIndex(camposHorarios[4]));
+            
             Onibus onibus = getOnibusById( idonibus );
             
             lstHorarios.add( new Horario(id, saida, destino, chegada, onibus ) );

@@ -51,8 +51,30 @@ public class HorariosDAO
         
         String[] campos =  { this.banco.ID_HORARIO, this.banco.SAIDA, this.banco.DESTINO, this.banco.CHEGADA, this.banco.IDONIBUS };
         
-        String where = "( " + this.banco.SAIDA + " < '" + hora + "' ) and " + this.banco.IDONIBUS + " in ( SELECT " + this.banco.ID_ONIBUS + " FROM " + this.banco.TABELAONIBUS + " WHERE " + this.banco.ONIBUS_ID_TIPO + " = " + tipo + " )";
-         
+        String where = "( " + this.banco.SAIDA + " < '" + hora + "' AND " + this.banco.SAIDA + " != '00:00'  ) and " + this.banco.IDONIBUS + " in ( SELECT " + this.banco.ID_ONIBUS + " FROM " + this.banco.TABELAONIBUS + " WHERE " + this.banco.ONIBUS_ID_TIPO + " = " + tipo + " )";
+        
+        db = this.banco.getReadableDatabase();
+        cursor = db.query(this.banco.TABELAHORARIOS, campos, where, null, null, null, this.banco.SAIDA + " desc ", "1");
+        
+        if(cursor!=null){
+            cursor.moveToFirst();
+        }
+        
+        db.close();
+        
+        return cursor;
+    }
+    
+    public Cursor selectHorarioAnterior(int tipo, int tipo2)
+    {
+        Cursor cursor;
+        
+        String hora = getHorarioStr();
+        
+        String[] campos =  { this.banco.ID_HORARIO, this.banco.SAIDA, this.banco.DESTINO, this.banco.CHEGADA, this.banco.IDONIBUS };
+        
+        String where = "( " + this.banco.SAIDA + " < '" + hora + "' ) and " + this.banco.IDONIBUS + " in ( SELECT " + this.banco.ID_ONIBUS + " FROM " + this.banco.TABELAONIBUS + " WHERE " + this.banco.ONIBUS_ID_TIPO + " BETWEEN " + tipo + " AND " + tipo2 + " )";
+        
         db = this.banco.getReadableDatabase();
         cursor = db.query(this.banco.TABELAHORARIOS, campos, where, null, null, null, this.banco.SAIDA + " desc ", "1");
         
@@ -84,6 +106,28 @@ public class HorariosDAO
     
         db.close();
     
+        return cursor;
+    }
+    
+    public Cursor selectHorarioProximos(int tipo, int tipo2)
+    {
+        Cursor cursor;
+        
+        String hora = getHorarioStr();
+        
+        String[] campos =  { this.banco.ID_HORARIO, this.banco.SAIDA, this.banco.DESTINO, this.banco.CHEGADA, this.banco.IDONIBUS };
+        
+        String where = "( " + this.banco.SAIDA + " >= '" + hora + "' ) and " + this.banco.IDONIBUS + " in ( SELECT " + this.banco.ID_ONIBUS + " FROM " + this.banco.TABELAONIBUS + " WHERE " + this.banco.ONIBUS_ID_TIPO + " BETWEEN " + tipo + " AND " + tipo2 + " )";
+        
+        db = this.banco.getReadableDatabase();
+        cursor = db.query(this.banco.TABELAHORARIOS, campos, where, null, null, null, this.banco.SAIDA + " asc ", "2");
+        
+        if(cursor!=null){
+            cursor.moveToFirst();
+        }
+        
+        db.close();
+        
         return cursor;
     }
     

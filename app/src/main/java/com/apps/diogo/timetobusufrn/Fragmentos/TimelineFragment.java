@@ -19,8 +19,9 @@ import android.widget.Toast;
 
 import com.apps.diogo.timetobusufrn.Classes.Database.Facade;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
-import com.apps.diogo.timetobusufrn.Classes.Adapters.PostAdapter;
+import com.apps.diogo.timetobusufrn.Classes.Adapters.Timeline.PostAdapter;
 import com.apps.diogo.timetobusufrn.R;
+import com.apps.diogo.timetobusufrn.Classes.Utility;
 
 import java.util.ArrayList;
 
@@ -47,7 +48,8 @@ public class TimelineFragment extends Fragment
         adaptadorLista = new PostAdapter(context, posts);
         lista.setAdapter(adaptadorLista);
     
-        
+        Utility.setListViewHeightBasedOnChildren(lista);
+    
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.sw_refresh);
         
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()

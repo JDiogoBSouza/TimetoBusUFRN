@@ -185,7 +185,7 @@ public class BancoHorarios extends SQLiteOpenHelper
         
         
         // Horarios Direto
-        db.execSQL("INSERT INTO Horarios values (NULL, NULL, '06:15', '06:30', 1)");
+        db.execSQL("INSERT INTO Horarios values (NULL, '06:16', '06:15', '06:30', 1)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:20', '06:35', '06:50', 2)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:40', '06:55', '07:10', 1)");
         db.execSQL("INSERT INTO Horarios values (NULL, '07:00', '07:15', '07:25', 2)");
@@ -231,7 +231,7 @@ public class BancoHorarios extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Horarios values (NULL, '22:20', '22:35', '23:00', 2)");
         
         // Horarios Inverso
-        db.execSQL("INSERT INTO Horarios values (NULL, '00:00', '06:30', '06:45', 3)");
+        db.execSQL("INSERT INTO Horarios values (NULL, '06:29', '06:30', '06:45', 3)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:30', '06:40', '07:00', 4)");
         db.execSQL("INSERT INTO Horarios values (NULL, '06:50', '07:00', '07:20', 3)");
         db.execSQL("INSERT INTO Horarios values (NULL, '07:10', '07:20', '07:40', 4)");
@@ -274,7 +274,7 @@ public class BancoHorarios extends SQLiteOpenHelper
         db.execSQL("INSERT INTO Horarios values (NULL, '21:40', '21:50', '22:05', 3)");
         db.execSQL("INSERT INTO Horarios values (NULL, '21:50', '22:05', '22:20', 4)");
         db.execSQL("INSERT INTO Horarios values (NULL, '22:10', '22:20', '22:35', 3)");
-        db.execSQL("INSERT INTO Horarios values (NULL, '22:20', '22:30', '00:00', 4)");
+        db.execSQL("INSERT INTO Horarios values (NULL, '22:20', '22:30', '22:31', 4)");
         
         // Horarios Expresso C&T
         db.execSQL("INSERT INTO Horarios values (NULL, '06:35', '06:40', '06:50', 5)");

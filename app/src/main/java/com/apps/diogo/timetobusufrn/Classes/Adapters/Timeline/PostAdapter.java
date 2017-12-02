@@ -1,4 +1,4 @@
-package com.apps.diogo.timetobusufrn.Classes.Adapters;
+package com.apps.diogo.timetobusufrn.Classes.Adapters.Timeline;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,18 +61,10 @@ public class PostAdapter extends ArrayAdapter<Post>
         
         Post post = posts.get(position);
         final String comentario = post.getComentario();
-        
-        Button botaoComent = (Button) rowView.findViewById(R.id.botaoComent);
-        
-        botaoComent.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Toast.makeText(context, comentario, Toast.LENGTH_SHORT).show();
-            }
-        });
-        
+    
+        ExpandableListView elvComment = (ExpandableListView) rowView.findViewById(R.id.elvComent);
+        comentExpandable adapter = new comentExpandable( context, post.getComentario() );
+        elvComment.setAdapter(adapter);
         
         textAutor.setText( post.getUsuario().getNome() );
         textMatricula.setText( post.getUsuario().getSMatricula() );

@@ -1,4 +1,4 @@
-package com.apps.diogo.timetobusufrn.Classes.Adapters;
+package com.apps.diogo.timetobusufrn.Classes.Adapters.Timeline;
 
 /**
  * Created by Diogo on 07/11/2017.

@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
-import com.apps.diogo.timetobusufrn.Classes.Adapters.AdapterExpandableLV;
+import com.apps.diogo.timetobusufrn.Classes.Adapters.Horarios.AdapterExpandableLV;
 import com.apps.diogo.timetobusufrn.Classes.Database.Facade;
 import com.apps.diogo.timetobusufrn.R;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Onibus.Horario;
@@ -111,8 +111,8 @@ public class HorariosFragment extends Fragment
         
         fac.getHorariosPorTipoeHora(1,lstDiretos );
         fac.getHorariosPorTipoeHora(2,lstInversos );
-        fac.getHorariosPorTipoeHora(3,lstExpressosCET);
-        fac.getHorariosPorTipoeHora(6,lstExpressosREI );
+        fac.getHorariosPorTipoeHora(3, 5, lstExpressosCET);
+        fac.getHorariosPorTipoeHora(6, 8, lstExpressosREI );
     
         adaptador.notifyDataSetChanged();
     }
