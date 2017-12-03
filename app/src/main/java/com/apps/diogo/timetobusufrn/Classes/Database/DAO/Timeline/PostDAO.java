@@ -123,12 +123,31 @@ public class PostDAO
         int horaEmSegundos = 60;
         
         Date data = new Date(System.currentTimeMillis() - tempoDuracaoPostagem * horaEmSegundos * 1000 );
-        String hora = data.getHours() + ":" + data.getMinutes();
+        
+        String hora = cortaHora(data);
             
+        Toast.makeText(context, "Hora Atual: " + hora, Toast.LENGTH_SHORT).show();
         String where = BancoTimeline.HORA + " < '" + hora + "'";
         
         db = banco.getReadableDatabase();
         db.delete(BancoTimeline.TABELA2,where,null);
         db.close();
+    }
+    
+    private String cortaHora(Date data)
+    {
+        String hora;
+        
+        if( data.getHours() > 9 )
+            hora = data.getHours() + ":";
+        else
+            hora = "0" + data.getHours() + ":";
+        
+        if( data.getMinutes() > 9 )
+            hora += data.getMinutes();
+        else
+            hora += "0" + data.getMinutes();
+        
+        return hora;
     }
 }
