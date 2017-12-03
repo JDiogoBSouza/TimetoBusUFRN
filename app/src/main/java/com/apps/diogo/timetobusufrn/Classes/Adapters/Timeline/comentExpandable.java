@@ -92,7 +92,7 @@ public class comentExpandable extends BaseExpandableListAdapter
     
         TextView tvComent = (TextView) convertView.findViewById(R.id.tvComentario);
     
-        tvComent.setText( "XABLAU" );
+        tvComent.setText( this.comentario );
     
         return convertView;
     }

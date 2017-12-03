@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,8 +45,7 @@ public class PostAdapter extends ArrayAdapter<Post>
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         
-        
-        View rowView = inflater.inflate(R.layout.postlayout, parent, false);
+        final View rowView = inflater.inflate(R.layout.postlayout, parent, false);
     
         TextView textAutor = (TextView) rowView.findViewById(R.id.usuario);
         TextView textMatricula = (TextView) rowView.findViewById(R.id.matricula);
@@ -62,8 +62,9 @@ public class PostAdapter extends ArrayAdapter<Post>
         Post post = posts.get(position);
         final String comentario = post.getComentario();
     
-        ExpandableListView elvComment = (ExpandableListView) rowView.findViewById(R.id.elvComent);
-        comentExpandable adapter = new comentExpandable( context, post.getComentario() );
+        final ExpandableListView elvComment = (ExpandableListView) rowView.findViewById(R.id.elvComent);
+        
+        final comentExpandable adapter = new comentExpandable( context, post.getComentario() );
         elvComment.setAdapter(adapter);
         
         textAutor.setText( post.getUsuario().getNome() );
@@ -87,8 +88,54 @@ public class PostAdapter extends ArrayAdapter<Post>
             
             imagemPost.setImageBitmap(raw);
         }
+    
+        elvComment.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener()
+        {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
+            {
+                setListViewHeight(parent, groupPosition);
+                return false;
+            }
+        });
         
         return rowView;
+    }
+    
+    private void setListViewHeight(ExpandableListView listView,
+                                   int group) {
+        ExpandableListAdapter listAdapter = (ExpandableListAdapter) listView.getExpandableListAdapter();
+        int totalHeight = 0;
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(),
+                View.MeasureSpec.EXACTLY);
+        for (int i = 0; i < listAdapter.getGroupCount(); i++) {
+            View groupItem = listAdapter.getGroupView(i, false, null, listView);
+            groupItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            
+            totalHeight += groupItem.getMeasuredHeight();
+            
+            if (((listView.isGroupExpanded(i)) && (i != group))
+                    || ((!listView.isGroupExpanded(i)) && (i == group))) {
+                for (int j = 0; j < listAdapter.getChildrenCount(i); j++) {
+                    View listItem = listAdapter.getChildView(i, j, false, null,
+                            listView);
+                    listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                    
+                    totalHeight += listItem.getMeasuredHeight();
+                    
+                }
+            }
+        }
+        
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        int height = totalHeight
+                + (listView.getDividerHeight() * (listAdapter.getGroupCount() - 1));
+        if (height < 10)
+            height = 200;
+        params.height = height;
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+        
     }
     
     private void setImagemEmpresa(int idEmpresa, ImageView imageOnibus)
