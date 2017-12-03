@@ -10,7 +10,7 @@
         android:id="@+id/tvComentario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:layout_weight="7"
         android:gravity="left"
         android:textSize="16sp"
