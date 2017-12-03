@@ -4,9 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.apps.diogo.timetobusufrn.Classes.Database.BancoTimeline;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
+
+import java.util.Date;
 
 /**
  * Created by Diogo on 27/10/2017.
@@ -16,10 +19,12 @@ public class PostDAO
 {
     private SQLiteDatabase db;
     private BancoTimeline banco;
+    private Context context;
     
     public PostDAO(Context context)
     {
         banco = new BancoTimeline(context);
+        this.context = context;
     }
     
     public long insertPost(Post post)
@@ -107,6 +112,21 @@ public class PostDAO
     public void deletePost(int id)
     {
         String where = BancoTimeline.ID + "=" + id;
+        db = banco.getReadableDatabase();
+        db.delete(BancoTimeline.TABELA2,where,null);
+        db.close();
+    }
+    
+    public void deletePostsAntigos()
+    {
+        int tempoDuracaoPostagem = 19;
+        int horaEmSegundos = 60;
+        
+        Date data = new Date(System.currentTimeMillis() - tempoDuracaoPostagem * horaEmSegundos * 1000 );
+        String hora = data.getHours() + ":" + data.getMinutes();
+            
+        String where = BancoTimeline.HORA + " < '" + hora + "'";
+        
         db = banco.getReadableDatabase();
         db.delete(BancoTimeline.TABELA2,where,null);
         db.close();

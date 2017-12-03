@@ -94,7 +94,9 @@ public class PostAdapter extends ArrayAdapter<Post>
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id)
             {
-                setParentListViewHeight(parent, groupPosition);
+                if( !comentario.isEmpty() )
+                    setParentListViewHeight(parent, groupPosition);
+                
                 return false;
             }
         });

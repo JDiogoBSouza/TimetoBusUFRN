@@ -171,7 +171,7 @@ public class TimelineFragment extends Fragment
     public void buscaPosts()
     {
         Facade fac = new Facade(context);
-        
+        fac.deletarPostsAntigos();
         adaptadorLista.clear();
         fac.getUltimosPosts(posts);
         adaptadorLista.notifyDataSetChanged();

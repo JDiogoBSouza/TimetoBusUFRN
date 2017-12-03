@@ -480,7 +480,16 @@ public class Facade
     {
         PostDAO dao = new PostDAO(contexto);
         dao.deletePost(id);
+        
         //TODO: Verificar se realmente excluiu
+        return true;
+    }
+    
+    public boolean deletarPostsAntigos()
+    {
+        PostDAO dao = new PostDAO(contexto);
+        dao.deletePostsAntigos();
+        
         return true;
     }
 }
