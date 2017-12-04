@@ -126,7 +126,7 @@ public class PostDAO
         
         String hora = cortaHora(data);
             
-        Toast.makeText(context, "Hora Atual: " + hora, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "Hora Atual: " + hora, Toast.LENGTH_SHORT).show();
         String where = BancoTimeline.HORA + " < '" + hora + "'";
         
         db = banco.getReadableDatabase();
