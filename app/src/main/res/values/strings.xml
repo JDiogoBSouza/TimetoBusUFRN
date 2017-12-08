@@ -8,16 +8,35 @@
     <string name="action_sobre">Sobre</string>
 
     <string-array name="paradas">
-        <item>Reitoria</item> 0
-        <item>Anel Viario</item>
-        <item>Saida UFRN</item>
-        <item>Bar de Mae</item>
-        <item>Capela</item>
+        <item>Terminal</item>
+        <item>Fisioterapia</item>
+        <item>Setor I</item>
+        <item>Setor II</item>
+        <item>Geologia</item>
+        <item>Lab Petroleo</item>
+        <item>ECT</item>
+        <item>CB</item>
+        <item>NUPLAN</item>
+        <item>Rotatória</item>
+        <item>Saída UFRN</item>
+        <item>Bar de Mãe</item>
+        <item>Igreja Mirassol</item>
         <item>Via Direta</item>
         <item>Deart</item>
-        <item>Esc. Musica</item>
+        <item>Escola Musica</item>
+        <item>Reitoria</item>
+        <item>DEF</item>
+        <item>DEF</item>
+        <item>Reitoria</item>
         <item>CB</item>
         <item>ECT</item>
+        <item>Lab Petróleo</item>
+        <item>Geologia</item>
+        <item>Setor II</item>
+        <item>Setor I</item>
+        <item>Fisioterapia</item>
+        <item>Júlio Barata</item>
+        <item>Residencias</item>
     </string-array>
 
     <string-array name="empresasDireto">
@@ -62,7 +81,6 @@
         <item>Ex. CeT</item>
         <item>Ex. Reitoria</item>
     </string-array>
-
 
 
     <string name="title_activity_login">Time to Bus - UFRN</string>
@@ -142,5 +160,6 @@
 
     <item name="visible" type="id"/>
     <item name="masked" type="id"/>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

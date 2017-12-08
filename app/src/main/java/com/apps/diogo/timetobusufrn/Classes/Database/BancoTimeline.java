@@ -160,10 +160,6 @@ public class BancoTimeline extends SQLiteOpenHelper
         db.execSQL("INSERT INTO usuarios values (2222,'Alex Lima', 'dg22221',  NULL)");
         db.execSQL("INSERT INTO usuarios values (3333,'Janna Silva', 'dg3333',  NULL)");
         db.execSQL("INSERT INTO usuarios values (4444, 'Bruno Silva', 'dg4444', NULL)");
-    
-        db.execSQL("INSERT INTO posts values (NULL, 'Reitoria', 'Inverso',2 , '12:45', ':44', 'Busao lotado', 2222)");
-        db.execSQL("INSERT INTO posts values (NULL, 'Via Direta', 'Direto',0 , '10:40', ':34', 'Busao Vazio', 4444)");
-        db.execSQL("INSERT INTO posts values (NULL, 'Via Direta', 'Inverso',1 , '10:00', ':34', 'Busao Vazio', 1111)");
     }
 }
 

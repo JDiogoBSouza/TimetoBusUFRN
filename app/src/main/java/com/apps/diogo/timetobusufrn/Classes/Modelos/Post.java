@@ -14,7 +14,7 @@ public class Post implements Serializable
     //private static int idCount = 0;
     
     private int id;
-    private String parada;
+    private int idParada;
     private String tipoOnibus;
     private int empresaOnibus;
     private String comentario;
@@ -26,10 +26,10 @@ public class Post implements Serializable
     //private Onibus onibus;
     
     
-    public Post(Usuario usuario, String parada, String tipoOnibus, int empresaOnibus, String comentario)
+    public Post(Usuario usuario, int idParada, String tipoOnibus, int empresaOnibus, String comentario)
     {
         super();
-        this.parada = parada;
+        this.idParada = idParada;
         this.tipoOnibus = tipoOnibus;
         this.empresaOnibus = empresaOnibus;
         this.comentario = comentario;
@@ -41,7 +41,7 @@ public class Post implements Serializable
         this.segundos = cortaSegundos(data);
     }
     
-    public Post(int id, Usuario usuario, String parada, String tipoOnibus, int empresaOnibus, String hora, String segundos, String comentario)
+    public Post(int id, Usuario usuario, int idParada, String tipoOnibus, int empresaOnibus, String hora, String segundos, String comentario)
     {
         super();
         this.id = id;
@@ -49,17 +49,9 @@ public class Post implements Serializable
         this.usuario = usuario;
         this.hora = hora;
         this.segundos = segundos;
-        this.parada = parada;
+        this.idParada = idParada;
         this.tipoOnibus = tipoOnibus;
         this.empresaOnibus = empresaOnibus;
-    }
-    
-    public String getParada() {
-        return parada;
-    }
-    
-    public void setParada(String parada) {
-        this.parada = parada;
     }
     
     public String getTipoOnibus() {
@@ -121,7 +113,7 @@ public class Post implements Serializable
     @Override
     public String toString()
     {
-        String content = usuario + "\n" + comentario + "\n" + hora + segundos;
+        String content = "Hora: " + hora + segundos + "\nCircular " + tipoOnibus + "\nComentario: " + comentario;
         return content;
     }
     
@@ -152,6 +144,115 @@ public class Post implements Serializable
             segundos = ":0" + data.getSeconds();
         
         return segundos;
+    }
+    
+    public int getIdParada() {
+        return idParada;
+    }
+    
+    public void setIdParada(int idParada) {
+        this.idParada = idParada;
+    }
+    
+    public String getNomeParada()
+    {
+        String nomeParada = "";
+    
+        switch(idParada)
+        {
+            case 0:
+                nomeParada = "Terminal";
+                break;
+            case 1:
+                nomeParada = "Fisioterapia";
+                break;
+            case 2:
+                nomeParada = "Setor I";
+                break;
+            case 3:
+                nomeParada = "Setor II";
+                break;
+            case 4:
+                nomeParada = "Geologia";
+                break;
+            case 5:
+                nomeParada = "Lab Petróleo";
+                break;
+            case 6:
+                nomeParada = "ECT";
+                break;
+            case 7:
+                nomeParada = "CB";
+                break;
+            case 8:
+                nomeParada = "NUPLAN";
+                break;
+            case 9:
+                nomeParada = "Rotatória";
+                break;
+            case 10:
+                nomeParada = "Saída UFRN";
+                break;
+            case 11:
+                nomeParada = "Bar de Mãe";
+                break;
+            case 12:
+                nomeParada = "Igreja Mirassol";
+                break;
+            case 13:
+                nomeParada = "Via Direta";
+                break;
+            case 14:
+                nomeParada = "DEART";
+                break;
+            case 15:
+                nomeParada = "Escola Musica";
+                break;
+            case 16:
+                nomeParada = "Reitoria";
+                break;
+            case 17:
+                nomeParada = "DEF";
+                break;
+            case 18:
+                nomeParada = "DEF";
+                break;
+            case 19:
+                nomeParada = "REITORIA";
+                break;
+            case 20:
+                nomeParada = "CB";
+                break;
+            case 21:
+                nomeParada = "ECT";
+                break;
+            case 22:
+                nomeParada = "Lab Petróleo";
+                break;
+            case 23:
+                nomeParada = "Geologia";
+                break;
+            case 24:
+                nomeParada = "Setor II";
+                break;
+            case 25:
+                nomeParada = "Setor I";
+                break;
+            case 26:
+                nomeParada = "Fisioterapia";
+                break;
+            case 27:
+                nomeParada = "Júlio Barata";
+                break;
+            case 28:
+                nomeParada = "Residências";
+                break;
+            default:
+                nomeParada = "Terminal";
+                break;
+        }
+        
+        return nomeParada;
     }
     
     @Override

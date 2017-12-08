@@ -37,7 +37,7 @@ public class PostDAO
         valores = new ContentValues();
         
         //valores.put(BancoTimeline.ID, post.getId());
-        valores.put(BancoTimeline.PARADA, post.getParada());
+        valores.put(BancoTimeline.PARADA, post.getIdParada());
         valores.put(BancoTimeline.TIPOONIBUS, post.getTipoOnibus());
         valores.put(BancoTimeline.EMPRESAONIBUS, post.getEmpresaOnibus());
         valores.put(BancoTimeline.HORA, post.getHora());
@@ -98,7 +98,7 @@ public class PostDAO
         where = BancoTimeline.ID + "=" + post.getId();
         
         valores = new ContentValues();
-        valores.put(BancoTimeline.PARADA, post.getParada());
+        valores.put(BancoTimeline.PARADA, post.getIdParada());
         valores.put(BancoTimeline.TIPOONIBUS, post.getTipoOnibus());
         valores.put(BancoTimeline.EMPRESAONIBUS, post.getEmpresaOnibus());
         valores.put(BancoTimeline.HORA, post.getHora());

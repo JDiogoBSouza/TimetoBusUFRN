@@ -255,50 +255,12 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
                 ArrayAdapter<CharSequence> adapter2;
                 
                 //Toast.makeText(getApplicationContext(), "Arg2 = " + arg2, Toast.LENGTH_SHORT).show();
-                
-                switch( arg2 )
-                {
-                    case 0:
-                        // Todos os Onibus, exceto o expresso CeT, param na reitoria.
-                        adapter2 = ArrayAdapter.createFromResource(context, R.array.onibusReitoria, android.R.layout.simple_spinner_item);
-                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter2);
-                        break;
     
-                    case 5:
-                        // Todos os Onibus param no via direta.
-                        adapter2 = ArrayAdapter.createFromResource(context, R.array.onibusViaDireta, android.R.layout.simple_spinner_item);
-                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter2);
-                        break;
-                    
-                    case 9:
-                        // Todos os Onibus, exceto o expresso reitoria, param na ECT.
-                        adapter2 = ArrayAdapter.createFromResource(context, R.array.onibusCET, android.R.layout.simple_spinner_item);
-                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter2);
-                    break;
-                    
-                    default:
-                        // Apenas diretos e inversos param nas outras paradas.
-                        adapter2 = ArrayAdapter.createFromResource(context, R.array.onibusComuns, android.R.layout.simple_spinner_item);
-                        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinner2.setAdapter(adapter2);
-                    break;
-                }
+                // TODO: Controle de Seleção de onibus deve ser refeito.
                 
-                /*
-                    0 - Reitoria
-                    1 - Anel Viario
-                    2 - Saida UFRN
-                    3 - Bar de Mae
-                    4 - Capela
-                    5 - Via Direta
-                    6 - Deart
-                    7 - Esc. Musica
-                    8 - CB
-                    9 - ECT
-                 */
+                adapter2 = ArrayAdapter.createFromResource(context, R.array.onibusViaDireta, android.R.layout.simple_spinner_item);
+                adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner2.setAdapter(adapter2);
             }
         
             @Override
@@ -563,7 +525,7 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         EditText textComentarios = (EditText) dialog.findViewById(R.id.DLcomentarios);
     
         String postContent = textComentarios.getText().toString();
-        String parada = spinnerParada.getSelectedItem().toString();
+        int parada = (int) spinnerParada.getSelectedItemId();
         
         OnibusSpinner a = (OnibusSpinner) spinnerEmpresaOnibus.getSelectedItem();
         
