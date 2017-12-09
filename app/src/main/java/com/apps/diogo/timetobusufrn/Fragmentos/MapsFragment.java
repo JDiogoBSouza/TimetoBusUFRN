@@ -25,6 +25,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -74,7 +76,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback
         //if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) return;
         //mMap.setMyLocationEnabled(true);
         
-        CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(infl);
+        CustomInfoWindowAdapter adapter = new CustomInfoWindowAdapter(infl, context);
         mMap.setInfoWindowAdapter(adapter);
     
         LatLng local = new LatLng(-5.837020, -35.203532);
@@ -88,7 +90,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback
     {
         Facade fac = new Facade(context);
         
-        ArrayList<Post> posts = new ArrayList<Post>();;
+        ArrayList<Post> posts = new ArrayList<Post>();
         fac.getUltimosPosts(posts);
     
         int height = 120;
@@ -96,19 +98,43 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback
         BitmapDrawable bitmapdraw=(BitmapDrawable)getResources().getDrawable( R.drawable.busico );
         Bitmap b = bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+    
+        Map<Integer, Marker> mMarkers = new HashMap<>();
         
         for(Post post : posts)
         {
-            mMap.addMarker(new MarkerOptions().position( buscaLocalizacao( post.getIdParada() ) )
-                    .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
-                    .title( post.getUsuario().getNome() )
-                    .snippet( post.toString() ));
+            Marker marcador = mMarkers.get( post.getIdParada() );
+            
+            if( marcador == null  )
+            {
+                // Adiciona um novo marcador.
+                ArrayList<Post> listaPosts = new ArrayList<Post>();
+
+                marcador = mMap.addMarker(new MarkerOptions()
+                        .position( buscaLocalizacao( post.getIdParada() ) )
+                        .icon(BitmapDescriptorFactory.fromBitmap(smallMarker))
+                        .title( post.getUsuario().getNome() )
+                        .snippet( post.toString() ));
+                
+                listaPosts.add(post);
+                marcador.setTag(listaPosts);
+                
+                mMarkers.put( post.getIdParada(), marcador);
+            }
+            else
+            {
+                // Atualiza o marcador existente.
+                ArrayList<Post> listaExistente = (ArrayList<Post>) marcador.getTag();
+                listaExistente.add(post);
+            }
         }
+        
+        
     }
     
     private LatLng buscaLocalizacao( int idLocal )
     {
-        // Apenas para testes
+        // Apenas para testes, Amazenar coordenadas no banco de dados depois
         
         LatLng local = null;
         
