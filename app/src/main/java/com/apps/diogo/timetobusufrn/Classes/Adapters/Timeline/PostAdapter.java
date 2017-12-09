@@ -71,7 +71,7 @@ public class PostAdapter extends ArrayAdapter<Post>
         textMatricula.setText( post.getUsuario().getSMatricula() );
         
         textOnibus.setText( post.getTipoOnibus() );
-        textParada.setText( post.getParada() );
+        textParada.setText( post.getNomeParada() );
         
         textHora.setText( post.getHora() );
         textSegundos.setText( post.getSegundos() );

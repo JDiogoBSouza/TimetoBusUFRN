@@ -3,6 +3,7 @@ package com.apps.diogo.timetobusufrn.Fragmentos;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
 import com.apps.diogo.timetobusufrn.R;
 
@@ -37,10 +39,41 @@ public class FragmentoTabs extends Fragment
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         viewPager.setAdapter(new sliderAdapter(getChildFragmentManager()));
         tabLayout = (TabLayout) view.findViewById(R.id.sliding_tabs);
+        
+        final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
                 tabLayout.setupWithViewPager(viewPager);
+            }
+        });
+    
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener()
+        {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab)
+            {
+                int position = tab.getPosition();
+                
+                if( position == 0 )
+                {
+                    fab.show();
+                }
+                else
+                {
+                    fab.hide();
+                }
+            }
+        
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab)
+            {
+            }
+        
+            @Override
+            public void onTabReselected(TabLayout.Tab tab)
+            {
             }
         });
             

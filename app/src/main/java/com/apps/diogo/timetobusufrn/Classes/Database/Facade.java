@@ -230,7 +230,7 @@ public class Facade
     
         do{
             int id = cursor.getInt( cursor.getColumnIndex( nomeCampos[0] ) );
-            String parada = cursor.getString( cursor.getColumnIndex(nomeCampos[1]) );
+            int parada = cursor.getInt( cursor.getColumnIndex(nomeCampos[1]) );
             String onibus = cursor.getString( cursor.getColumnIndex(nomeCampos[2]) );
             int empresaOnibus = cursor.getInt( cursor.getColumnIndex(nomeCampos[3]) );
             String hora = cursor.getString( cursor.getColumnIndex(nomeCampos[4]) );
