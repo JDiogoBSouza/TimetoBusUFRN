@@ -1,24 +1,19 @@
 package com.apps.diogo.timetobusufrn.Fragmentos;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apps.diogo.timetobusufrn.Classes.Adapters.Maps.CustomInfoWindowAdapter;
 import com.apps.diogo.timetobusufrn.Classes.Database.Facade;
 import com.apps.diogo.timetobusufrn.Classes.Modelos.Post;
 import com.apps.diogo.timetobusufrn.R;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -31,7 +26,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Diogo on 17/10/2017.

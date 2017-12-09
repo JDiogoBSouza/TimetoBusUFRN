@@ -213,7 +213,7 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
     private void initFloatingActionButton()
     {
         fab = (FloatingActionButton) findViewById(R.id.fab);
-    
+        
         fab.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -490,8 +490,10 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
         if (fragment != null)
         {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            
             ft.replace(R.id.content_timeline, fragment);
             ft.commit();
+    
         }
         
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -582,7 +584,7 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
             {
                 fragmentoAtual = new FragmentoTabs();
                 setFragment(fragmentoAtual);
-                fab.setVisibility(View.VISIBLE);
+                fab.show();
             }
         }
         else if (id == R.id.nav_notificacoes)
@@ -591,7 +593,7 @@ public class TimelineActivity extends AppCompatActivity implements NavigationVie
             {
                 fragmentoAtual = new FragmentoNotificacoes();
                 setFragment(fragmentoAtual);
-                fab.setVisibility(View.INVISIBLE);
+                fab.hide();
             }
         }
         else if (id == R.id.nav_logoff)
